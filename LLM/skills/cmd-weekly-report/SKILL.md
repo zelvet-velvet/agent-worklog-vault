@@ -1,8 +1,8 @@
 ---
 name: cmd-weekly-report
-description: Worklog vault commands CMD_WEEKLY_REPORT and CMD_WEEKLY_SYNC. Use when the user types either, or asks to update the weekly report: rebuilds or updates LLM/WEEKLY_REPORT.md (Traditional Chinese) from DEV_STATUS.md or the chat.
+description: Worklog vault commands /cmd-weekly-report and /cmd-weekly-report sync. Use when the user runs either, or asks to update the weekly report: rebuilds or updates LLM/WEEKLY_REPORT.md (Traditional Chinese) from DEV_STATUS.md or the chat.
 ---
-# CMD_WEEKLY_REPORT / CMD_WEEKLY_SYNC
+# /cmd-weekly-report [sync]
 
 Vault root: this skill's folder resolved with `realpath`, three levels up (`<vault>/LLM/skills/<name>/`); run the commands below from there. Target `LLM/WEEKLY_REPORT.md`; source `LLM/DEV_STATUS.md` (history: `LLM/PROGRESS_ARCHIVE.md`, read only when needed).
 
@@ -16,8 +16,8 @@ Vault root: this skill's folder resolved with `realpath`, three levels up (`<vau
     4. Each bullet is one line: `- **短標題**：一句話重點`. Abstract only: the result and why it matters, no step-by-step, file lists or offsets. Max 4 bullets above `---`, max 4 below.
     5. Then `## 開發環境與版控`, `## 本週問題與待辦事項` (`### 問題`, `### 待辦事項`), `## 導入 LLM 協助開發與協同作業`.
 - **NEW WEEK ROLL**: If today is after the `週期` end date, first update `週期` to the current week, then in every block move the old this-week bullets below `---` into history (merge with existing history, keep the 4 most important), remove the empty `---`, and drop `(Updated)`. Old items that fall out of history go to `PAST_REPORTS.md`.
-- **CMD_WEEKLY_REPORT**: Rebuild this week's part of `WEEKLY_REPORT.md` from `DEV_STATUS.md` following **REPORT STRUCTURE** (apply **NEW WEEK ROLL** first if needed).
-- **CMD_WEEKLY_SYNC**: Update `WEEKLY_REPORT.md` from chat context (and `DEV_STATUS.md` `Today`) following **REPORT STRUCTURE** (apply **NEW WEEK ROLL** first if needed). Add new progress above the `---` of the matching block; create a new block with `(New)` if the work part is new. Update `xx%`, labels, 問題 and 待辦事項.
+- **/cmd-weekly-report**: Rebuild this week's part of `WEEKLY_REPORT.md` from `DEV_STATUS.md` following **REPORT STRUCTURE** (apply **NEW WEEK ROLL** first if needed).
+- **/cmd-weekly-report sync**: Update `WEEKLY_REPORT.md` from chat context (and `DEV_STATUS.md` `Today`) following **REPORT STRUCTURE** (apply **NEW WEEK ROLL** first if needed). Add new progress above the `---` of the matching block; create a new block with `(New)` if the work part is new. Update `xx%`, labels, 問題 and 待辦事項.
 - **PIN UPDATED BLOCKS**: Blocks labeled `(Updated)` or `(New)` MUST be moved to the top of `## 工作項目`; renumber the blocks.
 - **STATUS LABELS** (only these four, no `(Ongoing)`):
     - `(Updated)`: existing block with new progress this week.

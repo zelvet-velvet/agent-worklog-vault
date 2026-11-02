@@ -4,14 +4,14 @@
 
 以 Obsidian 筆記庫整合專案的每日工作紀錄、筆記與週報，並透過 **LLM 程式開發 agent** 維護內容（Claude Code、Codex，或其他可讀取 `AGENTS.md` 的 agent）。
 
-開發時於對話中與 agent 協作，再以簡短指令（`CMD_SYNC`、`CMD_ROLLOVER`…）更新進度清單、日誌、筆記與週報。每個指令皆為一個 [Agent Skill](https://agentskills.io)，存放於筆記庫，並與筆記一同以 git 管理版本。
+開發時於對話中與 agent 協作，再以簡短指令（`/cmd-sync`、`/cmd-rollover`…）更新進度清單、日誌、筆記與週報。每個指令皆為一個 [Agent Skill](https://agentskills.io)，存放於筆記庫，並與筆記一同以 git 管理版本。
 
 | 功能 | 說明 |
 | :--- | :--- |
-| 即時更新進度清單 | 透過 `CMD_SYNC` 將當日完成項目寫入 `LLM/DEV_STATUS.md` |
-| 自動產生日誌 | 透過 `CMD_ROLLOVER` 將當日進度移至日誌筆記，並以 `CMD_JOURNAL` 依個人語氣整理摘要 |
-| 筆記與程式碼一致 | 透過 `CMD_NOTES_SYNC` 對照 git 紀錄檢查筆記，並更新過時內容 |
-| 快速產生週報 | 透過 `CMD_WEEKLY_REPORT` 產生週報，再以 `CMD_WORD_REPORT` 轉為 Word 格式 |
+| 即時更新進度清單 | 透過 `/cmd-sync` 將當日完成項目寫入 `LLM/DEV_STATUS.md` |
+| 自動產生日誌 | 透過 `/cmd-rollover` 將當日進度移至日誌筆記，並以 `/cmd-journal` 依個人語氣整理摘要 |
+| 筆記與程式碼一致 | 透過 `/cmd-notes-sync` 對照 git 紀錄檢查筆記，並更新過時內容 |
+| 快速產生週報 | 透過 `/cmd-weekly-report` 產生週報，再以 `/cmd-word-report` 轉為 Word 格式 |
 | 精簡 agent 上下文 | 僅載入執行中的指令，歷史紀錄於需要時讀取 |
 | 易讀的圖表 | 設置所有 Mermaid 圖表類型的深色主題，並提供 agent 繪圖規則 |
 
@@ -28,18 +28,18 @@ sequenceDiagram
     participant J as 日誌筆記
     participant W as WEEKLY_REPORT.md
     You->>A: 於對話中開發程式
-    You->>A: CMD_SYNC
+    You->>A: /cmd-sync
     A->>S: 更新今日進度與進行中項目
-    You->>A: CMD_JOURNAL
+    You->>A: /cmd-journal
     A->>J: 整理當日工作摘要
     Note over You,W: 一日結束
-    You->>A: CMD_ROLLOVER
+    You->>A: /cmd-rollover
     A->>J: 寫入當日進度清單
     A->>S: 今日進度移至昨日並 commit
     Note over You,W: 一週結束
-    You->>A: CMD_WEEKLY_REPORT
+    You->>A: /cmd-weekly-report
     A->>W: 產生本週週報
-    You->>A: CMD_WORD_REPORT
+    You->>A: /cmd-word-report
     A->>W: 產生 Word 用 HTML 與 .doc 並 push
 ```
 
@@ -47,10 +47,10 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    C[與 agent 對話] --> SY[CMD_SYNC] --> S["DEV_STATUS.md<br/>今日 · 昨日 · 進行中"]
-    S --> RO[CMD_ROLLOVER] --> J[日誌筆記]
-    S --> NS[CMD_NOTES_SYNC] --> N[Spec · Impl · Quest 筆記]
-    S --> WR[CMD_WEEKLY_REPORT] --> R[WEEKLY_REPORT.md] --> WO[CMD_WORD_REPORT] --> D[Word 用 .doc]
+    C[與 agent 對話] --> SY["/cmd-sync"] --> S["DEV_STATUS.md<br/>今日 · 昨日 · 進行中"]
+    S --> RO["/cmd-rollover"] --> J[日誌筆記]
+    S --> NS["/cmd-notes-sync"] --> N[Spec · Impl · Quest 筆記]
+    S --> WR["/cmd-weekly-report"] --> R[WEEKLY_REPORT.md] --> WO["/cmd-word-report"] --> D[Word 用 .doc]
 ```
 
 ### Agent 讀取檔案的時機
@@ -80,12 +80,12 @@ flowchart TB
 ```mermaid
 stateDiagram-v2
     direction LR
-    [*] --> Today: CMD_SYNC
-    Today --> DayNote: CMD_ROLLOVER
-    Today --> Yesterday: CMD_ROLLOVER
+    [*] --> Today: /cmd-sync
+    Today --> DayNote: /cmd-rollover
+    Today --> Yesterday: /cmd-rollover
     Yesterday --> [*]: 下一次 rollover
-    [*] --> Ongoing: CMD_SYNC
-    Ongoing --> Archive: 完成後 CMD_NOTES_SYNC
+    [*] --> Ongoing: /cmd-sync
+    Ongoing --> Archive: 完成後 /cmd-notes-sync
     Today: 今日進度
     Yesterday: 昨日進度
     Ongoing: 進行中
@@ -112,7 +112,7 @@ flowchart LR
 
 ### 多專案、多筆記庫
 
-Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾（`~/.claude/skills`）：包含筆記庫本身，以及 `LLM/vault_config.json` 的 `projects` 中由此筆記庫記錄的各程式 repo。因此 `CMD_SYNC` 僅出現於這些專案的 session，且一定寫入此筆記庫；同一台電腦上的其他筆記庫連結至各自的專案，可使用相同的指令名稱。若專案為 git repo，每個連結會以名稱加入 `.git/info/exclude`，專案不會產生 commit 或未追蹤檔案，專案自行 commit 於同一資料夾的 skill 仍可正常 commit。筆記庫若位於專案 repo 內，可直接將 skill commit 至該 repo 的 `.claude/skills/`。`projects` 中的相對路徑以筆記庫資料夾為基準。連結為 WSL symlink，於 Windows 原生執行的 agent 開啟 `/mnt/c` 上的 repo 時不會讀取。
+Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾（`~/.claude/skills`）：包含筆記庫本身，以及 `LLM/vault_config.json` 的 `projects` 中由此筆記庫記錄的各程式 repo。因此 `/cmd-sync` 僅出現於這些專案的 session，且一定寫入此筆記庫；同一台電腦上的其他筆記庫連結至各自的專案，可使用相同的指令名稱。若專案為 git repo，每個連結會以名稱加入 `.git/info/exclude`，專案不會產生 commit 或未追蹤檔案，專案自行 commit 於同一資料夾的 skill 仍可正常 commit。筆記庫若位於專案 repo 內，可直接將 skill commit 至該 repo 的 `.claude/skills/`。`projects` 中的相對路徑以筆記庫資料夾為基準。連結為 WSL symlink，於 Windows 原生執行的 agent 開啟 `/mnt/c` 上的 repo 時不會讀取。
 
 ---
 
@@ -120,7 +120,7 @@ Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾�
 
 ```mermaid
 flowchart LR
-    A[使用範本] --> B[install_plugins.py] --> C[啟用外掛] --> D[vault_config.json] --> E[link_skills.sh] --> F[CMD_SYNC]
+    A[使用範本] --> B[install_plugins.py] --> C[啟用外掛] --> D[vault_config.json] --> E[link_skills.sh] --> F["/cmd-sync"]
 ```
 
 1. **複製筆記庫**：以此 repo 為範本建立或 clone，完成第 2 步前先不以 Obsidian 開啟。
@@ -159,13 +159,13 @@ flowchart LR
 
 | 指令 | 作用 |
 | :--- | :--- |
-| `CMD_SYNC` | 依據對話內容更新今日、昨日與進行中項目 |
-| `CMD_ROLLOVER` | 將今日進度移至日誌筆記與昨日，並 commit |
-| `CMD_NOTES_SYNC [日期]` | 修正與程式碼不一致的筆記，並封存已完成項目 |
-| `CMD_JOURNAL [日期]` | 整理日誌筆記的工作摘要，並依據修改紀錄學習語氣 |
-| `CMD_REPORT [日期]` | 整理週筆記的三段式摘要 |
-| `CMD_WEEKLY_REPORT` / `CMD_WEEKLY_SYNC` | 重建 / 更新 `WEEKLY_REPORT.md` |
-| `CMD_WORD_REPORT` | 產生 Word 用 HTML 與公司 `.doc`，並 commit、push |
+| `/cmd-sync` | 依據對話內容更新今日、昨日與進行中項目 |
+| `/cmd-rollover` | 將今日進度移至日誌筆記與昨日，並 commit |
+| `/cmd-notes-sync [日期]` | 修正與程式碼不一致的筆記，並封存已完成項目 |
+| `/cmd-journal [日期]` | 整理日誌筆記的工作摘要，並依據修改紀錄學習語氣 |
+| `/cmd-report [日期]` | 整理週筆記的三段式摘要 |
+| `/cmd-weekly-report` / `/cmd-weekly-report sync` | 重建 / 更新 `WEEKLY_REPORT.md` |
+| `/cmd-word-report` | 產生 Word 用 HTML 與公司 `.doc`，並 commit、push |
 
 以下 skill 不需指令，於相關工作時自動套用：
 

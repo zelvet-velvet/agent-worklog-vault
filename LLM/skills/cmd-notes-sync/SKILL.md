@@ -1,10 +1,10 @@
 ---
 name: cmd-notes-sync
-description: Worklog vault command CMD_NOTES_SYNC [YYYY-MM-DD]. Use when the user types CMD_NOTES_SYNC: brings the vault notes describing the day's work up to date against the code, then moves finished Ongoing items of DEV_STATUS.md to PROGRESS_ARCHIVE.md.
+description: Worklog vault command /cmd-notes-sync [YYYY-MM-DD]. Use when the user runs /cmd-notes-sync: brings the vault notes describing the day's work up to date against the code, then moves finished Ongoing items of DEV_STATUS.md to PROGRESS_ARCHIVE.md.
 ---
-# CMD_NOTES_SYNC [YYYY-MM-DD]
+# /cmd-notes-sync [YYYY-MM-DD]
 
-Vault root: this skill's folder resolved with `realpath`, three levels up (`<vault>/LLM/skills/<name>/`); run the commands below from there. **No arguments**: use `Today's Progress` in `LLM/DEV_STATUS.md`. With a date (`CMD_NOTES_SYNC 2026-10-07`): use `Yesterday's Progress` when its heading date matches.
+Vault root: this skill's folder resolved with `realpath`, three levels up (`<vault>/LLM/skills/<name>/`); run the commands below from there. **No arguments**: use `Today's Progress` in `LLM/DEV_STATUS.md`. With a date (`/cmd-notes-sync 2026-10-07`): use `Yesterday's Progress` when its heading date matches.
 
 1. **Find**: From the progress items, search the vault (`Spec/`, `Impl/`, `Quest/`, `Reference/`, `Tools/`) for the notes that mention the same feature, command code, function or file. Typical: `Spec/*`, `Impl/*`, `Quest/Task N`. Grep first and read only the matching sections of large notes.
 2. **Check against the code**: Compare each note with the code (`git log` / `git diff` of the repo for that day) and with `DEV_STATUS.md`. Fix only what is provably stale: status words ("not yet built", "pending"), test results, command / key type tables, commit hashes, file and function names. Keep the note's own format (callouts, mermaid, tables; callout type follows the block's state, see [[LLM_GUIDE]] Vault Note Format).

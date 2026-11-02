@@ -1,8 +1,8 @@
 ---
 name: cmd-journal
-description: Worklog vault command CMD_JOURNAL [YYYY-MM-DD]. Use when the user types CMD_JOURNAL: writes the day's journal bullets in Traditional Chinese (Taiwan work-log tone) into the day note and learns from the user's edits in TONE.md.
+description: Worklog vault command /cmd-journal [YYYY-MM-DD]. Use when the user runs /cmd-journal: writes the day's journal bullets in Traditional Chinese (Taiwan work-log tone) into the day note and learns from the user's edits in TONE.md.
 ---
-# CMD_JOURNAL [YYYY-MM-DD]
+# /cmd-journal [YYYY-MM-DD]
 
 Vault root: this skill's folder resolved with `realpath`, three levels up (`<vault>/LLM/skills/<name>/`); run the commands below from there.
 

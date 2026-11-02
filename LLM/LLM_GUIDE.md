@@ -20,7 +20,7 @@ sticker: lucide//book-open
 Each vault command is a skill in `LLM/skills/<name>/SKILL.md` (Agent Skills format). The command table and the setup for each agent are in [[AGENTS]] at the vault root. To change a command's rules, edit its skill file.
 
 - **Status files**: `DEV_STATUS.md` = Today, Yesterday, Ongoing. Finished history = `PROGRESS_ARCHIVE.md` (read only for the weekly report history or when asked).
-- **TRUST ORDER** (when sources disagree): code, then today's chat and `DEV_STATUS.md`, then Spec notes, then other vault notes. If a note contradicts the code, say so in the answer, do not repeat the stale fact, and suggest `CMD_NOTES_SYNC`.
+- **TRUST ORDER** (when sources disagree): code, then today's chat and `DEV_STATUS.md`, then Spec notes, then other vault notes. If a note contradicts the code, say so in the answer, do not repeat the stale fact, and suggest `/cmd-notes-sync`.
 - **Tone** (Chinese journal and reports): the user's own work-log style in [[TONE]]: neutral written Taiwan workplace Chinese, verb first, summary level, technical terms in English, no Mainland wording.
 
 ### 🔔 Notifications

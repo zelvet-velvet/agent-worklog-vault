@@ -4,14 +4,14 @@
 
 An Obsidian vault that keeps a project's daily work log, notes and reports **together with an LLM coding agent** (Claude Code, Codex, or any agent that reads `AGENTS.md`).
 
-You work with the agent in chat as usual. A few short commands (`CMD_SYNC`, `CMD_ROLLOVER`, …) let it keep the status list, the journal, the notes and the weekly report up to date. Each command is an [Agent Skill](https://agentskills.io) stored in the vault, so the rules are versioned with your notes.
+You work with the agent in chat as usual. A few short commands (`/cmd-sync`, `/cmd-rollover`, …) let it keep the status list, the journal, the notes and the weekly report up to date. Each command is an [Agent Skill](https://agentskills.io) stored in the vault, so the rules are versioned with your notes.
 
 | You get | How |
 | :--- | :--- |
-| A status list that is always current | `CMD_SYNC` writes what was done today into `LLM/DEV_STATUS.md` |
-| A journal without writing it | `CMD_ROLLOVER` moves the day into its journal note; `CMD_JOURNAL` writes the summary in your own tone |
-| Notes that match the code | `CMD_NOTES_SYNC` checks notes against the git history and fixes stale facts |
-| The weekly report in minutes | `CMD_WEEKLY_REPORT` builds it; `CMD_WORD_REPORT` turns it into a Word-ready file |
+| A status list that is always current | `/cmd-sync` writes what was done today into `LLM/DEV_STATUS.md` |
+| A journal without writing it | `/cmd-rollover` moves the day into its journal note; `/cmd-journal` writes the summary in your own tone |
+| Notes that match the code | `/cmd-notes-sync` checks notes against the git history and fixes stale facts |
+| The weekly report in minutes | `/cmd-weekly-report` builds it; `/cmd-word-report` turns it into a Word-ready file |
 | A small agent context | Only the command that runs is loaded; history is read on demand |
 | Readable diagrams | A dark theme for every Mermaid diagram type, plus a guide for the agent |
 
@@ -28,18 +28,18 @@ sequenceDiagram
     participant J as Journal note
     participant W as WEEKLY_REPORT.md
     You->>A: work on the code in chat
-    You->>A: CMD_SYNC
+    You->>A: /cmd-sync
     A->>S: update Today and Ongoing
-    You->>A: CMD_JOURNAL
+    You->>A: /cmd-journal
     A->>J: a short summary in your tone
     Note over You,W: end of the day
-    You->>A: CMD_ROLLOVER
+    You->>A: /cmd-rollover
     A->>J: the day's list
     A->>S: Today becomes Yesterday, git commit
     Note over You,W: end of the week
-    You->>A: CMD_WEEKLY_REPORT
+    You->>A: /cmd-weekly-report
     A->>W: this week's report
-    You->>A: CMD_WORD_REPORT
+    You->>A: /cmd-word-report
     A->>W: Word-ready HTML and .doc, commit, push
 ```
 
@@ -47,10 +47,10 @@ sequenceDiagram
 
 ```mermaid
 flowchart LR
-    C[Chat with the agent] --> SY[CMD_SYNC] --> S["DEV_STATUS.md<br/>Today · Yesterday · Ongoing"]
-    S --> RO[CMD_ROLLOVER] --> J[Journal day note]
-    S --> NS[CMD_NOTES_SYNC] --> N[Spec · Impl · Quest notes]
-    S --> WR[CMD_WEEKLY_REPORT] --> R[WEEKLY_REPORT.md] --> WO[CMD_WORD_REPORT] --> D[Word-ready .doc]
+    C[Chat with the agent] --> SY["/cmd-sync"] --> S["DEV_STATUS.md<br/>Today · Yesterday · Ongoing"]
+    S --> RO["/cmd-rollover"] --> J[Journal day note]
+    S --> NS["/cmd-notes-sync"] --> N[Spec · Impl · Quest notes]
+    S --> WR["/cmd-weekly-report"] --> R[WEEKLY_REPORT.md] --> WO["/cmd-word-report"] --> D[Word-ready .doc]
 ```
 
 ### What the agent reads, and when
@@ -80,12 +80,12 @@ flowchart TB
 ```mermaid
 stateDiagram-v2
     direction LR
-    [*] --> Today: CMD_SYNC
-    Today --> DayNote: CMD_ROLLOVER
-    Today --> Yesterday: CMD_ROLLOVER
+    [*] --> Today: /cmd-sync
+    Today --> DayNote: /cmd-rollover
+    Today --> Yesterday: /cmd-rollover
     Yesterday --> [*]: next rollover
-    [*] --> Ongoing: CMD_SYNC
-    Ongoing --> Archive: done, CMD_NOTES_SYNC
+    [*] --> Ongoing: /cmd-sync
+    Ongoing --> Archive: done, /cmd-notes-sync
     DayNote: Journal day note
     Archive: PROGRESS_ARCHIVE.md
 ```
@@ -109,7 +109,7 @@ flowchart LR
 
 ### Several projects, several vaults
 
-The skills are linked into **project** skills folders, never the global ones (`~/.claude/skills`): the vault itself and every code repo in `projects` (`LLM/vault_config.json`) that this vault logs. So `CMD_SYNC` exists only in sessions of those projects and always reaches this vault; another vault on the same computer, linked into its own projects, can use the same command names. In a git repo each link goes into `.git/info/exclude` by name, so the project gets no commit and no untracked files, and skills the project commits itself in the same folder stay committable. A vault that lives inside its project repo can commit its skills in that repo's `.claude/skills/` instead. Relative paths in `projects` are read from the vault folder. The links are WSL symlinks: an agent running natively on Windows does not follow them in a repo on `/mnt/c`.
+The skills are linked into **project** skills folders, never the global ones (`~/.claude/skills`): the vault itself and every code repo in `projects` (`LLM/vault_config.json`) that this vault logs. So `/cmd-sync` exists only in sessions of those projects and always reaches this vault; another vault on the same computer, linked into its own projects, can use the same command names. In a git repo each link goes into `.git/info/exclude` by name, so the project gets no commit and no untracked files, and skills the project commits itself in the same folder stay committable. A vault that lives inside its project repo can commit its skills in that repo's `.claude/skills/` instead. Relative paths in `projects` are read from the vault folder. The links are WSL symlinks: an agent running natively on Windows does not follow them in a repo on `/mnt/c`.
 
 ---
 
@@ -117,7 +117,7 @@ The skills are linked into **project** skills folders, never the global ones (`~
 
 ```mermaid
 flowchart LR
-    A[Use template] --> B[install_plugins.py] --> C[Turn plugins on] --> D[vault_config.json] --> E[link_skills.sh] --> F[CMD_SYNC]
+    A[Use template] --> B[install_plugins.py] --> C[Turn plugins on] --> D[vault_config.json] --> E[link_skills.sh] --> F["/cmd-sync"]
 ```
 
 1. **Copy the vault**: use this repo as a template (or clone it). Do not open it in Obsidian yet.
@@ -156,13 +156,13 @@ Without Python: delete a plugin's folder, install it from Settings → Community
 
 | Command | Does |
 | :--- | :--- |
-| `CMD_SYNC` | Update Today, Yesterday and Ongoing from the chat |
-| `CMD_ROLLOVER` | Move Today into its day note and to Yesterday, then commit |
-| `CMD_NOTES_SYNC [date]` | Fix notes that disagree with the code, archive finished items |
-| `CMD_JOURNAL [date]` | Journal summary in the day note, learning from your edits |
-| `CMD_REPORT [date]` | Three-part summary in the week note |
-| `CMD_WEEKLY_REPORT` / `CMD_WEEKLY_SYNC` | Rebuild / update `WEEKLY_REPORT.md` |
-| `CMD_WORD_REPORT` | Word-ready HTML and the company `.doc`, commit and push |
+| `/cmd-sync` | Update Today, Yesterday and Ongoing from the chat |
+| `/cmd-rollover` | Move Today into its day note and to Yesterday, then commit |
+| `/cmd-notes-sync [date]` | Fix notes that disagree with the code, archive finished items |
+| `/cmd-journal [date]` | Journal summary in the day note, learning from your edits |
+| `/cmd-report [date]` | Three-part summary in the week note |
+| `/cmd-weekly-report` / `/cmd-weekly-report sync` | Rebuild / update `WEEKLY_REPORT.md` |
+| `/cmd-word-report` | Word-ready HTML and the company `.doc`, commit and push |
 
 Three skills work without a command:
 

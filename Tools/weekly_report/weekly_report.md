@@ -9,7 +9,7 @@ sticker: lucide//file-text
 ```mermaid
 %% elk %%
 flowchart LR
-    MD["LLM/WEEKLY_REPORT.md<br/>(CMD_WEEKLY_SYNC)"] --> PY["weekly_report.py"]
+    MD["LLM/WEEKLY_REPORT.md<br/>(/cmd-weekly-report sync)"] --> PY["weekly_report.py"]
     PY --> WW["LLM/WEEKLY_WORD.md"]
     PY -->|"--fill"| DOC["company weekly .doc<br/>col 5: 狀態總覽 + blocks<br/>col 6: 問題 / 待辦 / LLM"]
 ```
@@ -32,7 +32,7 @@ python3 weekly_report.py --fill --force   # replace content already in the .doc
 
 ## Week number
 
-Taken from the `> 週期：YYYY-MM-DD ~ ... (Week NN)` line, so run `CMD_WEEKLY_SYNC` (week roll) first.
+Taken from the `> 週期：YYYY-MM-DD ~ ... (Week NN)` line, so run `/cmd-weekly-report sync` (week roll) first.
 
 - Target: `doc_dir` / `doc_name` in `LLM/vault_config.json`
 - Missing → copied from the blank template `template_glob` in `LLM/vault_config.json`

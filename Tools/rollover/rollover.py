@@ -1,4 +1,4 @@
-"""CMD_ROLLOVER: move DEV_STATUS.md 'Today' into its journal day note, shift Today -> Yesterday, commit.
+"""/cmd-rollover: move DEV_STATUS.md 'Today' into its journal day note, shift Today -> Yesterday, commit.
 
 Usage (from WSL, any folder):
     python3 rollover.py --show                  # print the Today date and items (for writing the brief list)
@@ -9,7 +9,7 @@ Usage (from WSL, any folder):
 
 The brief list (one '- **Title**: result' line per item) is written by the LLM; this script does the rest:
 day note location, section replace, DEV_STATUS headings, git commit of only the two files. Rules: LLM/skills/cmd-rollover.
-Exit codes: 0 done, 1 Today empty (run CMD_SYNC), 2 day note missing (open it in Obsidian), 3 day note section not empty.
+Exit codes: 0 done, 1 Today empty (run /cmd-sync), 2 day note missing (open it in Obsidian), 3 day note section not empty.
 """
 import argparse, datetime, json, re, subprocess, sys
 from pathlib import Path
@@ -79,7 +79,7 @@ def main():
         print(f'Today ({date}):\n{items}' if items else f'Today ({date}) is empty')
         return
     if not items:
-        print('Today has no items: run CMD_SYNC first. Nothing changed.')
+        print('Today has no items: run /cmd-sync first. Nothing changed.')
         sys.exit(1)
 
     brief = (a.list.read_text(encoding='utf-8') if a.list else sys.stdin.read()).replace('\r\n', '\n').strip('\n')

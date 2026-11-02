@@ -2,7 +2,7 @@
 up: "[[LLM]]"
 sticker: lucide//message-square
 ---
-The user's own writing style for `CMD_JOURNAL` and the weekly report. Learned from the user's edits; see **Tone learning** in the `cmd-journal` skill.
+The user's own writing style for `/cmd-journal` and the weekly report. Learned from the user's edits; see **Tone learning** in the `cmd-journal` skill.
 
 ## Profile
 - **Register**: neutral written Taiwan workplace Chinese, like a work log handed to a manager. Not spoken, not slangy, not stiff officialese either.
@@ -15,7 +15,7 @@ The user's own writing style for `CMD_JOURNAL` and the weekly report. Learned fr
 - **Terms**: keep technical terms, file and function names in English . 週報, not 周報.
 
 ## Edit pairs
-Draft → User rows, newest first, keep 15 (`CMD_JOURNAL` adds them).
+Draft → User rows, newest first, keep 15 (`/cmd-journal` adds them).
 
 | Draft | User |
 | :--- | :--- |
@@ -24,4 +24,4 @@ Draft → User rows, newest first, keep 15 (`CMD_JOURNAL` adds them).
 Written by the user without a draft.
 
 ## Last draft
-Written by `CMD_JOURNAL`; compared with the note on the next run.
+Written by `/cmd-journal`; compared with the note on the next run.

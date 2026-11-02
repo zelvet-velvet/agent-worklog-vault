@@ -1,4 +1,4 @@
-# Word HTML rules (CMD_WORD_REPORT)
+# Word HTML rules (/cmd-word-report)
 
 Implemented in `Tools/weekly_report/weekly_report.py`; keep both in sync.
 

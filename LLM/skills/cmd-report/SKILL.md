@@ -1,8 +1,8 @@
 ---
 name: cmd-report
-description: Worklog vault command CMD_REPORT [YYYY-MM-DD]. Use when the user types CMD_REPORT: writes the three Traditional Chinese parts (本週工作內容說明, 時程調整, 下週重點) into the journal week note.
+description: Worklog vault command /cmd-report [YYYY-MM-DD]. Use when the user runs /cmd-report: writes the three Traditional Chinese parts (本週工作內容說明, 時程調整, 下週重點) into the journal week note.
 ---
-# CMD_REPORT [YYYY-MM-DD]
+# /cmd-report [YYYY-MM-DD]
 
 Vault root: this skill's folder resolved with `realpath`, three levels up (`<vault>/LLM/skills/<name>/`); run the commands below from there.
 

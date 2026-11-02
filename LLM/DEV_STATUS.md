@@ -4,7 +4,7 @@ aliases: []
 sticker: lucide//activity
 ---
 > [!IMPORTANT]
-> **LLM Instructions**: Each `CMD_*` is an agent skill (`LLM/skills/`); shared rules are in [[LLM_GUIDE]]. Finished work: [[PROGRESS_ARCHIVE]].
+> **LLM Instructions**: Each `/cmd-*` command is an agent skill (`LLM/skills/`); shared rules are in [[LLM_GUIDE]]. Finished work: [[PROGRESS_ARCHIVE]].
 
 ## 🚀 Today's Progress (2026-01-01)
 
@@ -17,7 +17,7 @@ sticker: lucide//activity
 ### 🔩 [FW] Firmware
 > [!todo]- 1 open
 > - **First Task Group**:
->     - [ ] **Example Item**: Replace with real work; `CMD_SYNC` keeps this list.
+>     - [ ] **Example Item**: Replace with real work; `/cmd-sync` keeps this list.
 
 ---
 ### 📱 [APP] Application
