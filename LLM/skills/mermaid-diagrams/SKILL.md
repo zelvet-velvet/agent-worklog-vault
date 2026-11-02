@@ -54,7 +54,7 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - The theme colours every diagram (`mermaid-afterglow.css`). Do not write `style X fill:#…`, `classDef … fill:#…` or `%%{init: {theme…}}%%`: they break the theme and dark mode.
 - Mark meaning with the built-in classes, no `classDef` needed: `:::pass` (green), `:::fail` (red), `:::warn` (yellow), `:::info` (blue), `:::muted` (faint, dashed). Example: `B[Verify KCV]:::pass`.
 - Series colours (pie slices, chart lines, sections) follow the order of the data; put the most important series first.
-- Tree view: mark changed files with `:::new` (green), `:::edited` (orange), `:::ported` (purple), `:::removed` (red, struck through), `:::highlight` (yellow box); the comment after `##` takes the same colour. Example: `crypto.c :::new ## added for key storage`.
+- Tree view: mark changed files with `:::new` (green), `:::edited` (orange), `:::ported` (purple), `:::removed` (red, struck through), `:::highlight` (yellow box); the comment after `##` takes the colour, the file name stays plain. Example: `crypto.c :::new ## added for key storage`.
 
 ## Obsidian specifics
 - The vault renders with **Mermaid 11.17**, bundled by the Mermaid ELK Renderer plugin (*Use bundled Mermaid* on). Without that setting Obsidian's own 11.13 renders, which lacks the 11.12+ types and collapsible subgraphs (`G@{ view: collapsed }`). v12 features (`neo` look, ELK by default) are not available. When in doubt, use a form shown in `_Meta/Mermaid Preview.md`.

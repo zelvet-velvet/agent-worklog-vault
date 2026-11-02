@@ -1368,10 +1368,15 @@
 .mermaid svg[aria-roledescription="gitGraph"] text.commit-label { transform-box: fill-box; transform-origin: center; transform: rotate(45deg); }
 .mermaid svg[aria-roledescription="gitGraph"] .commit-label { font-size: 13px !important; font-weight: 600 !important; fill: var(--text-normal) !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
 
-/* Tree view: name and comment share a colour, like the SP file trees (tab-panels-vertical.css):
+/* Tree view: the comment takes the status colour, like the SP file trees (tab-panels-vertical.css):
    app.c :::new ## added    util.c :::edited ## …    port.c :::ported ## …    old.c :::removed ## … */
-.mermaid text.treeView-node-label.new,     .mermaid g:has(> text.new)     > text.treeView-node-description { fill: var(--diagram-c4) !important; }
-.mermaid text.treeView-node-label.edited,  .mermaid g:has(> text.edited)  > text.treeView-node-description { fill: var(--diagram-c6) !important; }
-.mermaid text.treeView-node-label.ported,  .mermaid g:has(> text.ported)  > text.treeView-node-description { fill: var(--diagram-c7) !important; }
-.mermaid text.treeView-node-label.removed, .mermaid g:has(> text.removed) > text.treeView-node-description { fill: var(--diagram-error) !important; text-decoration: line-through; }
+.mermaid g:has(> text.new)     > text.treeView-node-description { fill: var(--diagram-c4) !important; }
+.mermaid g:has(> text.edited)  > text.treeView-node-description { fill: var(--diagram-c6) !important; }
+.mermaid g:has(> text.ported)  > text.treeView-node-description { fill: var(--diagram-c7) !important; }
+.mermaid g:has(> text.removed) > text.treeView-node-description { fill: var(--diagram-error) !important; text-decoration: line-through; }
 .mermaid text.treeView-node-description { font-style: normal !important; }
+
+/* Class, ER, requirement: markers (arrowheads, diamonds, crow's feet) scale with the line
+   width, so these keep thin relation lines; the 3 px of §4 made the markers huge */
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"], [aria-roledescription="er"], [aria-roledescription="requirement"]) :is(path.relation, .edgePaths path, path.edge-thickness-normal, path.edge-thickness-thick, .er.relationshipLine) { stroke-width: 1.5px !important; }
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"], [aria-roledescription="er"], [aria-roledescription="requirement"]) marker :is(path, line, circle, polygon) { stroke-width: 1px !important; }

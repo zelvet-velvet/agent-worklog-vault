@@ -409,13 +409,13 @@ settings:
     description: 'Light chip behind notes and edge labels.'
     type: variable-color
     format: hex
-    default: '#313242'
+    default: '#f2e5bc'
   - id: diagram-note-text
     title: Diagram Note Text Color
     description: 'Text on notes and edge labels.'
     type: variable-color
     format: hex
-    default: '#f2e5bc'
+    default: '#1C1D26'
   - id: diagram-error
     title: Diagram Error/Reject Color
     description: 'classDef fail / error.'
@@ -565,8 +565,8 @@ settings:
     --diagram-subgraph-border: #9F4E85;
     --diagram-note-border: #E5B567;
     --diagram-actor-bg: #212121;
-    --diagram-note-bg: #313242;             /* chip behind notes & edge labels */
-    --diagram-note-text: #f2e5bc;
+    --diagram-note-bg: #f2e5bc;             /* light chip behind notes & edge labels (text colour) */
+    --diagram-note-text: #1C1D26;           /* dark text on the chip (page colour) */
     --diagram-error: #AC4142;               /* classDef fail / error */
     --diagram-success: #7E8E50;             /* classDef pass / success */
 
