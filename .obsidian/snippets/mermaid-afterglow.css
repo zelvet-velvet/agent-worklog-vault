@@ -32,6 +32,8 @@
     29. Architecture   30. Radar    31. Treemap
     32. Mindmap / timeline solid   33. Sankey flows   34. Mermaid 11.17 inline styles
     35. 11.12 – 11.17 types: ishikawa, venn, railroad, wardley, event modeling, cynefin
+    36. Readability fixes: ER markers, gantt text, requirement arrows, git tags,
+        mindmap root, sankey labels, packet fields, tree view, event modeling text
    Series colours --diagram-c1 … c8 (and warn / info) live in the palette too.
    Preview of every type: _Meta/Mermaid Preview.md
 
@@ -1209,14 +1211,14 @@
    33. SANKEY FLOWS — one solid series colour per flow (overrides §25)
    ========================================================================== */
 
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+1) path { stroke: var(--diagram-c1) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+2) path { stroke: var(--diagram-c2) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+3) path { stroke: var(--diagram-c3) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+4) path { stroke: var(--diagram-c4) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+5) path { stroke: var(--diagram-c5) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+6) path { stroke: var(--diagram-c6) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+7) path { stroke: var(--diagram-c7) !important; stroke-opacity: 0.8 !important; }
-.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+8) path { stroke: var(--diagram-c8) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+1) path { stroke: var(--diagram-c1) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+2) path { stroke: var(--diagram-c2) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+3) path { stroke: var(--diagram-c3) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+4) path { stroke: var(--diagram-c4) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+5) path { stroke: var(--diagram-c5) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+6) path { stroke: var(--diagram-c6) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+7) path { stroke: var(--diagram-c7) !important; stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+8) path { stroke: var(--diagram-c8) !important; stroke-opacity: 0.5 !important; }
 .mermaid svg[aria-roledescription="sankey"] g.link:hover path { stroke-opacity: 1 !important; }
 
 
@@ -1289,3 +1291,60 @@
 .mermaid svg[aria-roledescription="cynefin"] path.cynefinCliff { stroke: var(--diagram-error) !important; }
 .mermaid svg[aria-roledescription="cynefin"] path.cynefinConfusion { fill: color-mix(in srgb, var(--diagram-c7) 35%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; }
 .mermaid svg[aria-roledescription="cynefin"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   36. READABILITY FIXES (checked against the plugin's Mermaid 11.17)
+       Text that sits half on a shape and half on the page gets a halo in the page
+       colour (paint-order: stroke), so it reads on both.
+   ========================================================================== */
+
+/* ER: crow's-foot markers are lines, not filled shapes; the zero circles take the page colour */
+.mermaid svg[aria-roledescription="er"] marker path { fill: none !important; stroke: var(--diagram-edge-color) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="er"] marker circle { fill: var(--background-primary) !important; stroke: var(--diagram-edge-color) !important; stroke-width: 1.5px !important; }
+/* Gantt: light text on the darker bars, dark text only on the bright active bar */
+.mermaid svg[aria-roledescription="gantt"] [class*="taskText"]:not([class*="Outside"]), .mermaid svg[aria-roledescription="gantt"] [class*="doneText"], .mermaid svg[aria-roledescription="gantt"] [class*="critText"] { fill: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="gantt"] [class*="activeText"]:not([class*="Crit"]) { fill: var(--background-primary) !important; }
+.mermaid svg[aria-roledescription="gantt"] [class*="taskTextOutside"], .mermaid svg[aria-roledescription="gantt"] .milestoneText { fill: var(--diagram-text) !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
+.mermaid svg[aria-roledescription="gantt"] rect[class*="task"]:not([class*="active"]):not([class*="crit"]):not([class*="done"]) { fill: color-mix(in srgb, var(--diagram-c1) 45%, var(--background-primary-alt)) !important; }
+/* Requirement: thin relation lines, so the arrowheads (scaled by line width) stay normal */
+.mermaid svg[aria-roledescription="requirement"] path, .mermaid svg[aria-roledescription="requirement"] .edgePath .path { stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="requirement"] marker line, .mermaid svg[aria-roledescription="requirement"] marker path, .mermaid svg[aria-roledescription="requirement"] marker circle { stroke: var(--diagram-edge-color) !important; stroke-width: 1px !important; fill: none !important; }
+/* Git graph: tags drawn without Mermaid's fixed 10 px box, larger, in the note-border colour */
+.mermaid svg[aria-roledescription="gitGraph"] .tag-label-bkg, .mermaid svg[aria-roledescription="gitGraph"] .tag-hole { display: none !important; }
+.mermaid svg[aria-roledescription="gitGraph"] .tag-label { font-size: 14px !important; font-weight: 700 !important; fill: var(--diagram-note-border) !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
+.mermaid svg[aria-roledescription="gitGraph"] .commit-label { font-size: 12px !important; }
+/* Mindmap root: a dark disc with a light ring, so it differs from every branch colour */
+.mermaid svg[aria-roledescription="mindmap"] .section-root circle, .mermaid svg[aria-roledescription="mindmap"] .section-root rect, .mermaid svg[aria-roledescription="mindmap"] .section-root path { fill: var(--background-primary-alt) !important; stroke: var(--text-normal) !important; stroke-width: 3px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-root text, .mermaid svg[aria-roledescription="mindmap"] .section-root .nodeLabel, .mermaid svg[aria-roledescription="mindmap"] .section-root .nodeLabel p { fill: var(--text-normal) !important; color: var(--text-normal) !important; font-weight: 700 !important; }
+/* Sankey: node labels sit on the flows */
+.mermaid svg[aria-roledescription="sankey"] g.node-labels text { fill: var(--diagram-text) !important; font-weight: 600 !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
+/* Packet: each field tinted with a series colour, bold label, readable bit numbers */
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+1) { fill: color-mix(in srgb, var(--diagram-c1) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+2) { fill: color-mix(in srgb, var(--diagram-c2) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+3) { fill: color-mix(in srgb, var(--diagram-c3) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+4) { fill: color-mix(in srgb, var(--diagram-c4) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+5) { fill: color-mix(in srgb, var(--diagram-c5) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+6) { fill: color-mix(in srgb, var(--diagram-c6) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c6) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+7) { fill: color-mix(in srgb, var(--diagram-c7) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+8) { fill: color-mix(in srgb, var(--diagram-c8) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] text.packetLabel { fill: var(--diagram-text) !important; font-size: 14px !important; font-weight: 600 !important; }
+.mermaid svg[aria-roledescription="packet"] text.packetByte { fill: var(--text-muted) !important; font-size: 11px !important; }
+.mermaid svg[aria-roledescription="packet"] text.packetTitle { fill: var(--diagram-text) !important; }
+/* Tree view: lines in the faint text colour, folders bold */
+.mermaid line.treeView-node-line { stroke: var(--text-faint) !important; stroke-width: 1.5px !important; }
+.mermaid text.treeView-node-label { fill: var(--diagram-text) !important; }
+.mermaid text.treeView-node-dir { fill: var(--diagram-c1) !important; font-weight: 700 !important; }
+.mermaid text.treeView-node-description { fill: var(--text-muted) !important; font-style: italic; }
+.mermaid rect.treeView-highlight-bg { fill: color-mix(in srgb, var(--diagram-note-border) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-note-border) !important; }
+/* Event modeling: labels are HTML, so they need color (not fill) */
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box span, .mermaid svg[aria-roledescription="eventmodeling"] g.em-box b, .mermaid svg[aria-roledescription="eventmodeling"] g.em-box div { color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box:has(rect[fill="#bcd6fe"]) :is(span, b, div), .mermaid svg[aria-roledescription="eventmodeling"] g.em-box:has(rect[fill="#ffb778"]) :is(span, b, div) { color: var(--background-primary) !important; }
+/* Gantt done text: Mermaid sets #id .doneTextN { fill: black !important }; an ID outranks
+   classes even with !important, so :is() borrows an ID's weight (#afterglow-id never matches) */
+.mermaid svg[aria-roledescription="gantt"] text[class*="doneText"]:is(text, #afterglow-id),
+.mermaid svg[aria-roledescription="gantt"] text[class*="critText"]:is(text, #afterglow-id) { fill: var(--diagram-text) !important; }
+/* Sankey: Mermaid draws the flows over the labels (no z-index in SVG), so the flows stay
+   see-through enough for the haloed labels to read */
+.mermaid svg[aria-roledescription="sankey"] g.links g.link path { stroke-opacity: 0.5 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.link:hover path { stroke-opacity: 0.85 !important; }
