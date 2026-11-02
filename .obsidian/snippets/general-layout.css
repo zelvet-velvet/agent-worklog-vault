@@ -134,18 +134,17 @@ mark,
 }
 
 
-/* Callout right under a heading (DEV_STATUS sections): it is the heading's
-   content, so keep it close. The heading's bottom margin and the callout's top
-   margin collapse (the larger wins), so both are set. Other callouts keep their
-   normal spacing. */
-.markdown-rendered .el-h2:has(+ .el-div > .callout) > h2,
-.markdown-rendered .el-h3:has(+ .el-div > .callout) > h3 {
+/* Block right under a heading (callout, diagram, tabs, table): it is the heading's
+   content, so keep it close in reading view (no blank-line gap). The heading's bottom
+   margin and the block's top margin collapse (the larger wins), so both are set.
+   Blocks further down keep their normal spacing. */
+.markdown-rendered :is(.el-h1, .el-h2, .el-h3, .el-h4, .el-h5, .el-h6):has(+ :is(.el-div, .el-pre, .el-table)) > :is(h1, h2, h3, h4, h5, h6) {
     margin-bottom: 0;
 }
-.markdown-rendered .el-h2 + .el-div > .callout,
-.markdown-rendered .el-h3 + .el-div > .callout {
-    margin-top: var(--callout-after-heading);
+.markdown-rendered :is(.el-h1, .el-h2, .el-h3, .el-h4, .el-h5, .el-h6) + :is(.el-div, .el-pre, .el-table) > :first-child {
+    margin-top: var(--callout-after-heading, 6px);
 }
+
 /* Live Preview: the heading line and the callout widget are siblings */
 .markdown-source-view.mod-cm6 .HyperMD-header-2:has(+ .cm-callout),
 .markdown-source-view.mod-cm6 .HyperMD-header-3:has(+ .cm-callout) {

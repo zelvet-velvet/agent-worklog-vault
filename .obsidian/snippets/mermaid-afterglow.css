@@ -37,6 +37,8 @@
     37. Second pass: sankey blend, packet solid, git commit ids, tree-view status classes
     38. Solid fills everywhere (except venn, radar, sankey overlaps); tree-view highlight
     39. Design rule: dark fill + coloured border + light text for every coloured block
+    40. Legend row below a diagram (<div class="diagram-legend">)
+    41. Extra node classes: mod (H6 colour), hdr (block-grid header, no box), sec (block-grid section title)
    Series colours --diagram-c1 … c8 (and warn / info) live in the palette too.
    Preview of every type: _Meta/Mermaid Preview.md
 
@@ -748,7 +750,7 @@
 
 /* ==========================================================================
    17. SEMANTIC CLASSES — all node shapes
-   Use in a diagram: A[Build]:::pass, B[Flash]:::fail, C:::warn, D:::info, E:::muted.
+   Use in a diagram: A[Build]:::pass, B[Flash]:::fail, C:::warn, D:::info, E:::muted, F:::mod (H6 colour).
    The classDef lines are not needed: these classes are styled here.
    ========================================================================== */
 
@@ -1696,3 +1698,80 @@
    is allowed to draw outside and is shifted back by the padding to stay centred) */
 .mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] foreignObject { overflow: visible !important; }
 .mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] foreignObject > div { padding: 2px 8px !important; transform: translate(-8px, -2px); }
+
+
+/* ==========================================================================
+   40. LEGEND — a row of swatches right below a diagram, aligned right, one per class used.
+   In a note: <div class="diagram-legend"><span class="warn">To discuss</span><span class="info">To do</span></div>
+   Classes: pass, fail, warn, info, mod, muted (same colours as the node classes); node = a plain node.
+   ========================================================================== */
+
+.diagram-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.3em 1.4em;
+    margin: 0.2em 0 0.8em;
+    padding: 0.15em 0;
+    font-size: 0.85em;
+    line-height: 1.6;
+    overflow: visible;
+    color: var(--text-muted);
+}
+.diagram-legend > span {
+    --legend-color: var(--text-faint);
+    display: inline-flex;
+    align-items: center;
+}
+.diagram-legend > span::before {
+    content: "";
+    width: 1.1em;
+    height: 0.8em;
+    margin-right: 0.45em;
+    border: 2px solid var(--legend-color);
+    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--legend-color) 18%, transparent);
+}
+.diagram-legend > .pass  { --legend-color: var(--diagram-success); }
+.diagram-legend > .fail  { --legend-color: var(--diagram-error); }
+.diagram-legend > .warn  { --legend-color: var(--diagram-warn); }
+.diagram-legend > .info  { --legend-color: var(--diagram-info); }
+.diagram-legend > .mod   { --legend-color: var(--h6-color, var(--diagram-c7)); }
+.diagram-legend > .node  { --legend-color: var(--diagram-node-border); }
+.diagram-legend > .node::before { background-color: var(--background-primary-alt); }
+.diagram-legend > .muted { --legend-color: var(--text-faint); }
+.diagram-legend > .muted::before { border-style: dashed; background-color: transparent; }
+
+
+/* ==========================================================================
+   41. EXTRA NODE CLASSES — placed last so they win over the earlier passes.
+   :::mod  coloured block in the H6 colour (finished, needs a change)
+   :::hdr  header / row label of a block grid: no box, bold text
+   :::sec  section title row of a block grid (s1["Title"]:N): a thin line on its top edge, bold text
+   ========================================================================== */
+
+.mermaid .node.mod rect,
+.mermaid .node.mod polygon,
+.mermaid .node.mod path,
+.mermaid .node.mod circle,
+.mermaid .node.mod ellipse {
+    fill: var(--background-primary-alt) !important;
+    stroke: var(--h6-color, var(--diagram-c7)) !important;
+    stroke-width: 3px !important;
+}
+.mermaid .node.mod .nodeLabel,
+.mermaid .node.mod .nodeLabel p,
+.mermaid .node.mod span { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; font-weight: 600 !important; }
+.mermaid .node.hdr rect,
+.mermaid .node.hdr polygon,
+.mermaid .node.hdr path { fill: transparent !important; stroke: transparent !important; }
+.mermaid .node.hdr .nodeLabel,
+.mermaid .node.hdr .nodeLabel p,
+.mermaid .node.hdr span { color: var(--text-muted) !important; fill: var(--text-muted) !important; font-weight: 700 !important; }
+.mermaid .node.sec > rect { height: 1px !important; fill: var(--text-faint) !important; stroke: none !important; }
+.mermaid .node.sec .nodeLabel,
+.mermaid .node.sec .nodeLabel p,
+.mermaid .node.sec span { color: var(--text-muted) !important; fill: var(--text-muted) !important; font-weight: 700 !important; }
+/* A block grid whose first row is :::hdr text: the row is as tall as a box row, so the text
+   floats with empty space above it. Pull the diagram up so the header sits under the heading. */
+.mermaid:has(> svg[aria-roledescription="block"] .node.hdr) > svg { margin-top: -24px; }
