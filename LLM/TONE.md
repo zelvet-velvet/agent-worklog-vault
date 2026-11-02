@@ -2,8 +2,6 @@
 up: "[[LLM]]"
 sticker: lucide//message-square
 ---
-# TAIWAN WORK-LOG TONE
-
 The user's own writing style for `CMD_JOURNAL` and the weekly report. Learned from the user's edits; see **Tone learning** in the `cmd-journal` skill.
 
 ## Profile

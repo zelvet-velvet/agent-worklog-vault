@@ -6,8 +6,6 @@ sticker: lucide//activity
 > [!IMPORTANT]
 > **LLM Instructions**: Each `CMD_*` is an agent skill (`LLM/skills/`); shared rules are in [[LLM_GUIDE]]. Finished work: [[PROGRESS_ARCHIVE]].
 
-# 📌 Project Status List
-
 ## 🚀 Today's Progress (2026-01-01)
 
 ## 📅 Yesterday's Progress (2026-01-01)

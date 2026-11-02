@@ -47,7 +47,6 @@ def note():
                             f'<span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:{c};'
                             f'vertical-align:middle;margin-right:4px;"></span>--diagram-{v} {c} {n}</span>')
     out = ['---', 'up: "[[_Meta]]"', 'sticker: lucide//workflow', 'tags:', '  - theme', '  - reference', '---',
-           '# Mermaid Preview', '',
            'Every Mermaid diagram type the vault renders, drawn live with the vault theme. Colours come from '
            '`mermaid-afterglow.css`, which uses only the variables of `popping-and-locking.css` (Style Settings → '
            'Popping and Locking → Diagram Colors). How to choose and write a diagram: skill `mermaid-diagrams`. '

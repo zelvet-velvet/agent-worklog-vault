@@ -27,6 +27,7 @@ Each vault command is a skill in `LLM/skills/<name>/SKILL.md` (Agent Skills form
 - Provide status at the very end ONLY for modified sections (e.g., `**[Today's Progress]** Updated in DEV_STATUS.md`, `**[Journal]** Updated in 2026-10-02.md`). Blank line before/after.
 
 ### 🗂️ Vault Note Format (callouts)
+- **No H1 title**: make.md shows the file name as the note title, so a note never starts with `# Title`. Name the file well; the first heading in a note is `##`.
 - **Diagrams**: a flow, protocol, state machine, frame layout or timeline is clearer as a Mermaid diagram; follow the `mermaid-diagrams` skill (type choice, size, `:::pass` / `:::fail` classes, no hard-coded colours).
 - **Callout before table**: Items that each carry a status or a short detail (tasks, findings, open points, per-area summaries) go in callouts, one per group. A table is only for a real grid read across columns (command / key type / register tables, colour palettes).
 - **Callout type = the block's state** (owner, 2026-10-30): A block with a state shows it in its callout type, and the type changes in the same edit as its boxes or status line. The states follow the checkbox symbols of [[Checkbox Style]], so a box and its block use the same words:
