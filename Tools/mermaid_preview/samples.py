@@ -13,9 +13,7 @@ SAMPLES = [
     end
     E --> H
     G --> P[Passed]:::pass
-    G --> X[Failed]:::fail
-    classDef pass fill:none
-    classDef fail fill:none'''),
+    G --> X[Failed]:::fail'''),
 ('Flowchart 11.x features', 'expanded shapes (A@{ shape }), markdown labels, edge ends, animated edge, semantic classes', '''flowchart LR
     S@{ shape: sm-circ, label: "start" } --> D1@{ shape: doc, label: "Spec" }
     D1 --> P@{ shape: subproc, label: "Build" }
@@ -120,7 +118,15 @@ SAMPLES = [
     section Ship
         Deploy: 2: Ops
         Celebrate: 5: Dev, Ops'''),
-('Gantt', 'sections, done / active / critical tasks, milestone, today line', '''gantt
+('Gantt', 'sections, done / active / critical tasks, milestone; config block for taller bars and larger text', '''---
+config:
+  gantt:
+    barHeight: 30
+    barGap: 8
+    fontSize: 14
+    sectionFontSize: 14
+---
+gantt
     title Plan
     dateFormat YYYY-MM-DD
     section Design
@@ -245,7 +251,12 @@ App,Testing,10'''),
     a --> b
     c(("Store")) d{"Check"} e["Output"]
     b --> e'''),
-('Packet', 'bit fields of a frame', '''packet-beta
+('Packet', 'bit fields of a frame; config block for taller rows', '''---
+config:
+  packet:
+    rowHeight: 44
+---
+packet-beta
     0-7: "OP"
     8-23: "Length"
     24-31: "Flags"

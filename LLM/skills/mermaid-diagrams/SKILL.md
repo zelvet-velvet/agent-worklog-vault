@@ -48,7 +48,8 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - **Layout**: declare nodes in reading order; use invisible links `A ~~~ B` to line things up.
 - **ELK layout** (Mermaid ELK Renderer plugin): put `%% elk %%` as the **first line** of the block (before `flowchart …`; only front matter or `%%{init}%%` may come before it). Use it for flowcharts with subgraphs or many crossings and for state machines: fewer crossings, straighter edges. Not for class diagrams (arrowheads pile up) or small graphs. Other algorithms go in front matter instead of the marker: `---` / `config:` / `  layout: elk.mrtree` / `---` (also `elk.force`, `elk.stress`).
 - **Sequence**: `autonumber` when the text refers to step numbers; `Note over A,B` for context; `alt … else … end` for error paths; `loop` for retries; activation bars only when timing matters.
-- **Packet**: one row per 32 bits; name fields as in the spec note.
+- **Packet**: one row per 32 bits; name fields as in the spec note. Start the block with `---` / `config:` / `  packet:` / `    rowHeight: 44` / `---` for readable rows.
+- **Gantt**: start the block with `---` / `config:` / `  gantt:` / `    barHeight: 30` / `    barGap: 8` / `    fontSize: 14` / `    sectionFontSize: 14` / `---` (the default bars are too thin to read).
 
 ## Colours: never hard-code
 - The theme colours every diagram (`mermaid-afterglow.css`). Do not write `style X fill:#…`, `classDef … fill:#…` or `%%{init: {theme…}}%%`: they break the theme and dark mode.

@@ -42,8 +42,6 @@ flowchart LR
     E --> H
     G --> P[Passed]:::pass
     G --> X[Failed]:::fail
-    classDef pass fill:none
-    classDef fail fill:none
 ```
 
 > [!example]- Source
@@ -60,8 +58,6 @@ flowchart LR
 >     E --> H
 >     G --> P[Passed]:::pass
 >     G --> X[Failed]:::fail
->     classDef pass fill:none
->     classDef fail fill:none
 > ```
 
 ## 2. Flowchart 11.x features
@@ -340,9 +336,17 @@ journey
 
 ## 8. Gantt
 
-*sections, done / active / critical tasks, milestone, today line* · [syntax](https://mermaid.ai/open-source/syntax/gantt.html)
+*sections, done / active / critical tasks, milestone; config block for taller bars and larger text* · [syntax](https://mermaid.ai/open-source/syntax/gantt.html)
 
 ```mermaid
+---
+config:
+  gantt:
+    barHeight: 30
+    barGap: 8
+    fontSize: 14
+    sectionFontSize: 14
+---
 gantt
     title Plan
     dateFormat YYYY-MM-DD
@@ -358,6 +362,14 @@ gantt
 
 > [!example]- Source
 > ```text
+> ---
+> config:
+>   gantt:
+>     barHeight: 30
+>     barGap: 8
+>     fontSize: 14
+>     sectionFontSize: 14
+> ---
 > gantt
 >     title Plan
 >     dateFormat YYYY-MM-DD
@@ -711,9 +723,14 @@ block-beta
 
 ## 19. Packet
 
-*bit fields of a frame* · [syntax](https://mermaid.ai/open-source/syntax/packet.html)
+*bit fields of a frame; config block for taller rows* · [syntax](https://mermaid.ai/open-source/syntax/packet.html)
 
 ```mermaid
+---
+config:
+  packet:
+    rowHeight: 44
+---
 packet-beta
     0-7: "OP"
     8-23: "Length"
@@ -723,6 +740,11 @@ packet-beta
 
 > [!example]- Source
 > ```text
+> ---
+> config:
+>   packet:
+>     rowHeight: 44
+> ---
 > packet-beta
 >     0-7: "OP"
 >     8-23: "Length"
