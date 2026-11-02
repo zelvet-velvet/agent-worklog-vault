@@ -342,10 +342,10 @@ journey
 ---
 config:
   gantt:
-    barHeight: 30
+    barHeight: 34
     barGap: 8
-    fontSize: 14
-    sectionFontSize: 14
+    fontSize: 16
+    sectionFontSize: 16
 ---
 gantt
     title Plan
@@ -365,10 +365,10 @@ gantt
 > ---
 > config:
 >   gantt:
->     barHeight: 30
+>     barHeight: 34
 >     barGap: 8
->     fontSize: 14
->     sectionFontSize: 14
+>     fontSize: 16
+>     sectionFontSize: 16
 > ---
 > gantt
 >     title Plan
@@ -729,7 +729,7 @@ block-beta
 ---
 config:
   packet:
-    rowHeight: 44
+    rowHeight: 48
 ---
 packet-beta
     0-7: "OP"
@@ -743,7 +743,7 @@ packet-beta
 > ---
 > config:
 >   packet:
->     rowHeight: 44
+>     rowHeight: 48
 > ---
 > packet-beta
 >     0-7: "OP"

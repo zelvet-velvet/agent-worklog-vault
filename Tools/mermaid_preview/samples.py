@@ -121,10 +121,10 @@ SAMPLES = [
 ('Gantt', 'sections, done / active / critical tasks, milestone; config block for taller bars and larger text', '''---
 config:
   gantt:
-    barHeight: 30
+    barHeight: 34
     barGap: 8
-    fontSize: 14
-    sectionFontSize: 14
+    fontSize: 16
+    sectionFontSize: 16
 ---
 gantt
     title Plan
@@ -254,7 +254,7 @@ App,Testing,10'''),
 ('Packet', 'bit fields of a frame; config block for taller rows', '''---
 config:
   packet:
-    rowHeight: 44
+    rowHeight: 48
 ---
 packet-beta
     0-7: "OP"
