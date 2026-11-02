@@ -1,0 +1,14 @@
+{
+  "_comment": "Personal values read by the vault tools and skills. Change these instead of editing scripts.",
+  "owner": "Your Name",
+  "coauthor": "Claude Opus 5.5 <noreply@anthropic.com>",
+  "skill_dirs": [
+    "~/.claude/skills",
+    "~/.codex/skills"
+  ],
+  "weekly_report": {
+    "doc_dir": "/mnt/c/Users/<you>/Documents/weekly",
+    "doc_name": "weekly_report_{year}_W{week}.doc",
+    "template_glob": "weekly_report_template*.doc"
+  }
+}

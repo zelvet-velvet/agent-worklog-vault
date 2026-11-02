@@ -1,0 +1,162 @@
+/* ==========================================================================
+   Tab Panels (plugin) — settings-sidebar layout
+   Tabs in a tinted side panel on the left, the content as its own card on
+   the right (no divider line). Fixed column width; long tab names wrap with a hanging indent so
+   the text lines up after "N · " and nothing is cut. Overrides the plugin's
+   styles.css; screen only, PDF export keeps the plugin's print layout.
+   ========================================================================== */
+
+@media screen {
+
+    .tab-panel-container {
+        --tp-radius: 6px;
+        --tp-frame: var(--text-faint);
+        --tp-gap: 0.4em;
+
+        flex-direction: row;
+        align-items: stretch;
+        gap: var(--tp-gap);
+        padding: var(--tp-gap);
+        border: 2px solid var(--tp-frame);
+        border-radius: var(--tp-radius);
+        background-color: var(--background-secondary);
+    }
+
+    /* Side panel: fixed width (same for every tab), long names wrap */
+    .tab-panel-container .tab-scroll-container {
+        flex: 0 0 auto;
+        width: 12em;
+        max-width: 30%;
+        font-size: 0.75em;
+        overflow: visible;
+    }
+
+    .tab-panel-container .tab-scroll-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tab-panel-container ul.tab-container {
+        flex-direction: column;
+        width: auto;
+        margin: 0;
+        /* first tab starts level with the tab title on the right */
+        padding: 1.1em 0 0.3em;
+        gap: 0.2em;
+    }
+
+    .tab-panel-container .tab {
+        position: relative;
+        white-space: normal;
+        line-height: 1.3;
+        /* hanging indent: wrapped lines start under the name, not the number */
+        padding: 0.3em 0.7em 0.3em 2em;
+        text-indent: -1.2em;
+        border-radius: 4px;
+        color: var(--text-muted);
+    }
+
+    .tab-panel-container .tab:hover {
+        color: var(--text-normal);
+        background-color: var(--background-modifier-hover);
+    }
+
+    .tab-panel-container .tab.selected {
+        border: none;
+        margin-bottom: 0;
+        color: var(--text-accent);
+        background-color: var(--background-primary);
+    }
+
+    /* Drop the plugin's curved corner pieces */
+    .tab-panel-container .tab.selected::before,
+    .tab-panel-container .tab.selected::after {
+        display: none;
+    }
+
+    /* Content card */
+    .tab-panel-container .content-container {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 0.8em 1.2em;
+        border-radius: 4px;
+        box-shadow: none;
+        background-color: var(--background-primary);
+    }
+
+    /* Title line right on top of its list (no blank line between them) */
+    .tab-panel-container .rendered-content > p,
+    .tab-panel-container .rendered-content > .el-p > p {
+        margin-bottom: 0.2em;
+    }
+
+    .tab-panel-container .rendered-content > p + ul,
+    .tab-panel-container .rendered-content > p + ol,
+    .tab-panel-container .rendered-content > .el-p + .el-ul > ul,
+    .tab-panel-container .rendered-content > .el-p + .el-ol > ol {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    /* Tab title (the bold first line): plain text colour, not the accent */
+    .tab-panel-container .rendered-content > p:first-child strong,
+    .tab-panel-container .rendered-content > .el-p:first-child strong {
+        color: var(--color-yellow);
+        font-size: 1.1em;
+    }
+
+    /* Callouts inside a tab: light sections (no fill, thin colour bar on the
+       left, small title), with air between them. Callouts elsewhere keep the
+       general-layout.css look. */
+    .tab-panel-container .callout {
+        --callout-icon-size: 0.8em !important;
+        --callout-title-top: 0 !important;
+        --callout-content-top: 0.3em !important;
+        --callout-content-bottom: 0 !important;
+
+        margin: 1em 0 0;
+        padding: 0.15em 0 0.15em 0.9em;
+        background: transparent !important;
+        border: none !important;
+        border-left: 3px solid rgba(var(--callout-color), 0.8) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        mix-blend-mode: normal !important;
+    }
+
+    .tab-panel-container .callout.is-collapsed > .callout-title {
+        margin-bottom: 0 !important;
+    }
+
+    .tab-panel-container .callout .callout-title {
+        font-size: 0.85em;
+        gap: 0;
+    }
+
+    .tab-panel-container .callout-content {
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    .tab-panel-container .callout-content ul {
+        padding-inline-start: 1.3em;
+    }
+
+    /* File tree (<pre class="file-tree">): folders, new, edited, ported from AS350X6 */
+    .file-tree {
+        margin: 0.3em 0 0;
+        padding: 0.5em 0.8em;
+        font-family: var(--font-monospace);
+        font-size: 0.8em;
+        line-height: 1.45;
+        color: var(--text-normal);
+        background-color: var(--code-background);
+        border-radius: 4px;
+        white-space: pre;
+        overflow-x: auto;
+    }
+
+    .file-tree .tree-dir    { color: var(--color-blue); font-weight: 600; }
+    .file-tree .tree-new    { color: var(--color-green); }
+    .file-tree .tree-edited { color: var(--color-orange); }
+    .file-tree .tree-ported { color: var(--color-purple); }
+}

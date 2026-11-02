@@ -1,0 +1,15 @@
+{
+  "accentColor": "#e77436",
+  "cssTheme": "Minimal",
+  "baseFontSizeAction": true,
+  "baseFontSize": 30,
+  "enabledCssSnippets": [
+    "popping-and-locking",
+    "mermaid-afterglow",
+    "term-cards",
+    "general-layout",
+    "tab-panels-vertical"
+  ],
+  "showRibbon": true,
+  "theme": "obsidian"
+}

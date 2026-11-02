@@ -1,0 +1,660 @@
+/* ==========================================================================
+   popping-and-locking.css
+   Dark color theme ("Popping and Locking") layered on top of Minimal.
+   Source: VS Code theme hedinne/popping-and-locking-vscode
+   (themes/popping-and-locking-color-theme.json); syntax colours aligned 2026-11-02.
+
+   HOW TO EDIT
+     Easiest: Settings → Style Settings → "Popping and Locking" → pick colors.
+     Or: change the hex values in section 1 below. Keep the @settings
+     defaults and section 1 in sync, so "reset to default" gives the same color.
+
+   CONTENTS
+     @settings   — Style Settings panel definition (must stay a comment block)
+     1. Palette  — every color variable (dark mode only)
+     2. Sidebars — make ribbon/sidebars use the palette
+     3. Icons    — keep SVG icons visible with the custom colors
+     4. Tabs     — tab bar + tab header colors (desktop only)
+     5. Swatches — per-swatch colour in Style Settings (plugin bug workaround)
+
+   Used by: mermaid-afterglow.css reads the --diagram-* variables.
+   Color swatches: Docs/Theme Color Preview.md
+   ========================================================================== */
+
+/* @settings
+name: Popping and Locking
+id: popping-and-locking
+settings:
+  - id: heading-backgrounds
+    title: Backgrounds
+    type: heading
+    level: 2
+    collapsed: false
+  - id: background-primary
+    title: Background Primary
+    description: 'Note background (reading and editing view).'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: background-primary-alt
+    title: Background Primary Alt
+    description: 'Cards, callouts, code blocks, active line.'
+    type: variable-color
+    format: hex
+    default: '#21222D'
+  - id: background-secondary
+    title: Background Secondary
+    description: 'Left and right sidebars.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: background-secondary-alt
+    title: Background Secondary Alt
+    description: 'Hovered and selected items in the sidebars, sidebar headers.'
+    type: variable-color
+    format: hex
+    default: '#313242'
+  - id: background-modifier-border
+    title: Border Color
+    description: 'Dividers, table lines, input and card borders.'
+    type: variable-color
+    format: hex
+    default: '#313242'
+
+  - id: heading-text
+    title: Text Colors
+    type: heading
+    level: 2
+    collapsed: false
+  - id: text-normal
+    title: Text Normal
+    description: 'Body text of notes and the UI.'
+    type: variable-color
+    format: hex
+    default: '#f2e5bc'
+  - id: text-muted
+    title: Text Muted
+    description: 'Secondary text: file explorer, properties, setting descriptions.'
+    type: variable-color
+    format: hex
+    default: '#c4beb4'
+  - id: text-faint
+    title: Text Faint
+    description: 'Least important text: placeholders, line numbers, list bullets.'
+    type: variable-color
+    format: hex
+    default: '#928374'
+  - id: text-accent
+    title: Text Accent
+    description: 'Tags, active file and icons, highlighted UI text (links use Link Color).'
+    type: variable-color
+    format: hex
+    default: '#d79921'
+  - id: interactive-accent
+    title: Interactive Accent
+    description: 'Buttons, toggles, checkbox fill, active pills.'
+    type: variable-color
+    format: hex
+    default: '#458588'
+  - id: bold-color
+    title: Bold Color
+    description: 'Bold text in notes (the bold titles in DEV_STATUS lists).'
+    type: variable-color
+    format: hex
+    default: '#fe8019'
+  - id: italic-color
+    title: Italic Color
+    description: '*Italic* text in notes.'
+    type: variable-color
+    format: hex
+    default: '#d3869b'
+
+  - id: link-color
+    title: Link Color
+    description: 'Internal and external links in notes (tags and UI accents keep Text Accent).'
+    type: variable-color
+    format: hex
+    default: '#6c99bb'
+  - id: text-selection
+    title: Text Selection
+    description: 'Background of selected text (with alpha).'
+    type: variable-color
+    format: hex
+    opacity: true
+    default: '#60daff47'
+  - id: caret-color
+    title: Cursor
+    description: 'Text cursor in the editor.'
+    type: variable-color
+    format: hex
+    default: '#f42c3e'
+  - id: heading-headings
+    title: Headings (Minimal "Colorful headings")
+    description: 'Used only while Minimal Theme Settings → Colorful headings is on. Defaults are Minimal''s own colours.'
+    type: heading
+    level: 2
+    collapsed: false
+  - id: pl-h1-color
+    title: H1
+    description: 'Heading 1 (Minimal red).'
+    type: variable-color
+    format: hex
+    default: '#d04255'
+  - id: pl-h2-color
+    title: H2
+    description: 'Heading 2 (Minimal yellow; orange is kept for bold).'
+    type: variable-color
+    format: hex
+    default: '#e5b567'
+  - id: pl-h3-color
+    title: H3
+    description: 'Heading 3 (cyan from the VS Code theme).'
+    type: variable-color
+    format: hex
+    default: '#99c6ca'
+  - id: pl-h4-color
+    title: H4
+    description: 'Heading 4 (Minimal green).'
+    type: variable-color
+    format: hex
+    default: '#a8c373'
+  - id: pl-h5-color
+    title: H5
+    description: 'Heading 5 (Minimal blue).'
+    type: variable-color
+    format: hex
+    default: '#6c99bb'
+  - id: pl-h6-color
+    title: H6
+    description: 'Heading 6 (Minimal purple).'
+    type: variable-color
+    format: hex
+    default: '#9e86c8'
+
+  - id: heading-icons
+    title: Icons
+    type: heading
+    level: 2
+    collapsed: true
+  - id: icon-color
+    title: Icon Color
+    description: 'Ribbon and sidebar icons at rest.'
+    type: variable-color
+    format: hex
+    default: '#c4beb4'
+  - id: icon-color-hover
+    title: Icon Color Hover
+    description: 'Icons under the mouse.'
+    type: variable-color
+    format: hex
+    default: '#f2e5bc'
+  - id: icon-color-active
+    title: Icon Color Active
+    description: 'Icon of the open view (selected ribbon / sidebar tab).'
+    type: variable-color
+    format: hex
+    default: '#d79921'
+  - id: icon-color-focused
+    title: Icon Color Focused
+    description: 'Icons in the focused pane.'
+    type: variable-color
+    format: hex
+    default: '#f2e5bc'
+
+  - id: heading-nav
+    title: Navigation (File Explorer / Search)
+    type: heading
+    level: 2
+    collapsed: true
+  - id: nav-item-color
+    title: Nav Item Color
+    description: 'File and folder names in the file explorer and search results.'
+    type: variable-color
+    format: hex
+    default: '#c4beb4'
+  - id: nav-item-color-hover
+    title: Nav Item Hover
+    description: 'File explorer item under the mouse.'
+    type: variable-color
+    format: hex
+    default: '#f2e5bc'
+  - id: nav-item-color-active
+    title: Nav Item Active
+    description: 'The open file in the file explorer.'
+    type: variable-color
+    format: hex
+    default: '#d79921'
+  - id: nav-collapse-icon-color
+    title: Nav Collapse Icon
+    description: 'Folder fold arrows.'
+    type: variable-color
+    format: hex
+    default: '#c4beb4'
+
+  - id: heading-tabs
+    title: Titlebar & Tabs
+    type: heading
+    level: 2
+    collapsed: true
+  - id: titlebar-background
+    title: Titlebar Background
+    description: 'Window title bar when another window has focus.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: titlebar-background-focused
+    title: Titlebar Background Focused
+    description: 'Window title bar when Obsidian has focus.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: tab-container-background
+    title: Tab Container Background
+    description: 'Strip behind the tabs.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: tab-bar-background
+    title: Tab Bar Background
+    description: 'Tab bar of each pane.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: tab-outline-color
+    title: Tab Outline Color
+    description: 'Line under and around the tabs.'
+    type: variable-color
+    format: hex
+    default: '#313242'
+  - id: tab-header-bg
+    title: Tab Header Container Background
+    description: 'Tab header container (desktop).'
+    type: variable-color
+    format: hex
+    default: '#21222D'
+  - id: tab-active-bg
+    title: Active Tab Background
+    description: 'The selected tab.'
+    type: variable-color
+    format: hex
+    default: '#1C1D26'
+  - id: tab-hover-bg
+    title: Tab Hover Background
+    description: 'A tab under the mouse.'
+    type: variable-color
+    format: hex
+    default: '#313242'
+
+  - id: heading-syntax
+    title: Syntax Highlighting
+    type: heading
+    level: 2
+    collapsed: true
+  - id: code-background
+    title: Code Background
+    description: 'Background of code blocks and `inline code`.'
+    type: variable-color
+    format: hex
+    default: '#21222D'
+  - id: code-normal
+    title: Code Normal
+    description: 'Plain code text.'
+    type: variable-color
+    format: hex
+    default: '#f2e5bc'
+  - id: code-comment
+    title: Code Comment
+    description: 'Comments.'
+    type: variable-color
+    format: hex
+    default: '#506899'
+  - id: code-function
+    title: Code Function
+    description: 'Function names and calls.'
+    type: variable-color
+    format: hex
+    default: '#7ec16e'
+  - id: code-important
+    title: Code Important
+    description: 'Preprocessor lines (#define, #include) and other important tokens.'
+    type: variable-color
+    format: hex
+    default: '#fe8019'
+  - id: code-keyword
+    title: Code Keyword
+    description: 'Keywords (if, return, static).'
+    type: variable-color
+    format: hex
+    default: '#f42c3e'
+  - id: code-operator
+    title: Code Operator
+    description: 'Operators (=, +, ->).'
+    type: variable-color
+    format: hex
+    default: '#7ec16e'
+  - id: code-property
+    title: Code Property
+    description: 'Properties and struct members.'
+    type: variable-color
+    format: hex
+    default: '#fabd2f'
+  - id: code-punctuation
+    title: Code Punctuation
+    description: 'Brackets, commas, semicolons.'
+    type: variable-color
+    format: hex
+    default: '#ebdbb2'
+  - id: code-string
+    title: Code String
+    description: 'Strings.'
+    type: variable-color
+    format: hex
+    default: '#b8bb26'
+  - id: code-tag
+    title: Code Tag
+    description: 'HTML / XML tags.'
+    type: variable-color
+    format: hex
+    default: '#fabd2f'
+  - id: code-value
+    title: Code Value
+    description: 'Numbers and constants.'
+    type: variable-color
+    format: hex
+    default: '#d3869b'
+
+  - id: heading-diagrams
+    title: Diagram Colors (Mermaid / Excalidraw)
+    type: heading
+    level: 2
+    collapsed: true
+  - id: diagram-text
+    title: Diagram Text Color
+    description: 'Text in mermaid nodes (mermaid-afterglow.css).'
+    type: variable-color
+    format: hex
+    default: '#D0D0D0'
+  - id: diagram-node-border
+    title: Diagram Node/Actor Border
+    description: 'Node and sequence-actor borders.'
+    type: variable-color
+    format: hex
+    default: '#6C99BB'
+  - id: diagram-edge-color
+    title: Diagram Edges/Arrows
+    description: 'Arrows and lines.'
+    type: variable-color
+    format: hex
+    default: '#7DD6CF'
+  - id: diagram-subgraph-border
+    title: Diagram Subgraph/Loop Border
+    description: 'Subgraph, loop and alt borders.'
+    type: variable-color
+    format: hex
+    default: '#9F4E85'
+  - id: diagram-note-border
+    title: Diagram Note Border
+    description: 'Note borders in sequence diagrams.'
+    type: variable-color
+    format: hex
+    default: '#E5B567'
+  - id: diagram-actor-bg
+    title: Diagram Actor Box Background
+    description: 'Actor and node fill.'
+    type: variable-color
+    format: hex
+    default: '#212121'
+  - id: diagram-note-bg
+    title: Diagram Note Box Background
+    description: 'Light chip behind notes and edge labels.'
+    type: variable-color
+    format: hex
+    default: '#FFFFFF'
+  - id: diagram-note-text
+    title: Diagram Note Text Color
+    description: 'Text on notes and edge labels.'
+    type: variable-color
+    format: hex
+    default: '#000000'
+  - id: diagram-error
+    title: Diagram Error/Reject Color
+    description: 'classDef fail / error.'
+    type: variable-color
+    format: hex
+    default: '#AC4142'
+  - id: diagram-success
+    title: Diagram Success/Accept Color
+    description: 'classDef pass / success.'
+    type: variable-color
+    format: hex
+    default: '#7E8E50'
+*/
+
+
+/* ==========================================================================
+   1. PALETTE — dark mode only (light mode keeps Minimal's colors)
+   ========================================================================== */
+
+.theme-dark {
+    /* Backgrounds */
+    --background-primary: #1C1D26;          /* note background */
+    --background-primary-alt: #21222D;      /* cards, code blocks */
+    --background-secondary: #1C1D26;        /* sidebars */
+    --background-secondary-alt: #313242;
+    --background-modifier-border: #313242;  /* borders & dividers */
+
+    /* Text */
+    --text-normal: #f2e5bc;
+    --text-muted: #c4beb4;
+    --text-faint: #928374;
+    --text-accent: #d79921;                 /* tags, active items, highlights */
+    --interactive-accent: #458588;          /* buttons, active pills */
+    --bold-color: #fe8019;                  /* VS Code: markup.bold */
+    --italic-color: #d3869b;
+    --link-color: #6c99bb;                  /* Minimal blue; links in notes */
+    --link-color-hover: var(--link-color);
+    --link-external-color: var(--link-color);
+    --link-external-color-hover: var(--link-color);
+    --text-selection: #60daff47;            /* VS Code: editor.selectionBackground */
+    --caret-color: #f42c3e;                 /* VS Code: editorCursor.foreground */
+
+    /* Icons */
+    --icon-color: #c4beb4;
+    --icon-color-hover: #f2e5bc;
+    --icon-color-active: #d79921;
+    --icon-color-focused: #f2e5bc;
+
+    /* Navigation (file explorer / search) */
+    --nav-item-color: #c4beb4;
+    --nav-item-color-hover: #f2e5bc;
+    --nav-item-color-active: #d79921;
+    --nav-collapse-icon-color: #c4beb4;
+
+    /* Minimal theme base tones (RGB triplets, not hex) */
+    --mono-rgb-0: 28, 29, 38;
+    --mono-rgb-100: 242, 229, 188;
+
+    /* Titlebar & tabs */
+    --titlebar-background: #1C1D26;
+    --titlebar-background-focused: #1C1D26;
+    --tab-container-background: #1C1D26;
+    --tab-bar-background: #1C1D26;
+    --tab-outline-color: #313242;
+    --tab-header-bg: #21222D;               /* used in section 4 */
+    --tab-active-bg: #1C1D26;               /* used in section 4 */
+    --tab-hover-bg: #313242;                /* used in section 4 */
+
+    /* Syntax highlighting */
+    --code-background: #21222D;
+    --code-normal: #f2e5bc;
+    --code-comment: #506899;                /* VS Code: comment */
+    --code-function: #7ec16e;               /* VS Code: entity.name.function.function-call */
+    --code-important: #fe8019;              /* VS Code: meta.preprocessor */
+    --code-keyword: #f42c3e;                /* VS Code: keyword, storage */
+    --code-operator: #7ec16e;               /* VS Code: keyword.operator */
+    --code-property: #fabd2f;               /* VS Code: support.type.property-name */
+    --code-punctuation: #ebdbb2;            /* VS Code: punctuation */
+    --code-string: #b8bb26;                 /* VS Code: string */
+    --code-tag: #fabd2f;                    /* VS Code: entity.name.tag */
+    --code-value: #d3869b;                  /* VS Code: constant */
+
+    /* Diagrams (read by mermaid-afterglow.css) */
+    --diagram-text: #D0D0D0;
+    --diagram-node-border: #6C99BB;
+    --diagram-edge-color: #7DD6CF;
+    --diagram-subgraph-border: #9F4E85;
+    --diagram-note-border: #E5B567;
+    --diagram-actor-bg: #212121;
+    --diagram-note-bg: #FFFFFF;             /* light chip behind notes & edge labels */
+    --diagram-note-text: #000000;
+    --diagram-error: #AC4142;               /* classDef fail / error */
+    --diagram-success: #7E8E50;             /* classDef pass / success */
+}
+
+
+/* Headings: Minimal sets --hN-color only with "Colorful headings" on. Style Settings
+   writes --pl-hN-color when a heading colour is picked; the fallback is Minimal's colour. */
+.theme-dark.colorful-headings {
+    --h1-color: var(--pl-h1-color, #d04255);
+    --h2-color: var(--pl-h2-color, #e5b567);
+    --h3-color: var(--pl-h3-color, #99c6ca);
+    --h4-color: var(--pl-h4-color, #a8c373);
+    --h5-color: var(--pl-h5-color, #6c99bb);
+    --h6-color: var(--pl-h6-color, #9e86c8);
+}
+
+
+/* ==========================================================================
+   2. SIDEBARS — ribbon and side panels follow --background-secondary
+   ========================================================================== */
+
+.workspace-ribbon.mod-left,
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+    background-color: var(--background-secondary) !important;
+}
+
+/* The Minimal theme paints the left ribbon with its own variables (black in its "dark black" style)
+   and an extra ::before layer, so set those too, otherwise the ribbon stays darker than the sidebar */
+body {
+    --ribbon-background: var(--background-secondary) !important;
+    --ribbon-background-collapsed: var(--background-secondary) !important;
+}
+
+
+.workspace-ribbon.mod-primary .sidebar-toggle-button,
+.workspace-ribbon.mod-primary .sidebar-toggle-button,
+.workspace-ribbon.mod-left::before,
+.workspace-ribbon.mod-left .side-dock-actions,
+.workspace-ribbon.mod-left .side-dock-settings {
+    background-color: var(--background-secondary) !important;
+}
+
+
+/* ==========================================================================
+   3. ICONS — stop icons inheriting hidden/faded styles from the theme
+   ========================================================================== */
+
+.clickable-icon svg,
+.side-bar-button svg,
+.nav-action-button svg,
+.nav-folder-collapse-indicator svg {
+    color: inherit !important;
+    stroke: currentColor !important;
+    opacity: 1 !important;
+}
+
+/* Left sidebar toggle button */
+.sidebar-toggle-button.mod-left {
+    color: var(--text-normal) !important;
+    opacity: 1 !important;
+}
+
+
+/* ==========================================================================
+   4. TABS — tab bar background and individual tab states
+      Desktop only (body:not(.is-mobile)): on mobile the sidebar view menu
+      (Files / Search / Navigator…) reuses .workspace-tab-header, and these
+      rules drew a square dark box behind its rounded highlight.
+   ========================================================================== */
+
+/* The strip behind all tabs */
+body:not(.is-mobile) .workspace-tabs-initial .workspace-tab-header-container,
+body:not(.is-mobile) .workspace-tab-header-container {
+    background-color: var(--tab-header-bg) !important;
+    border-bottom: 1px solid var(--background-modifier-border);
+}
+
+/* Each tab: transparent by default, colored when active / hovered */
+body:not(.is-mobile) .workspace-tab-header {
+    background-color: transparent !important;
+}
+
+body:not(.is-mobile) .workspace-tab-header.is-active {
+    background-color: var(--tab-active-bg) !important;
+}
+
+/* ==========================================================================
+   5. STYLE SETTINGS SWATCHES
+   Style Settings 1.0.9 sets --pcr-color on the group, not on each swatch, so every swatch
+   showed the last colour of its group. Give each swatch the live value of its own variable.
+   ========================================================================== */
+.setting-item[data-id="background-primary"] .pcr-button { --pcr-color: var(--background-primary); }
+.setting-item[data-id="background-primary-alt"] .pcr-button { --pcr-color: var(--background-primary-alt); }
+.setting-item[data-id="background-secondary"] .pcr-button { --pcr-color: var(--background-secondary); }
+.setting-item[data-id="background-secondary-alt"] .pcr-button { --pcr-color: var(--background-secondary-alt); }
+.setting-item[data-id="background-modifier-border"] .pcr-button { --pcr-color: var(--background-modifier-border); }
+.setting-item[data-id="text-normal"] .pcr-button { --pcr-color: var(--text-normal); }
+.setting-item[data-id="text-muted"] .pcr-button { --pcr-color: var(--text-muted); }
+.setting-item[data-id="text-faint"] .pcr-button { --pcr-color: var(--text-faint); }
+.setting-item[data-id="text-accent"] .pcr-button { --pcr-color: var(--text-accent); }
+.setting-item[data-id="interactive-accent"] .pcr-button { --pcr-color: var(--interactive-accent); }
+.setting-item[data-id="bold-color"] .pcr-button { --pcr-color: var(--bold-color); }
+.setting-item[data-id="italic-color"] .pcr-button { --pcr-color: var(--italic-color); }
+.setting-item[data-id="text-selection"] .pcr-button { --pcr-color: var(--text-selection); }
+.setting-item[data-id="caret-color"] .pcr-button { --pcr-color: var(--caret-color); }
+.setting-item[data-id="pl-h1-color"] .pcr-button { --pcr-color: var(--pl-h1-color, var(--h1-color)); }
+.setting-item[data-id="pl-h2-color"] .pcr-button { --pcr-color: var(--pl-h2-color, var(--h2-color)); }
+.setting-item[data-id="pl-h3-color"] .pcr-button { --pcr-color: var(--pl-h3-color, var(--h3-color)); }
+.setting-item[data-id="pl-h4-color"] .pcr-button { --pcr-color: var(--pl-h4-color, var(--h4-color)); }
+.setting-item[data-id="pl-h5-color"] .pcr-button { --pcr-color: var(--pl-h5-color, var(--h5-color)); }
+.setting-item[data-id="pl-h6-color"] .pcr-button { --pcr-color: var(--pl-h6-color, var(--h6-color)); }
+.setting-item[data-id="icon-color"] .pcr-button { --pcr-color: var(--icon-color); }
+.setting-item[data-id="icon-color-hover"] .pcr-button { --pcr-color: var(--icon-color-hover); }
+.setting-item[data-id="icon-color-active"] .pcr-button { --pcr-color: var(--icon-color-active); }
+.setting-item[data-id="icon-color-focused"] .pcr-button { --pcr-color: var(--icon-color-focused); }
+.setting-item[data-id="nav-item-color"] .pcr-button { --pcr-color: var(--nav-item-color); }
+.setting-item[data-id="nav-item-color-hover"] .pcr-button { --pcr-color: var(--nav-item-color-hover); }
+.setting-item[data-id="nav-item-color-active"] .pcr-button { --pcr-color: var(--nav-item-color-active); }
+.setting-item[data-id="nav-collapse-icon-color"] .pcr-button { --pcr-color: var(--nav-collapse-icon-color); }
+.setting-item[data-id="titlebar-background"] .pcr-button { --pcr-color: var(--titlebar-background); }
+.setting-item[data-id="titlebar-background-focused"] .pcr-button { --pcr-color: var(--titlebar-background-focused); }
+.setting-item[data-id="tab-container-background"] .pcr-button { --pcr-color: var(--tab-container-background); }
+.setting-item[data-id="tab-bar-background"] .pcr-button { --pcr-color: var(--tab-bar-background); }
+.setting-item[data-id="tab-outline-color"] .pcr-button { --pcr-color: var(--tab-outline-color); }
+.setting-item[data-id="tab-header-bg"] .pcr-button { --pcr-color: var(--tab-header-bg); }
+.setting-item[data-id="tab-active-bg"] .pcr-button { --pcr-color: var(--tab-active-bg); }
+.setting-item[data-id="tab-hover-bg"] .pcr-button { --pcr-color: var(--tab-hover-bg); }
+.setting-item[data-id="code-background"] .pcr-button { --pcr-color: var(--code-background); }
+.setting-item[data-id="code-normal"] .pcr-button { --pcr-color: var(--code-normal); }
+.setting-item[data-id="code-comment"] .pcr-button { --pcr-color: var(--code-comment); }
+.setting-item[data-id="code-function"] .pcr-button { --pcr-color: var(--code-function); }
+.setting-item[data-id="code-important"] .pcr-button { --pcr-color: var(--code-important); }
+.setting-item[data-id="code-keyword"] .pcr-button { --pcr-color: var(--code-keyword); }
+.setting-item[data-id="code-operator"] .pcr-button { --pcr-color: var(--code-operator); }
+.setting-item[data-id="code-property"] .pcr-button { --pcr-color: var(--code-property); }
+.setting-item[data-id="code-punctuation"] .pcr-button { --pcr-color: var(--code-punctuation); }
+.setting-item[data-id="code-string"] .pcr-button { --pcr-color: var(--code-string); }
+.setting-item[data-id="code-tag"] .pcr-button { --pcr-color: var(--code-tag); }
+.setting-item[data-id="code-value"] .pcr-button { --pcr-color: var(--code-value); }
+.setting-item[data-id="diagram-text"] .pcr-button { --pcr-color: var(--diagram-text); }
+.setting-item[data-id="diagram-node-border"] .pcr-button { --pcr-color: var(--diagram-node-border); }
+.setting-item[data-id="diagram-edge-color"] .pcr-button { --pcr-color: var(--diagram-edge-color); }
+.setting-item[data-id="diagram-subgraph-border"] .pcr-button { --pcr-color: var(--diagram-subgraph-border); }
+.setting-item[data-id="diagram-note-border"] .pcr-button { --pcr-color: var(--diagram-note-border); }
+.setting-item[data-id="diagram-actor-bg"] .pcr-button { --pcr-color: var(--diagram-actor-bg); }
+.setting-item[data-id="diagram-note-bg"] .pcr-button { --pcr-color: var(--diagram-note-bg); }
+.setting-item[data-id="diagram-note-text"] .pcr-button { --pcr-color: var(--diagram-note-text); }
+.setting-item[data-id="diagram-error"] .pcr-button { --pcr-color: var(--diagram-error); }
+.setting-item[data-id="diagram-success"] .pcr-button { --pcr-color: var(--diagram-success); }
+.setting-item[data-id="link-color"] .pcr-button { --pcr-color: var(--link-color); }
