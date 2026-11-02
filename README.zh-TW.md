@@ -198,7 +198,7 @@ flowchart LR
 
 ---
 
-## 致謝
+## 第三方元件
 
 - **[Popping and Locking](https://github.com/hedinne/popping-and-locking-vscode)**，作者 hedinne（MIT）：`popping-and-locking.css` 的配色與語法顏色取自此 VS Code 主題。授權全文：[`licenses/popping-and-locking-vscode.txt`](licenses/popping-and-locking-vscode.txt)。
 - **[Minimal](https://github.com/kepano/obsidian-minimal)**，作者 kepano（MIT）：CSS 片段所依附的主題，需另外安裝，不包含於 repo 內。
@@ -220,4 +220,4 @@ flowchart LR
 
 ## 授權
 
-MIT，詳見 [`LICENSE`](LICENSE)。第三方元件依各自授權（見「致謝」）。
+MIT，詳見 [`LICENSE`](LICENSE)。第三方元件依各自授權（見「第三方元件」）。
