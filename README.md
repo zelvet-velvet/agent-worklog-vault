@@ -100,3 +100,7 @@ Journal and weekly report text is written in Traditional Chinese in a Taiwan wor
   | [Hover Editor](https://github.com/nothingislost/obsidian-hover-editor) | nothingislost | MIT |
   | [make.md](https://github.com/make-md/makemd) | make.md | MIT |
 
+
+## Licence
+
+MIT, see [`LICENSE`](LICENSE). Third-party parts keep their own licences (see Credits).
