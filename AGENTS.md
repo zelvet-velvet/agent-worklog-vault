@@ -26,7 +26,7 @@ The user types a command (`CMD_SYNC`). Each one is a skill: agents with skill su
 
 ## Setup on a new machine
 - `python3 Tools/setup/install_plugins.py` downloads the plugin code and the theme (git keeps only their settings); run it before the first Obsidian start.
-- `bash Tools/skills/link_skills.sh` links every skill into each installed agent's skills folder (`skill_dirs` in `LLM/vault_config.json`).
+- `bash Tools/skills/link_skills.sh` links every skill into the project skills folders of the vault and of each repo in `projects` (`LLM/vault_config.json`), never the global ones, so the commands exist only in those projects' sessions. Rerun it after adding a skill or a project.
 - Python 3 for `Tools/` scripts; Obsidian plugins and theme: see the README.
 
 ## Commits in this vault

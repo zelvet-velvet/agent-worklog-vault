@@ -1,11 +1,12 @@
 {
-  "_comment": "Personal values read by the vault tools and skills. Change these instead of editing scripts.",
+  "_comment": "Personal values read by the vault tools and skills. Change these instead of editing scripts. projects: the code repos this vault logs; link_skills.sh links the skills into them (and into the vault) for the agents in agents.",
   "owner": "Your Name",
   "coauthor": "Claude Opus 5.5 <noreply@anthropic.com>",
-  "skill_dirs": [
-    "~/.claude/skills",
-    "~/.codex/skills"
-  ],
+  "projects": [],
+  "agents": {
+    "claude": ".claude/skills",
+    "codex": ".codex/skills"
+  },
   "weekly_report": {
     "doc_dir": "/mnt/c/Users/<you>/Documents/weekly",
     "doc_name": "weekly_report_{year}_W{week}.doc",

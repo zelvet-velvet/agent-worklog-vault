@@ -103,12 +103,16 @@ flowchart LR
     AG --> CC[Claude Code]
     AG --> CX[Codex]
     AG --> O[其他 agent]
-    SK[LLM/skills/] -- link_skills.sh --> C1["~/.claude/skills"] --> CC
-    SK -- link_skills.sh --> C2["~/.codex/skills"] --> CX
+    SK[LLM/skills/] -- link_skills.sh --> C1["各專案：<br/>.claude/skills"] --> CC
+    SK -- link_skills.sh --> C2["各專案：<br/>.codex/skills"] --> CX
     SK -.->|開啟 SKILL.md| O
 ```
 
 `AGENTS.md` 為唯一指令來源，`CLAUDE.md` 僅引用此檔案。Skill 存放於筆記庫並連結至各 agent 的 skills 資料夾，修改後所有 agent 同步更新。
+
+### 多專案、多筆記庫
+
+Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾（`~/.claude/skills`）：包含筆記庫本身，以及 `LLM/vault_config.json` 的 `projects` 中由此筆記庫記錄的各程式 repo。因此 `CMD_SYNC` 僅出現於這些專案的 session，且一定寫入此筆記庫；同一台電腦上的其他筆記庫連結至各自的專案，可使用相同的指令名稱。若專案為 git repo，skills 資料夾會加入 `.git/info/exclude`，專案不會產生 commit 或未追蹤檔案。筆記庫若位於專案 repo 內，可直接將 skill commit 至該 repo 的 `.claude/skills/`。
 
 ---
 
@@ -123,8 +127,8 @@ flowchart LR
 2. **安裝外掛程式碼與主題**：執行 `python3 Tools/setup/install_plugins.py`，從各外掛的 GitHub release 下載程式碼與 **Minimal** 主題（`--dry-run` 僅檢查連結）。repo 僅保存外掛設定、不含程式碼，未執行此步驟時外掛會顯示已安裝但無法啟用。
 3. **啟用外掛**：以 Obsidian 開啟資料夾，於 設定 → 社群外掛 開啟社群外掛後逐一啟用。
 4. **確認 CSS 片段**：設定 → 外觀 → CSS 片段，五個片段皆已啟用。
-5. **填寫個人設定**：修改 `LLM/vault_config.json`（`owner`、`coauthor`、`skill_dirs`、`weekly_report`），並填寫 `LLM/LLM_GUIDE.md` 開頭的 Project Information。
-6. **連結 Skill**：執行 `bash Tools/skills/link_skills.sh`，將每個 skill 連結至已安裝 agent 的 skills 資料夾；新增 skill 後需重新執行。
+5. **填寫個人設定**：修改 `LLM/vault_config.json`（`owner`、`coauthor`、`projects`、`agents`、`weekly_report`），並填寫 `LLM/LLM_GUIDE.md` 開頭的 Project Information。
+6. **連結 Skill**：執行 `bash Tools/skills/link_skills.sh`，依已安裝的 agent，將每個 skill 連結至筆記庫與 `projects` 中各 repo 的專案 skills 資料夾；新增 skill 或專案、或重新 clone 專案後需重新執行。由舊版（連結至 `~/.claude/skills`）升級時，首次執行加上 `--remove-global`。
 7. **設置 Git**：沿用此 repo 或執行 `git init`，並新增個人 remote。Rollover 與週報僅 commit 其寫入的檔案。
 
 `Tools/` 腳本需要 Python 3.9 以上；填寫公司週報 `.doc`（`weekly_report.py --fill`）需於裝有 Word 的 Windows 環境並透過 WSL 執行。

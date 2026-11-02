@@ -100,12 +100,16 @@ flowchart LR
     AG --> CC[Claude Code]
     AG --> CX[Codex]
     AG --> O[Other agents]
-    SK[LLM/skills/] -- link_skills.sh --> C1["~/.claude/skills"] --> CC
-    SK -- link_skills.sh --> C2["~/.codex/skills"] --> CX
+    SK[LLM/skills/] -- link_skills.sh --> C1["each project:<br/>.claude/skills"] --> CC
+    SK -- link_skills.sh --> C2["each project:<br/>.codex/skills"] --> CX
     SK -.->|open SKILL.md| O
 ```
 
 `AGENTS.md` is the single source of the instructions; `CLAUDE.md` only imports it. Skills live in the vault and are linked into each agent's skills folder, so one edit changes the command for every agent.
+
+### Several projects, several vaults
+
+The skills are linked into **project** skills folders, never the global ones (`~/.claude/skills`): the vault itself and every code repo in `projects` (`LLM/vault_config.json`) that this vault logs. So `CMD_SYNC` exists only in sessions of those projects and always reaches this vault; another vault on the same computer, linked into its own projects, can use the same command names. In a git repo the skills folder goes into `.git/info/exclude`, so the project gets no commit and no untracked files. A vault that lives inside its project repo can commit its skills in that repo's `.claude/skills/` instead.
 
 ---
 
@@ -120,8 +124,8 @@ flowchart LR
 2. **Plugin code and theme**: run `python3 Tools/setup/install_plugins.py`. It downloads every plugin's code and the **Minimal** theme from their GitHub releases (`--dry-run` only checks the links). The repo keeps each plugin's settings but not its code; without this step the plugins show as installed but fail to turn on.
 3. **Plugins**: open the folder in Obsidian, Settings → Community plugins → turn on community plugins, then turn each one on.
 4. **Snippets**: Settings → Appearance → CSS snippets: all five are already enabled.
-5. **Your values**: edit `LLM/vault_config.json` (`owner`, `coauthor`, `skill_dirs`, `weekly_report`) and fill the Project Information at the top of `LLM/LLM_GUIDE.md`.
-6. **Skills**: `bash Tools/skills/link_skills.sh` links every skill into each installed agent's skills folder. Run it again after adding a skill.
+5. **Your values**: edit `LLM/vault_config.json` (`owner`, `coauthor`, `projects`, `agents`, `weekly_report`) and fill the Project Information at the top of `LLM/LLM_GUIDE.md`.
+6. **Skills**: `bash Tools/skills/link_skills.sh` links every skill into the project skills folder of the vault and of each repo in `projects`, for each installed agent. Run it again after adding a skill or a project, or after cloning a project anew. Coming from an older version that linked into `~/.claude/skills`: add `--remove-global` once.
 7. **Git**: keep this repo or `git init`, then add your own remote. Rollover and the weekly report commit only the files they write.
 
 Needs Python 3.9+ for `Tools/`. Filling the company `.doc` (`weekly_report.py --fill`) needs Windows with Word, reached from WSL.
