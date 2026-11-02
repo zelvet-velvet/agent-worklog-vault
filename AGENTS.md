@@ -25,6 +25,7 @@ The user types a command (`CMD_SYNC`). Each one is a skill: agents with skill su
 | (adding or changing a diagram) | `mermaid-diagrams` | Which Mermaid type to use, readability, theme classes |
 
 ## Setup on a new machine
+- `python3 Tools/setup/install_plugins.py` downloads the plugin code and the theme (git keeps only their settings); run it before the first Obsidian start.
 - `bash Tools/skills/link_skills.sh` links every skill into each installed agent's skills folder (`skill_dirs` in `LLM/vault_config.json`).
 - Python 3 for `Tools/` scripts; Obsidian plugins and theme: see the README.
 

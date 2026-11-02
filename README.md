@@ -32,9 +32,9 @@ The split keeps the agent's context small: only the command that runs is loaded,
 
 ## Setup
 
-1. **Copy the vault**: use this repo as a template (or clone it), then open the folder in Obsidian.
-2. **Theme**: Settings → Appearance → Themes → install **Minimal**.
-3. **Plugins**: Settings → Community plugins → turn on community plugins, then install:
+1. **Copy the vault**: use this repo as a template (or clone it). Do not open it in Obsidian yet.
+2. **Plugin code and theme**: `python3 Tools/setup/install_plugins.py` downloads the code of every plugin below and the **Minimal** theme from their GitHub releases (`--dry-run` only checks the links). The repo keeps each plugin's settings but not its code, so without this step the plugins show as installed but fail to turn on.
+3. **Plugins**: open the folder in Obsidian, Settings → Community plugins → turn on community plugins, then turn each one on:
 
    | Plugin | Needed for |
    | :--- | :--- |
@@ -49,7 +49,7 @@ The split keeps the agent's context small: only the command that runs is loaded,
    | Hover Editor | Editing in hover popups |
    | make.md | Note icons (`sticker:`) and folder notes |
 
-   The plugin settings (`data.json`) are already in `.obsidian/plugins/`; only the code is installed from Obsidian.
+   The plugin settings (`data.json`) are already in `.obsidian/plugins/`. Without Python: delete a plugin's folder, install it from Settings → Community plugins → Browse, then copy its `data.json` back from git.
 4. **Snippets**: Settings → Appearance → CSS snippets: all five are enabled. `popping-and-locking.css` is a dark colour theme based on the VS Code theme [Popping and Locking](https://github.com/hedinne/popping-and-locking-vscode); change its colours in Style Settings.
 5. **Your values**: edit `LLM/vault_config.json` (`owner`, `coauthor`, `skill_dirs`, `weekly_report`) and fill the Project Information at the top of `LLM/LLM_GUIDE.md`.
 6. **Skills**: `bash Tools/skills/link_skills.sh` links every skill into each installed agent's skills folder (`~/.claude/skills`, `~/.codex/skills`, … from `skill_dirs`). Run it again after adding a skill.

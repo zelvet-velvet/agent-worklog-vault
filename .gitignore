@@ -17,3 +17,6 @@ __pycache__/
 .space/context.mdb
 **/.space/context.mdb
 .obsidian/plugins/make-md/data.json
+
+# Themes are installed from Obsidian (or Tools/setup/install_plugins.py)
+.obsidian/themes/
