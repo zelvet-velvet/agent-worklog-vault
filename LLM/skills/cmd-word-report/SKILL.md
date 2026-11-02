@@ -1,6 +1,6 @@
 ---
 name: cmd-word-report
-description: Worklog vault command /cmd-word-report. Use when the user runs either: runs Tools/weekly_report/weekly_report.py to build WEEKLY_WORD.md and fill the company .doc, then commits and pushes the vault.
+description: Worklog vault command /cmd-word-report. Use when the user runs it: runs Tools/weekly_report/weekly_report.py to build WEEKLY_WORD.md and fill the company .doc, then commits and pushes the vault.
 ---
 # /cmd-word-report
 
