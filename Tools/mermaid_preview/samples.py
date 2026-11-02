@@ -1,4 +1,4 @@
-"""Mermaid samples: every diagram type in Mermaid 11.13 (Obsidian 1.14) with its main features.
+"""Mermaid samples: every diagram type in Mermaid 11.17 (bundled by Mermaid ELK Renderer; Obsidian 1.14 alone has 11.13).
 (title, short description of what it shows, code). Used for the Edge test page and the vault note."""
 
 SAMPLES = [
@@ -199,7 +199,7 @@ SAMPLES = [
 ('C4 context', 'person, system, external system, boundary, relations', '''C4Context
     title System context
     Person(user, "User", "Uses the app")
-    System_Boundary(b, "Product") {
+    System_Onlineary(b, "Product") {
         System(app, "App", "Mobile app")
         SystemDb(db, "Database", "Stores data")
     }
@@ -282,4 +282,126 @@ App,Testing,10'''),
         "UI": 25
         "Network": 15
     "Docs": 8'''),
+('Dense flowchart, default layout', 'the same graph as the next sample, laid out by the default dagre engine', '''flowchart LR
+    subgraph DEV [Device]
+        FW[Firmware] --> SEC[(Secure store)]
+        FW --> LOG[Log]
+    end
+    subgraph APP [App]
+        UI[Screen] --> SVC[Service]
+        SVC --> CACHE[(Cache)]
+    end
+    subgraph SRV [Server]
+        API[API] --> DB[(Database)]
+        API --> Q[Queue]
+        Q --> W[Worker]
+    end
+    SVC --> FW
+    SVC --> API
+    W --> DB
+    LOG --> API
+    W -.-> SVC
+    UI --> LOG'''),
+('Dense flowchart, ELK layout', 'first line %% elk %% (Mermaid ELK Renderer): fewer crossings, straighter edges, tidier subgraphs', '''%% elk %%
+flowchart LR
+    subgraph DEV [Device]
+        FW[Firmware] --> SEC[(Secure store)]
+        FW --> LOG[Log]
+    end
+    subgraph APP [App]
+        UI[Screen] --> SVC[Service]
+        SVC --> CACHE[(Cache)]
+    end
+    subgraph SRV [Server]
+        API[API] --> DB[(Database)]
+        API --> Q[Queue]
+        Q --> W[Worker]
+    end
+    SVC --> FW
+    SVC --> API
+    W --> DB
+    LOG --> API
+    W -.-> SVC
+    UI --> LOG'''),
+('State, ELK layout', 'state machine with %% elk %%', '''%% elk %%
+stateDiagram-v2
+    [*] --> Offline
+    Offline --> Connecting : CONNECT
+    Connecting --> Online : ok
+    Connecting --> Offline : refused
+    Online --> Reconnecting : RECONNECT
+    Reconnecting --> Online : ok
+    Online --> Offline : DISCONNECT
+    Online --> Loading : SYNC
+    Loading --> Online : done
+    Loading --> Online : error'''),
+('Class, ELK layout', 'class diagram with %% elk %%', '''%% elk %%
+classDiagram
+    Vehicle <|-- Car
+    Vehicle <|-- Truck
+    Car *-- Engine
+    Truck *-- Engine
+    Car o-- Wheel
+    Truck o-- Wheel
+    Garage --> Car
+    Garage --> Truck'''),
+('Ishikawa (fishbone)', 'effect, cause categories, nested causes (11.12)', '''ishikawa-beta
+    Boot fails
+    Firmware
+        Wrong image
+        Bad signature
+    Hardware
+        Flash
+            Worn cells
+            Bad wiring
+        Power
+    Process
+        Skipped test
+    Environment
+        Too cold'''),
+('Tree view', 'folders, files, comments, highlight (11.14)', '''treeView-beta
+    project/
+        src/
+            main.c :::highlight ## entry point
+            crypto.c ## new
+            util.h
+        docs/
+            guide.md
+        Makefile'''),
+('Venn', 'sets and a named overlap (11.12)', '''venn-beta
+    title "Who touches the key"
+    set Firmware
+    set App
+    set Server
+    union Firmware,App["Load"]
+    union App,Server["Transport"]'''),
+('Railroad', 'grammar as a syntax diagram, EBNF (11.16)', '''railroad-ebnf-beta
+title "Frame"
+
+frame = op , length , [ token ] ;
+op = "0x10" | "0x11" | "0x12" ;'''),
+('Wardley map', 'components on value chain vs evolution (11.14)', '''wardley-beta
+title Key service
+
+component User [0.95, 0.70]
+component App [0.80, 0.55]
+component API [0.55, 0.60]
+component Database [0.40, 0.80]
+
+User -> App
+App -> API
+API -> Database
+
+evolve API 0.80'''),
+('Event modeling', 'time frames of UI, command, event (11.15)', '''eventmodeling
+
+tf 01 ui CartUI
+tf 02 cmd AddItem
+tf 03 evt ItemAdded'''),
+('Cynefin', 'the four domains (11.16)', '''cynefin-beta
+  title Where is the problem
+  complex
+  complicated
+  clear
+  chaotic'''),
 ]

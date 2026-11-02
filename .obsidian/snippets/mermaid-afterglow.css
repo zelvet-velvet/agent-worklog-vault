@@ -1,6 +1,7 @@
 /* ==========================================================================
    mermaid-afterglow.css
-   Colors for every Mermaid diagram type in Obsidian (Mermaid 11.13).
+   Colors for every Mermaid diagram type: Obsidian's Mermaid 11.13 and the 11.17 that
+   the Mermaid ELK Renderer plugin bundles (what the vault uses).
    Every color is a --diagram-* (or theme) variable (hex appears only to MATCH
    fills Mermaid writes as attributes, C4 and architecture)
    defined in popping-and-locking.css, so change colors there or in
@@ -29,6 +30,8 @@
     23. C4         24. Section colours (mindmap, timeline, kanban)
     25. Sankey     26. XY chart     27. Block            28. Packet
     29. Architecture   30. Radar    31. Treemap
+    32. Mindmap / timeline solid   33. Sankey flows   34. Mermaid 11.17 inline styles
+    35. 11.12 – 11.17 types: ishikawa, venn, railroad, wardley, event modeling, cynefin
    Series colours --diagram-c1 … c8 (and warn / info) live in the palette too.
    Preview of every type: _Meta/Mermaid Preview.md
 
@@ -817,15 +820,15 @@
 
 .mermaid g.note rect,
 .mermaid g.note path,
-.mermaid svg[aria-roledescription="class"] g.node[id^="note"] path,
-.mermaid svg[aria-roledescription="class"] g.node[id^="note"] rect {
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id^="note"] path,
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id^="note"] rect {
     fill: var(--diagram-note-bg) !important;
     stroke: var(--diagram-note-border) !important;
 }
 .mermaid g.note .nodeLabel,
 .mermaid g.note text,
-.mermaid svg[aria-roledescription="class"] g.node[id^="note"] .nodeLabel,
-.mermaid svg[aria-roledescription="class"] g.node[id^="note"] p,
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id^="note"] .nodeLabel,
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id^="note"] p,
 .mermaid .node.note .nodeLabel,
 .mermaid .node.note span {
     color: var(--diagram-note-text) !important;
@@ -1137,3 +1140,152 @@
 .mermaid rect.treemapLeaf { fill: var(--background-primary-alt) !important; fill-opacity: 1 !important; stroke: var(--diagram-node-border) !important; stroke-width: 1.5px !important; }
 .mermaid text.treemapLabel, .mermaid text.treemapSectionLabel { fill: var(--diagram-text) !important; }
 .mermaid text.treemapValue, .mermaid text.treemapSectionValue { fill: var(--text-muted) !important; }
+
+
+/* ==========================================================================
+   32. MINDMAP AND TIMELINE — solid section colours, dark text
+   Overrides the tints of §24 for these two (kanban columns keep the tint).
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="mindmap"] .section--1 rect, .mermaid svg[aria-roledescription="mindmap"] .section--1 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section--1 polygon { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-0 rect, .mermaid svg[aria-roledescription="mindmap"] .section-0 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-0 polygon { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-0 { stroke: var(--diagram-c2) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-1 rect, .mermaid svg[aria-roledescription="mindmap"] .section-1 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-1 polygon { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-1 { stroke: var(--diagram-c3) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-2 rect, .mermaid svg[aria-roledescription="mindmap"] .section-2 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-2 polygon { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-2 { stroke: var(--diagram-c4) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-3 rect, .mermaid svg[aria-roledescription="mindmap"] .section-3 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-3 polygon { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-3 { stroke: var(--diagram-c5) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-4 rect, .mermaid svg[aria-roledescription="mindmap"] .section-4 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-4 polygon { fill: var(--diagram-c6) !important; stroke: var(--diagram-c6) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-4 { stroke: var(--diagram-c6) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-5 rect, .mermaid svg[aria-roledescription="mindmap"] .section-5 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-5 polygon { fill: var(--diagram-c7) !important; stroke: var(--diagram-c7) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-5 { stroke: var(--diagram-c7) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-6 rect, .mermaid svg[aria-roledescription="mindmap"] .section-6 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-6 polygon { fill: var(--diagram-c8) !important; stroke: var(--diagram-c8) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-6 { stroke: var(--diagram-c8) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-7 rect, .mermaid svg[aria-roledescription="mindmap"] .section-7 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-7 polygon { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-7 { stroke: var(--diagram-c1) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-8 rect, .mermaid svg[aria-roledescription="mindmap"] .section-8 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-8 polygon { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-8 { stroke: var(--diagram-c2) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-9 rect, .mermaid svg[aria-roledescription="mindmap"] .section-9 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-9 polygon { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-9 { stroke: var(--diagram-c3) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-10 rect, .mermaid svg[aria-roledescription="mindmap"] .section-10 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-10 polygon { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-10 { stroke: var(--diagram-c4) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-11 rect, .mermaid svg[aria-roledescription="mindmap"] .section-11 path.node-bkg, .mermaid svg[aria-roledescription="mindmap"] .section-11 polygon { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid svg[aria-roledescription="mindmap"] path.section-edge-11 { stroke: var(--diagram-c5) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="mindmap"] [class*="section-"] text, .mermaid svg[aria-roledescription="mindmap"] [class*="section-"] .nodeLabel, .mermaid svg[aria-roledescription="mindmap"] [class*="section-"] .nodeLabel p, .mermaid svg[aria-roledescription="mindmap"] [class*="section-"] span { fill: var(--background-primary) !important; color: var(--background-primary) !important; font-weight: 600 !important; }
+.mermaid svg[aria-roledescription="timeline"] .section--1 rect, .mermaid svg[aria-roledescription="timeline"] .section--1 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section--1 polygon { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-0 rect, .mermaid svg[aria-roledescription="timeline"] .section-0 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-0 polygon { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-0 { stroke: var(--diagram-c2) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-1 rect, .mermaid svg[aria-roledescription="timeline"] .section-1 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-1 polygon { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-1 { stroke: var(--diagram-c3) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-2 rect, .mermaid svg[aria-roledescription="timeline"] .section-2 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-2 polygon { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-2 { stroke: var(--diagram-c4) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-3 rect, .mermaid svg[aria-roledescription="timeline"] .section-3 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-3 polygon { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-3 { stroke: var(--diagram-c5) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-4 rect, .mermaid svg[aria-roledescription="timeline"] .section-4 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-4 polygon { fill: var(--diagram-c6) !important; stroke: var(--diagram-c6) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-4 { stroke: var(--diagram-c6) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-5 rect, .mermaid svg[aria-roledescription="timeline"] .section-5 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-5 polygon { fill: var(--diagram-c7) !important; stroke: var(--diagram-c7) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-5 { stroke: var(--diagram-c7) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-6 rect, .mermaid svg[aria-roledescription="timeline"] .section-6 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-6 polygon { fill: var(--diagram-c8) !important; stroke: var(--diagram-c8) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-6 { stroke: var(--diagram-c8) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-7 rect, .mermaid svg[aria-roledescription="timeline"] .section-7 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-7 polygon { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-7 { stroke: var(--diagram-c1) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-8 rect, .mermaid svg[aria-roledescription="timeline"] .section-8 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-8 polygon { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-8 { stroke: var(--diagram-c2) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-9 rect, .mermaid svg[aria-roledescription="timeline"] .section-9 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-9 polygon { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-9 { stroke: var(--diagram-c3) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-10 rect, .mermaid svg[aria-roledescription="timeline"] .section-10 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-10 polygon { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-10 { stroke: var(--diagram-c4) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] .section-11 rect, .mermaid svg[aria-roledescription="timeline"] .section-11 path.node-bkg, .mermaid svg[aria-roledescription="timeline"] .section-11 polygon { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid svg[aria-roledescription="timeline"] path.section-edge-11 { stroke: var(--diagram-c5) !important; stroke-width: 2.5px !important; }
+.mermaid svg[aria-roledescription="timeline"] [class*="section-"] text, .mermaid svg[aria-roledescription="timeline"] [class*="section-"] .nodeLabel, .mermaid svg[aria-roledescription="timeline"] [class*="section-"] .nodeLabel p, .mermaid svg[aria-roledescription="timeline"] [class*="section-"] span { fill: var(--background-primary) !important; color: var(--background-primary) !important; font-weight: 600 !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-root circle, .mermaid svg[aria-roledescription="mindmap"] .section-root rect, .mermaid svg[aria-roledescription="mindmap"] .section-root path { fill: var(--diagram-note-border) !important; stroke: var(--diagram-note-border) !important; }
+.mermaid svg[aria-roledescription="mindmap"] .section-root text, .mermaid svg[aria-roledescription="mindmap"] .section-root .nodeLabel, .mermaid svg[aria-roledescription="mindmap"] .section-root .nodeLabel p { fill: var(--background-primary) !important; color: var(--background-primary) !important; font-weight: 700 !important; }
+.mermaid svg[aria-roledescription="timeline"] line, .mermaid svg[aria-roledescription="timeline"] g.lineWrapper line { stroke: var(--text-faint) !important; }
+.mermaid svg[aria-roledescription="timeline"] > g > text, .mermaid svg[aria-roledescription="timeline"] text.timeline-title { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   33. SANKEY FLOWS — one solid series colour per flow (overrides §25)
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+1) path { stroke: var(--diagram-c1) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+2) path { stroke: var(--diagram-c2) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+3) path { stroke: var(--diagram-c3) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+4) path { stroke: var(--diagram-c4) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+5) path { stroke: var(--diagram-c5) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+6) path { stroke: var(--diagram-c6) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+7) path { stroke: var(--diagram-c7) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:nth-of-type(8n+8) path { stroke: var(--diagram-c8) !important; stroke-opacity: 0.8 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.link:hover path { stroke-opacity: 1 !important; }
+
+
+/* ==========================================================================
+   34. MERMAID 11.17 (bundled by the ELK plugin) — inline !important styles
+   11.17 writes some fills as inline style="fill:… !important", which no stylesheet can
+   replace. Properties it does not set inline still work: text colour, fill-opacity, filter.
+   ========================================================================== */
+
+/* Class note: the yellow sticky stays, its text turns dark */
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] .nodeLabel,
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] p,
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] span { color: var(--diagram-note-text) !important; fill: var(--diagram-note-text) !important; }
+/* C4 shapes: Mermaid blue / grey, toned down to sit on the dark page */
+.mermaid svg[aria-roledescription="c4"] g.c4-shape .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-shape .basic { filter: saturate(0.55) brightness(0.85); fill-opacity: 0.6 !important; }
+.mermaid svg[aria-roledescription="c4"] g.c4-external_system .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-external .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-external .basic { fill-opacity: 0.35 !important; }
+.mermaid svg[aria-roledescription="c4"] g.c4-descr text, .mermaid svg[aria-roledescription="c4"] g.c4-type text { opacity: 0.85; }
+.mermaid svg[aria-roledescription="c4"] path.relation, .mermaid svg[aria-roledescription="c4"] g.edgePaths path { stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="c4"] g.cluster rect { stroke: var(--diagram-subgraph-border) !important; fill: transparent !important; }
+
+
+/* ==========================================================================
+   35. MERMAID 11.12 – 11.17 TYPES (bundled by the ELK plugin)
+       ishikawa, venn, railroad, wardley, event modeling, cynefin, tree view
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="ishikawa"] line { stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="ishikawa"] line.ishikawa-spine { stroke-width: 3px !important; }
+.mermaid svg[aria-roledescription="ishikawa"] line.ishikawa-sub-branch { stroke: var(--text-faint) !important; }
+.mermaid svg[aria-roledescription="ishikawa"] path.ishikawa-arrow { fill: var(--diagram-edge-color) !important; stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="ishikawa"] path.ishikawa-head { fill: var(--diagram-error) !important; stroke: var(--diagram-error) !important; }
+.mermaid svg[aria-roledescription="ishikawa"] text.ishikawa-head-label { fill: var(--background-primary) !important; font-weight: 700 !important; }
+.mermaid svg[aria-roledescription="ishikawa"] rect.ishikawa-label-box { fill: color-mix(in srgb, var(--diagram-c1) 35%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="ishikawa"] text, .mermaid svg[aria-roledescription="ishikawa"] text.ishikawa-label { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-0 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-0 path { fill: var(--diagram-c1) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c1) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-1 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-1 path { fill: var(--diagram-c2) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c2) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-2 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-2 path { fill: var(--diagram-c3) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c3) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-3 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-3 path { fill: var(--diagram-c4) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c4) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-4 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-4 path { fill: var(--diagram-c5) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c5) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-5 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-5 path { fill: var(--diagram-c6) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c6) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-6 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-6 path { fill: var(--diagram-c7) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c7) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-set-7 circle, .mermaid svg[aria-roledescription="venn"] g.venn-set-7 path { fill: var(--diagram-c8) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c8) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="venn"] g.venn-intersection path, .mermaid svg[aria-roledescription="venn"] g.venn-intersection circle { fill: var(--diagram-text) !important; fill-opacity: 0.08 !important; }
+.mermaid svg[aria-roledescription="venn"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription^="railroad"] path.railroad-line { stroke: var(--diagram-edge-color) !important; fill: none !important; }
+.mermaid svg[aria-roledescription^="railroad"] g.railroad-terminal rect { fill: color-mix(in srgb, var(--diagram-c2) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; }
+.mermaid svg[aria-roledescription^="railroad"] g.railroad-nonterminal rect { fill: var(--background-primary-alt) !important; stroke: var(--diagram-node-border) !important; }
+.mermaid svg[aria-roledescription^="railroad"] g.railroad-start circle, .mermaid svg[aria-roledescription^="railroad"] g.railroad-end circle, .mermaid svg[aria-roledescription^="railroad"] g.railroad-start path, .mermaid svg[aria-roledescription^="railroad"] g.railroad-end path { fill: var(--diagram-edge-color) !important; stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription^="railroad"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="wardley"] rect.wardley-background { fill: transparent !important; }
+.mermaid svg[aria-roledescription="wardley"] g.wardley-axes line, .mermaid svg[aria-roledescription="wardley"] g.wardley-axes path { stroke: var(--text-faint) !important; }
+.mermaid svg[aria-roledescription="wardley"] g.wardley-stages line { stroke: var(--background-modifier-border) !important; }
+.mermaid svg[aria-roledescription="wardley"] line.wardley-link { stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="wardley"] line.wardley-trend { stroke: var(--diagram-error) !important; }
+.mermaid svg[aria-roledescription="wardley"] g.wardley-node circle { fill: var(--background-primary-alt) !important; stroke: var(--diagram-node-border) !important; stroke-width: 2px !important; }
+.mermaid svg[aria-roledescription="wardley"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-swimlane rect { fill: var(--background-primary-alt) !important; stroke: var(--background-modifier-border) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box rect[fill="white"] { fill: var(--background-primary) !important; stroke: var(--diagram-node-border) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box rect[fill="#bcd6fe"] { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box rect[fill="#ffb778"] { fill: var(--diagram-c6) !important; stroke: var(--diagram-c6) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] path.em-relation { stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid svg[aria-roledescription="eventmodeling"] g.em-box:has(rect[fill="#bcd6fe"]) text, .mermaid svg[aria-roledescription="eventmodeling"] g.em-box:has(rect[fill="#ffb778"]) text { fill: var(--background-primary) !important; font-weight: 600 !important; }
+.mermaid svg[aria-roledescription="cynefin"] [fill="#E8F5E9"] { fill: color-mix(in srgb, var(--diagram-c4) 30%, var(--background-primary-alt)) !important; }
+.mermaid svg[aria-roledescription="cynefin"] [fill="#E3F2FD"] { fill: color-mix(in srgb, var(--diagram-c1) 30%, var(--background-primary-alt)) !important; }
+.mermaid svg[aria-roledescription="cynefin"] [fill="#FBE9E7"] { fill: color-mix(in srgb, var(--diagram-c6) 30%, var(--background-primary-alt)) !important; }
+.mermaid svg[aria-roledescription="cynefin"] [fill="#FFF8E1"] { fill: color-mix(in srgb, var(--diagram-c2) 30%, var(--background-primary-alt)) !important; }
+.mermaid svg[aria-roledescription="cynefin"] [fill="#F3E5F5"] { fill: color-mix(in srgb, var(--diagram-c7) 30%, var(--background-primary-alt)) !important; }
+.mermaid svg[aria-roledescription="cynefin"] path.cynefinBoundary { stroke: var(--text-faint) !important; }
+.mermaid svg[aria-roledescription="cynefin"] path.cynefinCliff { stroke: var(--diagram-error) !important; }
+.mermaid svg[aria-roledescription="cynefin"] path.cynefinConfusion { fill: color-mix(in srgb, var(--diagram-c7) 35%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; }
+.mermaid svg[aria-roledescription="cynefin"] text { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }

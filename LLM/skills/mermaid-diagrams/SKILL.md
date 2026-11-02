@@ -1,6 +1,6 @@
 ---
 name: mermaid-diagrams
-description: How to choose and write Mermaid diagrams in the Obsidian vault so they are readable, themed and render in Obsidian's Mermaid 11.13. Use whenever you add or change a ```mermaid block in a vault note, or when information (a flow, protocol, states, frame layout, schedule, history, proportions) would be clearer as a diagram than as text.
+description: How to choose and write Mermaid diagrams in the Obsidian vault so they are readable, themed and render in the vault (Mermaid 11.17 bundled by the Mermaid ELK Renderer plugin). Use whenever you add or change a ```mermaid block in a vault note, or when information (a flow, protocol, states, frame layout, schedule, history, proportions) would be clearer as a diagram than as text.
 ---
 # Mermaid diagrams in the vault
 
@@ -31,6 +31,10 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 | numbers over time or by category | `xychart-beta` (bars / lines); `pie` only for ≤ 6 shares of one whole |
 | flows of a quantity between stages | `sankey-beta` |
 | work items by status | `kanban` |
+| causes of a problem (root-cause analysis) | `ishikawa-beta` (fishbone) |
+| a folder / file tree with comments | `treeView-beta` |
+| overlap of responsibilities or sets | `venn-beta` |
+| the grammar of a command or frame | `railroad-ebnf-beta` |
 | scores on several dimensions | `radar-beta` |
 | sizes in a hierarchy | `treemap-beta` |
 | a user's experience across steps | `journey` |
@@ -41,7 +45,8 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - **Edges**: label with the verb or the condition (`-->|valid|`, `-- sends KCV -->`). Dotted `-.->` for optional / async, thick `==>` for the main path.
 - **Shapes carry meaning**, the same in every note: decision `{ }`, data store `[( )]`, document `@{ shape: doc }`, start / end `([ ])`, external party `:::muted`.
 - **Group** with `subgraph` for ownership or boundaries (firmware / app / server, trust zones); give each subgraph a title.
-- **Layout**: declare nodes in reading order; for dense graphs add `%% elk %%` on the line after `flowchart` (ELK renderer plugin). Use invisible links `A ~~~ B` to line things up.
+- **Layout**: declare nodes in reading order; use invisible links `A ~~~ B` to line things up.
+- **ELK layout** (Mermaid ELK Renderer plugin): put `%% elk %%` as the **first line** of the block (before `flowchart …`; only front matter or `%%{init}%%` may come before it). Use it for flowcharts with subgraphs or many crossings and for state machines: fewer crossings, straighter edges. Not for class diagrams (arrowheads pile up) or small graphs. Other algorithms go in front matter instead of the marker: `---` / `config:` / `  layout: elk.mrtree` / `---` (also `elk.force`, `elk.stress`).
 - **Sequence**: `autonumber` when the text refers to step numbers; `Note over A,B` for context; `alt … else … end` for error paths; `loop` for retries; activation bars only when timing matters.
 - **Packet**: one row per 32 bits; name fields as in the spec note.
 
@@ -51,7 +56,7 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - Series colours (pie slices, chart lines, sections) follow the order of the data; put the most important series first.
 
 ## Obsidian specifics
-- Obsidian bundles **Mermaid 11.13**: features from 11.17 or v12 (collapsible subgraphs, `neo` look, ELK by default) do not render. When in doubt, use a form shown in `_Meta/Mermaid Preview.md`.
+- The vault renders with **Mermaid 11.17**, bundled by the Mermaid ELK Renderer plugin (*Use bundled Mermaid* on). Without that setting Obsidian's own 11.13 renders, which lacks the 11.12+ types and collapsible subgraphs (`G@{ view: collapsed }`). v12 features (`neo` look, ELK by default) are not available. When in doubt, use a form shown in `_Meta/Mermaid Preview.md`.
 - Link a node to a vault note: name the node like the note and add `class A,B internal-link;` at the end.
 - `click` handlers do not work (strict security). Markdown labels need backticks: ``A["`**bold** _italic_`"]``.
 - Do not name a node `end` (lowercase); start an edge with a space if the target begins with `o` or `x`.

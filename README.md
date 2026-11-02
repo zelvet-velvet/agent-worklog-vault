@@ -45,7 +45,7 @@ The split keeps the agent's context small: only the command that runs is loaded,
    | Breadcrumbs | `up:` links and the folder-note maps |
    | Dataview | Tables and lists from note properties |
    | Tab Panels | Tabbed notes (styled by `tab-panels-vertical.css`) |
-   | Mermaid ELK Renderer | `%% elk %%` layout in mermaid diagrams |
+   | Mermaid ELK Renderer | `%% elk %%` (first line of a diagram) for ELK layout; with *Use bundled Mermaid* on it renders every diagram with Mermaid 11.17 (newer types such as fishbone, tree view, venn) |
    | Hover Editor | Editing in hover popups |
    | make.md | Note icons (`sticker:`) and folder notes |
 
@@ -78,4 +78,4 @@ Journal and weekly report text is written in Traditional Chinese in a Taiwan wor
 - **A command's rules**: edit its `LLM/skills/<name>/SKILL.md`; the change applies to every linked agent at once.
 - **Status layout**: `cmd-sync` describes the callouts; `Tools/status/counts.py` keeps their counts.
 - **Colours**: Style Settings → Popping and Locking; swatches and the chosen heading colours are in `_Meta/Theme Color Preview.md`.
-- **Diagrams**: `mermaid-afterglow.css` themes all 23 Mermaid types from the palette variables only (series colours `--diagram-c1` … `c8`, classes `:::pass` / `:::fail` / `:::warn` / `:::info` / `:::muted`). After changing a colour, `python3 Tools/mermaid_preview/preview.py render` draws every type with Obsidian's own Mermaid in headless Edge (Windows + WSL; paths in `vault_config.json`).
+- **Diagrams**: `mermaid-afterglow.css` themes every Mermaid type (34 samples) from the palette variables only (series colours `--diagram-c1` … `c8`, classes `:::pass` / `:::fail` / `:::warn` / `:::info` / `:::muted`). After changing a colour, `python3 Tools/mermaid_preview/preview.py render` draws every type with Obsidian's own Mermaid in headless Edge (Windows + WSL; paths in `vault_config.json`).
