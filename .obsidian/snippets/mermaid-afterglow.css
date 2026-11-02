@@ -1,7 +1,8 @@
 /* ==========================================================================
    mermaid-afterglow.css
-   Colors for Mermaid diagrams (flowchart, sequence, state, mindmap, gitGraph).
-   No hex values here: every color is a --diagram-* (or theme) variable
+   Colors for every Mermaid diagram type in Obsidian (Mermaid 11.13).
+   Every color is a --diagram-* (or theme) variable (hex appears only to MATCH
+   fills Mermaid writes as attributes, C4 and architecture)
    defined in popping-and-locking.css, so change colors there or in
    Settings → Style Settings → Popping and Locking → Diagram Colors.
 
@@ -22,6 +23,14 @@
     14. Mindmaps
     15. Tooltip
     16. Git graphs (branches, commits, merges, tags)
+    17. Semantic classes — :::pass / fail / warn / info / muted on any shape
+    18. Class diagram notes
+    19. Pie        20. Gantt        21. User journey     22. Quadrant
+    23. C4         24. Section colours (mindmap, timeline, kanban)
+    25. Sankey     26. XY chart     27. Block            28. Packet
+    29. Architecture   30. Radar    31. Treemap
+   Series colours --diagram-c1 … c8 (and warn / info) live in the palette too.
+   Preview of every type: _Meta/Mermaid Preview.md
 
    Sizing (fit-to-width) lives in general-layout.css §7.
    ========================================================================== */
@@ -727,3 +736,404 @@
    note width, so nothing scrolls sideways and nothing can widen the layout.
    Readability comes from tools/git_graph.py (few branches, no commit labels,
    the PR number in the branch name); `--last 8` makes it bigger still. */
+
+
+/* ==========================================================================
+   17. SEMANTIC CLASSES — all node shapes
+   Use in a diagram: A[Build]:::pass, B[Flash]:::fail, C:::warn, D:::info, E:::muted.
+   The classDef lines are not needed: these classes are styled here.
+   ========================================================================== */
+
+.mermaid .node.pass rect,
+.mermaid .node.pass polygon,
+.mermaid .node.pass path,
+.mermaid .node.pass circle,
+.mermaid .node.pass ellipse,
+.mermaid .node.success rect,
+.mermaid .node.success polygon,
+.mermaid .node.success path,
+.mermaid .node.success circle,
+.mermaid .node.success ellipse {
+    stroke: var(--diagram-success) !important;
+    stroke-width: 2.5px !important;
+    fill: color-mix(in srgb, var(--diagram-success) 18%, var(--background-primary-alt)) !important;
+}
+.mermaid .node.fail rect,
+.mermaid .node.fail polygon,
+.mermaid .node.fail path,
+.mermaid .node.fail circle,
+.mermaid .node.fail ellipse,
+.mermaid .node.error rect,
+.mermaid .node.error polygon,
+.mermaid .node.error path,
+.mermaid .node.error circle,
+.mermaid .node.error ellipse {
+    stroke: var(--diagram-error) !important;
+    stroke-width: 2.5px !important;
+    fill: color-mix(in srgb, var(--diagram-error) 18%, var(--background-primary-alt)) !important;
+}
+.mermaid .node.warn rect,
+.mermaid .node.warn polygon,
+.mermaid .node.warn path,
+.mermaid .node.warn circle,
+.mermaid .node.warn ellipse,
+.mermaid .node.warning rect,
+.mermaid .node.warning polygon,
+.mermaid .node.warning path,
+.mermaid .node.warning circle,
+.mermaid .node.warning ellipse {
+    stroke: var(--diagram-warn) !important;
+    stroke-width: 2.5px !important;
+    fill: color-mix(in srgb, var(--diagram-warn) 18%, var(--background-primary-alt)) !important;
+}
+.mermaid .node.info rect,
+.mermaid .node.info polygon,
+.mermaid .node.info path,
+.mermaid .node.info circle,
+.mermaid .node.info ellipse,
+.mermaid .node.note rect,
+.mermaid .node.note polygon,
+.mermaid .node.note path,
+.mermaid .node.note circle,
+.mermaid .node.note ellipse {
+    stroke: var(--diagram-info) !important;
+    stroke-width: 2.5px !important;
+    fill: color-mix(in srgb, var(--diagram-info) 18%, var(--background-primary-alt)) !important;
+}
+.mermaid .node.muted rect,
+.mermaid .node.muted polygon,
+.mermaid .node.muted path,
+.mermaid .node.muted circle {
+    stroke: var(--text-faint) !important;
+    stroke-dasharray: 4 3 !important;
+    fill: transparent !important;
+}
+.mermaid .node.muted .nodeLabel { color: var(--text-faint) !important; }
+
+
+/* ==========================================================================
+   18. CLASS DIAGRAMS — notes (same chip as sequence notes)
+   ========================================================================== */
+
+.mermaid g.note rect,
+.mermaid g.note path,
+.mermaid svg[aria-roledescription="class"] g.node[id^="note"] path,
+.mermaid svg[aria-roledescription="class"] g.node[id^="note"] rect {
+    fill: var(--diagram-note-bg) !important;
+    stroke: var(--diagram-note-border) !important;
+}
+.mermaid g.note .nodeLabel,
+.mermaid g.note text,
+.mermaid svg[aria-roledescription="class"] g.node[id^="note"] .nodeLabel,
+.mermaid svg[aria-roledescription="class"] g.node[id^="note"] p,
+.mermaid .node.note .nodeLabel,
+.mermaid .node.note span {
+    color: var(--diagram-note-text) !important;
+    fill: var(--diagram-note-text) !important;
+}
+
+
+/* ==========================================================================
+   19. PIE CHARTS — slices and legend take the series colours in order
+   ========================================================================== */
+
+.mermaid path.pieCircle:nth-of-type(8n+1),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+1) rect { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+2),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+2) rect { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+3),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+3) rect { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+4),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+4) rect { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+5),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+5) rect { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+6),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+6) rect { fill: var(--diagram-c6) !important; stroke: var(--diagram-c6) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+7),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+7) rect { fill: var(--diagram-c7) !important; stroke: var(--diagram-c7) !important; }
+.mermaid path.pieCircle:nth-of-type(8n+8),
+.mermaid svg[aria-roledescription="pie"] g.legend:nth-of-type(8n+8) rect { fill: var(--diagram-c8) !important; stroke: var(--diagram-c8) !important; }
+.mermaid path.pieCircle {
+    stroke: var(--background-primary) !important;
+    stroke-width: 2px !important;
+    opacity: 1 !important;
+}
+.mermaid .pieOuterCircle {
+    stroke: var(--background-modifier-border) !important;
+    fill: none !important;
+}
+.mermaid text.slice {
+    fill: var(--background-primary) !important;
+    font-weight: 600 !important;
+}
+.mermaid .pieTitleText,
+.mermaid svg[aria-roledescription="pie"] g.legend text {
+    fill: var(--diagram-text) !important;
+}
+
+
+/* ==========================================================================
+   20. GANTT — sections, task states, grid, today line
+   ========================================================================== */
+
+.mermaid rect.section0,
+.mermaid rect.section2 { fill: var(--background-primary-alt) !important; opacity: 1 !important; }
+.mermaid rect.section1,
+.mermaid rect.section3 { fill: transparent !important; }
+.mermaid rect.task0 { fill: color-mix(in srgb, var(--diagram-c1) 55%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.active0 { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.done0 { fill: color-mix(in srgb, var(--text-faint) 45%, var(--background-primary-alt)) !important; stroke: var(--text-faint) !important; }
+.mermaid rect.crit0, .mermaid rect.activeCrit0, .mermaid rect.doneCrit0 { fill: var(--diagram-error) !important; stroke: var(--diagram-error) !important; }
+.mermaid rect.task1 { fill: color-mix(in srgb, var(--diagram-c1) 55%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.active1 { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.done1 { fill: color-mix(in srgb, var(--text-faint) 45%, var(--background-primary-alt)) !important; stroke: var(--text-faint) !important; }
+.mermaid rect.crit1, .mermaid rect.activeCrit1, .mermaid rect.doneCrit1 { fill: var(--diagram-error) !important; stroke: var(--diagram-error) !important; }
+.mermaid rect.task2 { fill: color-mix(in srgb, var(--diagram-c1) 55%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.active2 { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.done2 { fill: color-mix(in srgb, var(--text-faint) 45%, var(--background-primary-alt)) !important; stroke: var(--text-faint) !important; }
+.mermaid rect.crit2, .mermaid rect.activeCrit2, .mermaid rect.doneCrit2 { fill: var(--diagram-error) !important; stroke: var(--diagram-error) !important; }
+.mermaid rect.task3 { fill: color-mix(in srgb, var(--diagram-c1) 55%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.active3 { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.done3 { fill: color-mix(in srgb, var(--text-faint) 45%, var(--background-primary-alt)) !important; stroke: var(--text-faint) !important; }
+.mermaid rect.crit3, .mermaid rect.activeCrit3, .mermaid rect.doneCrit3 { fill: var(--diagram-error) !important; stroke: var(--diagram-error) !important; }
+.mermaid rect.milestone { fill: var(--diagram-note-border) !important; stroke: var(--diagram-note-border) !important; }
+.mermaid [class*="taskText"]:not([class*="Outside"]),
+.mermaid [class*="doneText"],
+.mermaid [class*="activeText"],
+.mermaid [class*="critText"] {
+    fill: var(--background-primary) !important;
+    font-weight: 600 !important;
+}
+.mermaid [class*="taskTextOutside"],
+.mermaid .milestoneText,
+.mermaid [class*="sectionTitle"],
+.mermaid .titleText {
+    fill: var(--diagram-text) !important;
+}
+.mermaid .grid .tick line { stroke: var(--background-modifier-border) !important; }
+.mermaid .grid .tick text { fill: var(--text-muted) !important; }
+.mermaid .grid path.domain { stroke: none !important; }
+.mermaid .today { stroke: var(--diagram-error) !important; stroke-width: 2px !important; }
+
+
+/* ==========================================================================
+   21. USER JOURNEY — sections, tasks, faces, actors
+   ========================================================================== */
+
+.mermaid rect.section-type-0 { fill: color-mix(in srgb, var(--diagram-c1) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.task-type-0 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c1) !important; }
+.mermaid circle.actor-0 { fill: var(--diagram-c1) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-1 { fill: color-mix(in srgb, var(--diagram-c2) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; }
+.mermaid rect.task-type-1 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c2) !important; }
+.mermaid circle.actor-1 { fill: var(--diagram-c2) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-2 { fill: color-mix(in srgb, var(--diagram-c3) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; }
+.mermaid rect.task-type-2 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c3) !important; }
+.mermaid circle.actor-2 { fill: var(--diagram-c3) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-3 { fill: color-mix(in srgb, var(--diagram-c4) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; }
+.mermaid rect.task-type-3 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c4) !important; }
+.mermaid circle.actor-3 { fill: var(--diagram-c4) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-4 { fill: color-mix(in srgb, var(--diagram-c5) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.task-type-4 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c5) !important; }
+.mermaid circle.actor-4 { fill: var(--diagram-c5) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-5 { fill: color-mix(in srgb, var(--diagram-c6) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c6) !important; }
+.mermaid rect.task-type-5 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c6) !important; }
+.mermaid circle.actor-5 { fill: var(--diagram-c6) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-6 { fill: color-mix(in srgb, var(--diagram-c7) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; }
+.mermaid rect.task-type-6 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c7) !important; }
+.mermaid circle.actor-6 { fill: var(--diagram-c7) !important; stroke: var(--background-primary) !important; }
+.mermaid rect.section-type-7 { fill: color-mix(in srgb, var(--diagram-c8) 45%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; }
+.mermaid rect.task-type-7 { fill: var(--background-primary-alt) !important; stroke: var(--diagram-c8) !important; }
+.mermaid circle.actor-7 { fill: var(--diagram-c8) !important; stroke: var(--background-primary) !important; }
+.mermaid svg[aria-roledescription="journey"] text.journey-section,
+.mermaid svg[aria-roledescription="journey"] div.journey-section,
+.mermaid svg[aria-roledescription="journey"] div.task,
+.mermaid svg[aria-roledescription="journey"] text.task,
+.mermaid svg[aria-roledescription="journey"] .legend { color: var(--diagram-text) !important; fill: var(--diagram-text) !important; }
+.mermaid circle.face { fill: var(--diagram-note-border) !important; stroke: var(--background-primary) !important; }
+.mermaid .mouth { stroke: var(--background-primary) !important; }
+.mermaid line.task-line { stroke: var(--text-faint) !important; }
+
+
+/* ==========================================================================
+   22. QUADRANT CHARTS — quadrant tints, points, labels (Mermaid gives no classes on the fills)
+   ========================================================================== */
+
+.mermaid g.quadrant:nth-of-type(1) rect { fill: color-mix(in srgb, var(--diagram-c1) 16%, var(--background-primary-alt)) !important; }
+.mermaid g.quadrant:nth-of-type(2) rect { fill: color-mix(in srgb, var(--diagram-c2) 16%, var(--background-primary-alt)) !important; }
+.mermaid g.quadrant:nth-of-type(3) rect { fill: color-mix(in srgb, var(--diagram-c3) 16%, var(--background-primary-alt)) !important; }
+.mermaid g.quadrant:nth-of-type(4) rect { fill: color-mix(in srgb, var(--diagram-c4) 16%, var(--background-primary-alt)) !important; }
+.mermaid g.quadrants text,
+.mermaid g.labels text,
+.mermaid g.title text,
+.mermaid g.data-point text { fill: var(--diagram-text) !important; }
+.mermaid g.data-point circle { fill: var(--diagram-c2) !important; stroke: var(--background-primary) !important; stroke-width: 1.5px !important; }
+.mermaid g.border line { stroke: var(--background-modifier-border) !important; }
+
+
+/* ==========================================================================
+   23. C4 DIAGRAMS — Mermaid writes fixed fills as attributes, so they are matched by value
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="c4"] rect[fill="#08427B"], .mermaid svg[aria-roledescription="c4"] path[fill="#08427B"] { fill: color-mix(in srgb, var(--diagram-c8) 40%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; }
+.mermaid svg[aria-roledescription="c4"] rect[fill="#1168BD"], .mermaid svg[aria-roledescription="c4"] path[fill="#1168BD"] { fill: color-mix(in srgb, var(--diagram-c1) 40%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid svg[aria-roledescription="c4"] rect[fill="#999999"], .mermaid svg[aria-roledescription="c4"] path[fill="#999999"] { fill: var(--background-primary-alt) !important; stroke: var(--text-faint) !important; }
+.mermaid svg[aria-roledescription="c4"] rect[stroke="#444444"][fill="none"], .mermaid rect[stroke-dasharray] { stroke: var(--diagram-subgraph-border) !important; }
+.mermaid svg[aria-roledescription="c4"] line[stroke="#444444"] { stroke: var(--diagram-edge-color) !important; }
+.mermaid svg[aria-roledescription="c4"] text[fill="#FFFFFF"], .mermaid svg[aria-roledescription="c4"] text[fill="#444444"] { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   24. SECTION COLOURS — mindmap branches, timeline periods, kanban columns
+   Mermaid numbers sections -1, 0, 1, …; they cycle through the series colours.
+   Replaces the three fixed section rules of §14 for every level.
+   ========================================================================== */
+
+.mermaid .section--1 rect, .mermaid .section--1 circle, .mermaid .section--1 path.node-bkg, .mermaid .section--1 polygon { fill: color-mix(in srgb, var(--diagram-c1) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; stroke-width: 2px !important; }
+.mermaid .section--1 line { stroke: var(--diagram-c1) !important; stroke-width: 2px !important; }
+.mermaid .section-0 rect, .mermaid .section-0 circle, .mermaid .section-0 path.node-bkg, .mermaid .section-0 polygon { fill: color-mix(in srgb, var(--diagram-c2) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; stroke-width: 2px !important; }
+.mermaid .section-0 line { stroke: var(--diagram-c2) !important; stroke-width: 2px !important; }
+.mermaid .section-1 rect, .mermaid .section-1 circle, .mermaid .section-1 path.node-bkg, .mermaid .section-1 polygon { fill: color-mix(in srgb, var(--diagram-c3) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; stroke-width: 2px !important; }
+.mermaid .section-1 line { stroke: var(--diagram-c3) !important; stroke-width: 2px !important; }
+.mermaid .section-2 rect, .mermaid .section-2 circle, .mermaid .section-2 path.node-bkg, .mermaid .section-2 polygon { fill: color-mix(in srgb, var(--diagram-c4) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; stroke-width: 2px !important; }
+.mermaid .section-2 line { stroke: var(--diagram-c4) !important; stroke-width: 2px !important; }
+.mermaid .section-3 rect, .mermaid .section-3 circle, .mermaid .section-3 path.node-bkg, .mermaid .section-3 polygon { fill: color-mix(in srgb, var(--diagram-c5) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; stroke-width: 2px !important; }
+.mermaid .section-3 line { stroke: var(--diagram-c5) !important; stroke-width: 2px !important; }
+.mermaid .section-4 rect, .mermaid .section-4 circle, .mermaid .section-4 path.node-bkg, .mermaid .section-4 polygon { fill: color-mix(in srgb, var(--diagram-c6) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c6) !important; stroke-width: 2px !important; }
+.mermaid .section-4 line { stroke: var(--diagram-c6) !important; stroke-width: 2px !important; }
+.mermaid .section-5 rect, .mermaid .section-5 circle, .mermaid .section-5 path.node-bkg, .mermaid .section-5 polygon { fill: color-mix(in srgb, var(--diagram-c7) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; stroke-width: 2px !important; }
+.mermaid .section-5 line { stroke: var(--diagram-c7) !important; stroke-width: 2px !important; }
+.mermaid .section-6 rect, .mermaid .section-6 circle, .mermaid .section-6 path.node-bkg, .mermaid .section-6 polygon { fill: color-mix(in srgb, var(--diagram-c8) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; stroke-width: 2px !important; }
+.mermaid .section-6 line { stroke: var(--diagram-c8) !important; stroke-width: 2px !important; }
+.mermaid .section-7 rect, .mermaid .section-7 circle, .mermaid .section-7 path.node-bkg, .mermaid .section-7 polygon { fill: color-mix(in srgb, var(--diagram-c1) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; stroke-width: 2px !important; }
+.mermaid .section-7 line { stroke: var(--diagram-c1) !important; stroke-width: 2px !important; }
+.mermaid .section-8 rect, .mermaid .section-8 circle, .mermaid .section-8 path.node-bkg, .mermaid .section-8 polygon { fill: color-mix(in srgb, var(--diagram-c2) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; stroke-width: 2px !important; }
+.mermaid .section-8 line { stroke: var(--diagram-c2) !important; stroke-width: 2px !important; }
+.mermaid .section-9 rect, .mermaid .section-9 circle, .mermaid .section-9 path.node-bkg, .mermaid .section-9 polygon { fill: color-mix(in srgb, var(--diagram-c3) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; stroke-width: 2px !important; }
+.mermaid .section-9 line { stroke: var(--diagram-c3) !important; stroke-width: 2px !important; }
+.mermaid .section-10 rect, .mermaid .section-10 circle, .mermaid .section-10 path.node-bkg, .mermaid .section-10 polygon { fill: color-mix(in srgb, var(--diagram-c4) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; stroke-width: 2px !important; }
+.mermaid .section-10 line { stroke: var(--diagram-c4) !important; stroke-width: 2px !important; }
+.mermaid .section-11 rect, .mermaid .section-11 circle, .mermaid .section-11 path.node-bkg, .mermaid .section-11 polygon { fill: color-mix(in srgb, var(--diagram-c5) 22%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; stroke-width: 2px !important; }
+.mermaid .section-11 line { stroke: var(--diagram-c5) !important; stroke-width: 2px !important; }
+.mermaid .timeline-node text,
+.mermaid [class*="section-"] text,
+.mermaid [class*="section-"] .nodeLabel { fill: var(--diagram-text) !important; color: var(--diagram-text) !important; }
+.mermaid line.lineWrapper, .mermaid g.lineWrapper line { stroke: var(--text-faint) !important; }
+
+
+/* ==========================================================================
+   25. SANKEY — node colours from the series, flows in the edge colour
+   Mermaid draws flows with mix-blend-mode: multiply, which hides them on a dark page.
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+1) rect { fill: var(--diagram-c1) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+2) rect { fill: var(--diagram-c2) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+3) rect { fill: var(--diagram-c3) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+4) rect { fill: var(--diagram-c4) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+5) rect { fill: var(--diagram-c5) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+6) rect { fill: var(--diagram-c6) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+7) rect { fill: var(--diagram-c7) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.nodes g.node:nth-of-type(8n+8) rect { fill: var(--diagram-c8) !important; stroke: none !important; }
+.mermaid svg[aria-roledescription="sankey"] g.link { mix-blend-mode: normal !important; }
+.mermaid svg[aria-roledescription="sankey"] g.link path { stroke: var(--diagram-edge-color) !important; stroke-opacity: 0.35 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.link:hover path { stroke-opacity: 0.65 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.node-labels text { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   26. XY CHARTS — bars and lines in series order, plot on the page background
+   ========================================================================== */
+
+.mermaid rect.background { fill: transparent !important; }
+.mermaid g.bar-plot-0 rect { fill: var(--diagram-c1) !important; stroke: none !important; }
+.mermaid g.line-plot-0 path { stroke: var(--diagram-c1) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-1 rect { fill: var(--diagram-c2) !important; stroke: none !important; }
+.mermaid g.line-plot-1 path { stroke: var(--diagram-c2) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-2 rect { fill: var(--diagram-c3) !important; stroke: none !important; }
+.mermaid g.line-plot-2 path { stroke: var(--diagram-c3) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-3 rect { fill: var(--diagram-c4) !important; stroke: none !important; }
+.mermaid g.line-plot-3 path { stroke: var(--diagram-c4) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-4 rect { fill: var(--diagram-c5) !important; stroke: none !important; }
+.mermaid g.line-plot-4 path { stroke: var(--diagram-c5) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-5 rect { fill: var(--diagram-c6) !important; stroke: none !important; }
+.mermaid g.line-plot-5 path { stroke: var(--diagram-c6) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-6 rect { fill: var(--diagram-c7) !important; stroke: none !important; }
+.mermaid g.line-plot-6 path { stroke: var(--diagram-c7) !important; stroke-width: 3px !important; }
+.mermaid g.bar-plot-7 rect { fill: var(--diagram-c8) !important; stroke: none !important; }
+.mermaid g.line-plot-7 path { stroke: var(--diagram-c8) !important; stroke-width: 3px !important; }
+.mermaid g.left-axis path, .mermaid g.bottom-axis path, .mermaid g.left-axis line, .mermaid g.bottom-axis line { stroke: var(--text-faint) !important; }
+.mermaid g.left-axis text, .mermaid g.bottom-axis text, .mermaid g.chart-title text { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   27. BLOCK DIAGRAMS — labels (Mermaid colors the <p> inside a label #333 directly,
+       so the color inherited from .nodeLabel never reaches it)
+   ========================================================================== */
+
+.mermaid .nodeLabel p,
+.mermaid g.block .nodeLabel,
+.mermaid g.block span,
+.mermaid g.block .label div { color: var(--diagram-text) !important; fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   28. PACKET DIAGRAMS — bit fields
+   ========================================================================== */
+
+.mermaid rect.packetBlock { fill: var(--background-primary-alt) !important; stroke: var(--diagram-node-border) !important; stroke-width: 1.5px !important; }
+.mermaid text.packetLabel, .mermaid text.packetTitle { fill: var(--diagram-text) !important; }
+.mermaid text.packetByte { fill: var(--text-muted) !important; }
+
+
+/* ==========================================================================
+   29. ARCHITECTURE — service icons, groups, edges
+   ========================================================================== */
+
+.mermaid svg[aria-roledescription="architecture"] .architecture-service rect[style*="#087ebf"] { fill: var(--diagram-c1) !important; }
+.mermaid .architecture-service rect.background { fill: transparent !important; }
+.mermaid .architecture-groups rect { stroke: var(--diagram-subgraph-border) !important; fill: transparent !important; }
+.mermaid .architecture-edges path.edge { stroke: var(--diagram-edge-color) !important; stroke-width: 2px !important; }
+.mermaid .architecture-edges .arrow { fill: var(--diagram-edge-color) !important; }
+.mermaid .architecture-service text, .mermaid .architecture-groups text { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   30. RADAR CHARTS — curves in series order
+   ========================================================================== */
+
+.mermaid .radarCurve-0 { fill: var(--diagram-c1) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c1) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-0 { fill: var(--diagram-c1) !important; }
+.mermaid .radarCurve-1 { fill: var(--diagram-c2) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c2) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-1 { fill: var(--diagram-c2) !important; }
+.mermaid .radarCurve-2 { fill: var(--diagram-c3) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c3) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-2 { fill: var(--diagram-c3) !important; }
+.mermaid .radarCurve-3 { fill: var(--diagram-c4) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c4) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-3 { fill: var(--diagram-c4) !important; }
+.mermaid .radarCurve-4 { fill: var(--diagram-c5) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c5) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-4 { fill: var(--diagram-c5) !important; }
+.mermaid .radarCurve-5 { fill: var(--diagram-c6) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c6) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-5 { fill: var(--diagram-c6) !important; }
+.mermaid .radarCurve-6 { fill: var(--diagram-c7) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c7) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-6 { fill: var(--diagram-c7) !important; }
+.mermaid .radarCurve-7 { fill: var(--diagram-c8) !important; fill-opacity: 0.22 !important; stroke: var(--diagram-c8) !important; stroke-width: 2.5px !important; }
+.mermaid .radarLegendBox-7 { fill: var(--diagram-c8) !important; }
+.mermaid .radarGraticule { fill: none !important; stroke: var(--background-modifier-border) !important; }
+.mermaid .radarAxisLine { stroke: var(--background-modifier-border) !important; }
+.mermaid .radarAxisLabel, .mermaid .radarLegendText, .mermaid .radarTitle { fill: var(--diagram-text) !important; }
+
+
+/* ==========================================================================
+   31. TREEMAP — sections in series order, leaves tinted
+   ========================================================================== */
+
+.mermaid rect.section0.treemapSection, .mermaid rect.treemapSection.section0 { fill: color-mix(in srgb, var(--diagram-c1) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; }
+.mermaid rect.section1.treemapSection, .mermaid rect.treemapSection.section1 { fill: color-mix(in srgb, var(--diagram-c2) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; }
+.mermaid rect.section2.treemapSection, .mermaid rect.treemapSection.section2 { fill: color-mix(in srgb, var(--diagram-c3) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; }
+.mermaid rect.section3.treemapSection, .mermaid rect.treemapSection.section3 { fill: color-mix(in srgb, var(--diagram-c4) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; }
+.mermaid rect.section4.treemapSection, .mermaid rect.treemapSection.section4 { fill: color-mix(in srgb, var(--diagram-c5) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; }
+.mermaid rect.section5.treemapSection, .mermaid rect.treemapSection.section5 { fill: color-mix(in srgb, var(--diagram-c6) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c6) !important; }
+.mermaid rect.section6.treemapSection, .mermaid rect.treemapSection.section6 { fill: color-mix(in srgb, var(--diagram-c7) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; }
+.mermaid rect.section7.treemapSection, .mermaid rect.treemapSection.section7 { fill: color-mix(in srgb, var(--diagram-c8) 25%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; }
+.mermaid rect.treemapSectionHeader { fill: transparent !important; }
+.mermaid rect.treemapLeaf { fill: var(--background-primary-alt) !important; fill-opacity: 1 !important; stroke: var(--diagram-node-border) !important; stroke-width: 1.5px !important; }
+.mermaid text.treemapLabel, .mermaid text.treemapSectionLabel { fill: var(--diagram-text) !important; }
+.mermaid text.treemapValue, .mermaid text.treemapSectionValue { fill: var(--text-muted) !important; }

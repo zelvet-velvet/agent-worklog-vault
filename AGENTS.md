@@ -22,6 +22,7 @@ The user types a command (`CMD_SYNC`). Each one is a skill: agents with skill su
 | `CMD_WORD_REPORT` / `CMD_WORD_SYNC` | `cmd-word-report` | Run the weekly report tool, commit and push the vault |
 | (branch, commit, merge, MR) | `git-workflow` | Git and merge-request rules for the project repos |
 | (test groups, test results) | `test-queue` | `Quest/Test Queue.md` rules |
+| (adding or changing a diagram) | `mermaid-diagrams` | Which Mermaid type to use, readability, theme classes |
 
 ## Setup on a new machine
 - `bash Tools/skills/link_skills.sh` links every skill into each installed agent's skills folder (`skill_dirs` in `LLM/vault_config.json`).

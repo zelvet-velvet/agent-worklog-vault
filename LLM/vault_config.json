@@ -10,5 +10,10 @@
     "doc_dir": "/mnt/c/Users/<you>/Documents/weekly",
     "doc_name": "weekly_report_{year}_W{week}.doc",
     "template_glob": "weekly_report_template*.doc"
+  },
+  "mermaid_preview": {
+    "obsidian_asar_glob": "/mnt/c/Users/<you>/AppData/Roaming/obsidian/obsidian-*.asar",
+    "edge": "/mnt/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "out_dir": "/mnt/c/Users/<you>/AppData/Local/Temp/mermaid_preview"
   }
 }

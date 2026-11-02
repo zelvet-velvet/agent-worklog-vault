@@ -428,6 +428,66 @@ settings:
     type: variable-color
     format: hex
     default: '#7E8E50'
+  - id: diagram-c1
+    title: Series 1
+    description: 'Series colour 1 (blue): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#6C99BB'
+  - id: diagram-c2
+    title: Series 2
+    description: 'Series colour 2 (yellow): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#E5B567'
+  - id: diagram-c3
+    title: Series 3
+    description: 'Series colour 3 (magenta): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#B05279'
+  - id: diagram-c4
+    title: Series 4
+    description: 'Series colour 4 (green): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#A8C373'
+  - id: diagram-c5
+    title: Series 5
+    description: 'Series colour 5 (cyan): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#7DD6CF'
+  - id: diagram-c6
+    title: Series 6
+    description: 'Series colour 6 (orange): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#FE8019'
+  - id: diagram-c7
+    title: Series 7
+    description: 'Series colour 7 (purple): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#9E86C8'
+  - id: diagram-c8
+    title: Series 8
+    description: 'Series colour 8 (pink): pie slice, chart line, section, radar curve.'
+    type: variable-color
+    format: hex
+    default: '#D3869B'
+  - id: diagram-warn
+    title: Diagram Warning
+    description: 'classDef warn (node outline).'
+    type: variable-color
+    format: hex
+    default: '#E5B567'
+  - id: diagram-info
+    title: Diagram Info
+    description: 'classDef info (node outline).'
+    type: variable-color
+    format: hex
+    default: '#6C99BB'
 */
 
 
@@ -509,6 +569,18 @@ settings:
     --diagram-note-text: #000000;
     --diagram-error: #AC4142;               /* classDef fail / error */
     --diagram-success: #7E8E50;             /* classDef pass / success */
+
+    /* Diagram series: pie slices, gantt / journey / timeline sections, chart lines, radar curves, mindmap levels */
+    --diagram-c1: #6C99BB;                 /* blue */
+    --diagram-c2: #E5B567;                 /* yellow */
+    --diagram-c3: #B05279;                 /* magenta */
+    --diagram-c4: #A8C373;                 /* green */
+    --diagram-c5: #7DD6CF;                 /* cyan */
+    --diagram-c6: #FE8019;                 /* orange */
+    --diagram-c7: #9E86C8;                 /* purple */
+    --diagram-c8: #D3869B;                 /* pink */
+    --diagram-warn: #E5B567;                /* classDef warn */
+    --diagram-info: #6C99BB;                /* classDef info */
 }
 
 
@@ -658,3 +730,13 @@ body:not(.is-mobile) .workspace-tab-header.is-active {
 .setting-item[data-id="diagram-error"] .pcr-button { --pcr-color: var(--diagram-error); }
 .setting-item[data-id="diagram-success"] .pcr-button { --pcr-color: var(--diagram-success); }
 .setting-item[data-id="link-color"] .pcr-button { --pcr-color: var(--link-color); }
+.setting-item[data-id="diagram-c1"] .pcr-button { --pcr-color: var(--diagram-c1); }
+.setting-item[data-id="diagram-c2"] .pcr-button { --pcr-color: var(--diagram-c2); }
+.setting-item[data-id="diagram-c3"] .pcr-button { --pcr-color: var(--diagram-c3); }
+.setting-item[data-id="diagram-c4"] .pcr-button { --pcr-color: var(--diagram-c4); }
+.setting-item[data-id="diagram-c5"] .pcr-button { --pcr-color: var(--diagram-c5); }
+.setting-item[data-id="diagram-c6"] .pcr-button { --pcr-color: var(--diagram-c6); }
+.setting-item[data-id="diagram-c7"] .pcr-button { --pcr-color: var(--diagram-c7); }
+.setting-item[data-id="diagram-c8"] .pcr-button { --pcr-color: var(--diagram-c8); }
+.setting-item[data-id="diagram-warn"] .pcr-button { --pcr-color: var(--diagram-warn); }
+.setting-item[data-id="diagram-info"] .pcr-button { --pcr-color: var(--diagram-info); }

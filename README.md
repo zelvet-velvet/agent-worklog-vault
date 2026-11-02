@@ -25,7 +25,8 @@ flowchart LR
 | `LLM/TONE.md` | Your writing style for journal and report text, learned from your edits |
 | `LLM/vault_config.json` | Your values: name, commit co-author, skill folders, report file names |
 | `Quest/Test Queue.md` | Test checklists per branch; finished groups move to the archive |
-| `Tools/` | `rollover.py`, `counts.py`, `link_skills.sh`, `weekly_report.py` |
+| `Tools/` | `rollover.py`, `counts.py`, `link_skills.sh`, `weekly_report.py`, `mermaid_preview/preview.py` |
+| `_Meta/Mermaid Preview.md` | Every Mermaid diagram type drawn live with the vault theme |
 
 The split keeps the agent's context small: only the command that runs is loaded, and history lives in archives that are read on demand.
 
@@ -68,7 +69,7 @@ Python 3.9+ is needed for the `Tools/` scripts. The weekly `.doc` fill (`weekly_
 | `CMD_WEEKLY_REPORT` / `CMD_WEEKLY_SYNC` | Rebuild / update `WEEKLY_REPORT.md` |
 | `CMD_WORD_REPORT` | Word-ready HTML and the company `.doc`, commit and push |
 
-Two more skills apply without a command: `git-workflow` (branches, merges, merge requests in your code repos) and `test-queue` (test checklists).
+Three more skills apply without a command: `git-workflow` (branches, merges, merge requests in your code repos), `test-queue` (test checklists) and `mermaid-diagrams` (which diagram type to use and how to keep it readable and themed).
 
 Journal and weekly report text is written in Traditional Chinese in a Taiwan work-log tone (`LLM/TONE.md`); the rules and skills are in English. Change the language in `LLM/TONE.md` and the `cmd-journal` / `cmd-report` / `cmd-weekly-report` skills.
 
@@ -77,3 +78,4 @@ Journal and weekly report text is written in Traditional Chinese in a Taiwan wor
 - **A command's rules**: edit its `LLM/skills/<name>/SKILL.md`; the change applies to every linked agent at once.
 - **Status layout**: `cmd-sync` describes the callouts; `Tools/status/counts.py` keeps their counts.
 - **Colours**: Style Settings → Popping and Locking; swatches and the chosen heading colours are in `_Meta/Theme Color Preview.md`.
+- **Diagrams**: `mermaid-afterglow.css` themes all 23 Mermaid types from the palette variables only (series colours `--diagram-c1` … `c8`, classes `:::pass` / `:::fail` / `:::warn` / `:::info` / `:::muted`). After changing a colour, `python3 Tools/mermaid_preview/preview.py render` draws every type with Obsidian's own Mermaid in headless Edge (Windows + WSL; paths in `vault_config.json`).
