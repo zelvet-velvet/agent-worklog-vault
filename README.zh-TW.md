@@ -104,15 +104,15 @@ flowchart LR
     AG --> CX[Codex]
     AG --> O[其他 agent]
     SK[LLM/skills/] -- link_skills.sh --> C1["各專案：<br/>.claude/skills"] --> CC
-    SK -- link_skills.sh --> C2["各專案：<br/>.codex/skills"] --> CX
+    SK -- link_skills.sh --> C2["各專案：<br/>.agents/skills"] --> CX
     SK -.->|開啟 SKILL.md| O
 ```
 
-`AGENTS.md` 為唯一指令來源，`CLAUDE.md` 僅引用此檔案。Skill 存放於筆記庫並連結至各 agent 的 skills 資料夾，修改後所有 agent 同步更新。
+`AGENTS.md` 為唯一指令來源，`CLAUDE.md` 僅引用此檔案。Skill 存放於筆記庫，並依 agent 連結至各專案的 skills 資料夾（Claude Code 為 `.claude/skills`，Codex 為 `.agents/skills`），修改後所有 agent 同步更新。
 
 ### 多專案、多筆記庫
 
-Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾（`~/.claude/skills`）：包含筆記庫本身，以及 `LLM/vault_config.json` 的 `projects` 中由此筆記庫記錄的各程式 repo。因此 `CMD_SYNC` 僅出現於這些專案的 session，且一定寫入此筆記庫；同一台電腦上的其他筆記庫連結至各自的專案，可使用相同的指令名稱。若專案為 git repo，skills 資料夾會加入 `.git/info/exclude`，專案不會產生 commit 或未追蹤檔案。筆記庫若位於專案 repo 內，可直接將 skill commit 至該 repo 的 `.claude/skills/`。
+Skill 僅連結至**專案**的 skills 資料夾，不連結至全域資料夾（`~/.claude/skills`）：包含筆記庫本身，以及 `LLM/vault_config.json` 的 `projects` 中由此筆記庫記錄的各程式 repo。因此 `CMD_SYNC` 僅出現於這些專案的 session，且一定寫入此筆記庫；同一台電腦上的其他筆記庫連結至各自的專案，可使用相同的指令名稱。若專案為 git repo，每個連結會以名稱加入 `.git/info/exclude`，專案不會產生 commit 或未追蹤檔案，專案自行 commit 於同一資料夾的 skill 仍可正常 commit。筆記庫若位於專案 repo 內，可直接將 skill commit 至該 repo 的 `.claude/skills/`。`projects` 中的相對路徑以筆記庫資料夾為基準。連結為 WSL symlink，於 Windows 原生執行的 agent 開啟 `/mnt/c` 上的 repo 時不會讀取。
 
 ---
 

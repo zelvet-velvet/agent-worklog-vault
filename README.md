@@ -101,15 +101,15 @@ flowchart LR
     AG --> CX[Codex]
     AG --> O[Other agents]
     SK[LLM/skills/] -- link_skills.sh --> C1["each project:<br/>.claude/skills"] --> CC
-    SK -- link_skills.sh --> C2["each project:<br/>.codex/skills"] --> CX
+    SK -- link_skills.sh --> C2["each project:<br/>.agents/skills"] --> CX
     SK -.->|open SKILL.md| O
 ```
 
-`AGENTS.md` is the single source of the instructions; `CLAUDE.md` only imports it. Skills live in the vault and are linked into each agent's skills folder, so one edit changes the command for every agent.
+`AGENTS.md` is the single source of the instructions; `CLAUDE.md` only imports it. Skills live in the vault and are linked into each project's skills folder for every agent (`.claude/skills` for Claude Code, `.agents/skills` for Codex), so one edit changes the command for every agent.
 
 ### Several projects, several vaults
 
-The skills are linked into **project** skills folders, never the global ones (`~/.claude/skills`): the vault itself and every code repo in `projects` (`LLM/vault_config.json`) that this vault logs. So `CMD_SYNC` exists only in sessions of those projects and always reaches this vault; another vault on the same computer, linked into its own projects, can use the same command names. In a git repo the skills folder goes into `.git/info/exclude`, so the project gets no commit and no untracked files. A vault that lives inside its project repo can commit its skills in that repo's `.claude/skills/` instead.
+The skills are linked into **project** skills folders, never the global ones (`~/.claude/skills`): the vault itself and every code repo in `projects` (`LLM/vault_config.json`) that this vault logs. So `CMD_SYNC` exists only in sessions of those projects and always reaches this vault; another vault on the same computer, linked into its own projects, can use the same command names. In a git repo each link goes into `.git/info/exclude` by name, so the project gets no commit and no untracked files, and skills the project commits itself in the same folder stay committable. A vault that lives inside its project repo can commit its skills in that repo's `.claude/skills/` instead. Relative paths in `projects` are read from the vault folder. The links are WSL symlinks: an agent running natively on Windows does not follow them in a repo on `/mnt/c`.
 
 ---
 

@@ -5,7 +5,7 @@
   "projects": [],
   "agents": {
     "claude": ".claude/skills",
-    "codex": ".codex/skills"
+    "codex": ".agents/skills"
   },
   "weekly_report": {
     "doc_dir": "/mnt/c/Users/<you>/Documents/weekly",
