@@ -359,12 +359,14 @@ classDiagram
         Skipped test
     Environment
         Too cold'''),
-('Tree view', 'folders, files, comments, highlight (11.14)', '''treeView-beta
+('Tree view', 'folders, files, comments, highlight (11.14); vault status classes :::new / :::edited / :::ported / :::removed colour the name and its comment', '''treeView-beta
     project/
         src/
             main.c :::highlight ## entry point
-            crypto.c ## new
-            util.h
+            crypto.c :::new ## added for key storage
+            util.h :::edited ## buffer sizes
+            port.c :::ported ## from the reference board
+            legacy.c :::removed ## replaced by crypto.c
         docs/
             guide.md
         Makefile'''),

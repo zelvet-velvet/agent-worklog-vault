@@ -34,6 +34,7 @@
     35. 11.12 – 11.17 types: ishikawa, venn, railroad, wardley, event modeling, cynefin
     36. Readability fixes: ER markers, gantt text, requirement arrows, git tags,
         mindmap root, sankey labels, packet fields, tree view, event modeling text
+    37. Second pass: sankey blend, packet solid, git commit ids, tree-view status classes
    Series colours --diagram-c1 … c8 (and warn / info) live in the palette too.
    Preview of every type: _Meta/Mermaid Preview.md
 
@@ -487,8 +488,8 @@
 }
 
 .mermaid .branch-label0 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit1 {
@@ -508,8 +509,8 @@
 }
 
 .mermaid .branch-label1 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit2 {
@@ -529,8 +530,8 @@
 }
 
 .mermaid .branch-label2 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit3 {
@@ -550,8 +551,8 @@
 }
 
 .mermaid .branch-label3 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit4 {
@@ -571,8 +572,8 @@
 }
 
 .mermaid .branch-label4 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit5 {
@@ -592,8 +593,8 @@
 }
 
 .mermaid .branch-label5 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit6 {
@@ -613,8 +614,8 @@
 }
 
 .mermaid .branch-label6 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 .mermaid .commit7 {
@@ -634,8 +635,8 @@
 }
 
 .mermaid .branch-label7 {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
 }
 
 /* Branch name chips: the lane's color, dark text (light on dark lanes). The text
@@ -646,8 +647,8 @@
 .mermaid [class*="branch-label"] tspan,
 .mermaid [class*="branch-label"] span,
 .mermaid [class*="branch-label"] p {
-    fill: var(--diagram-note-text) !important;
-    color: var(--diagram-note-text) !important;
+    fill: var(--background-primary) !important;
+    color: var(--background-primary) !important;
     stroke: none !important;
     font-weight: normal !important;
     /* Mermaid sizes the chip from its own font: keep it (section 2 would
@@ -1228,10 +1229,10 @@
    replace. Properties it does not set inline still work: text colour, fill-opacity, filter.
    ========================================================================== */
 
-/* Class note: the yellow sticky stays, its text turns dark */
+/* Class note: the yellow sticky stays (inline fill), its text is dark */
 .mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] .nodeLabel,
 .mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] p,
-.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] span { color: var(--diagram-note-text) !important; fill: var(--diagram-note-text) !important; }
+.mermaid svg:is([aria-roledescription="class"], [aria-roledescription="classDiagram"]) g.node[id*="-note"] span { color: var(--background-primary) !important; fill: var(--background-primary) !important; }
 /* C4 shapes: Mermaid blue / grey, toned down to sit on the dark page */
 .mermaid svg[aria-roledescription="c4"] g.c4-shape .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-shape .basic { filter: saturate(0.55) brightness(0.85); fill-opacity: 0.6 !important; }
 .mermaid svg[aria-roledescription="c4"] g.c4-external_system .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-external .label-container, .mermaid svg[aria-roledescription="c4"] g.c4-external .basic { fill-opacity: 0.35 !important; }
@@ -1320,15 +1321,15 @@
 /* Sankey: node labels sit on the flows */
 .mermaid svg[aria-roledescription="sankey"] g.node-labels text { fill: var(--diagram-text) !important; font-weight: 600 !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
 /* Packet: each field tinted with a series colour, bold label, readable bit numbers */
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+1) { fill: color-mix(in srgb, var(--diagram-c1) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c1) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+2) { fill: color-mix(in srgb, var(--diagram-c2) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c2) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+3) { fill: color-mix(in srgb, var(--diagram-c3) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c3) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+4) { fill: color-mix(in srgb, var(--diagram-c4) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c4) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+5) { fill: color-mix(in srgb, var(--diagram-c5) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c5) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+6) { fill: color-mix(in srgb, var(--diagram-c6) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c6) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+7) { fill: color-mix(in srgb, var(--diagram-c7) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c7) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+8) { fill: color-mix(in srgb, var(--diagram-c8) 30%, var(--background-primary-alt)) !important; stroke: var(--diagram-c8) !important; stroke-width: 1.5px !important; }
-.mermaid svg[aria-roledescription="packet"] text.packetLabel { fill: var(--diagram-text) !important; font-size: 14px !important; font-weight: 600 !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+1) { fill: var(--diagram-c1) !important; stroke: var(--diagram-c1) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+2) { fill: var(--diagram-c2) !important; stroke: var(--diagram-c2) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+3) { fill: var(--diagram-c3) !important; stroke: var(--diagram-c3) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+4) { fill: var(--diagram-c4) !important; stroke: var(--diagram-c4) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+5) { fill: var(--diagram-c5) !important; stroke: var(--diagram-c5) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+6) { fill: var(--diagram-c6) !important; stroke: var(--diagram-c6) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+7) { fill: var(--diagram-c7) !important; stroke: var(--diagram-c7) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] rect.packetBlock:nth-of-type(8n+8) { fill: var(--diagram-c8) !important; stroke: var(--diagram-c8) !important; stroke-width: 1.5px !important; }
+.mermaid svg[aria-roledescription="packet"] text.packetLabel { fill: var(--background-primary) !important; font-size: 14px !important; font-weight: 600 !important; }
 .mermaid svg[aria-roledescription="packet"] text.packetByte { fill: var(--text-muted) !important; font-size: 11px !important; }
 .mermaid svg[aria-roledescription="packet"] text.packetTitle { fill: var(--diagram-text) !important; }
 /* Tree view: lines in the faint text colour, folders bold */
@@ -1348,3 +1349,29 @@
    see-through enough for the haloed labels to read */
 .mermaid svg[aria-roledescription="sankey"] g.links g.link path { stroke-opacity: 0.5 !important; }
 .mermaid svg[aria-roledescription="sankey"] g.link:hover path { stroke-opacity: 0.85 !important; }
+
+/* ==========================================================================
+   37. SECOND READABILITY PASS
+   ========================================================================== */
+
+/* Sankey: the flows are drawn over the labels; with "screen" blending a light label under a
+   flow comes out brighter than the flow, so the flows can be solid again */
+.mermaid svg[aria-roledescription="sankey"] g.links g.link { mix-blend-mode: screen !important; }
+.mermaid svg[aria-roledescription="sankey"] g.links g.link:is(g, #afterglow-id) path { stroke-opacity: 0.85 !important; }
+.mermaid svg[aria-roledescription="sankey"] g.node-labels text { fill: var(--text-normal) !important; stroke: none !important; }
+
+/* Git graph: commit ids (init, m1, …) larger and lighter, without the dark pill; the svg
+   may draw outside its box so long tags are not cut at the right edge */
+.mermaid svg[aria-roledescription="gitGraph"] { overflow: visible !important; }
+.mermaid svg[aria-roledescription="gitGraph"] .commit-label-bkg { display: none !important; }
+/* Mermaid tilts commit ids -45° on their group; turning the text back +45° around its own centre keeps it in place, level */
+.mermaid svg[aria-roledescription="gitGraph"] text.commit-label { transform-box: fill-box; transform-origin: center; transform: rotate(45deg); }
+.mermaid svg[aria-roledescription="gitGraph"] .commit-label { font-size: 13px !important; font-weight: 600 !important; fill: var(--text-normal) !important; paint-order: stroke fill !important; stroke: var(--background-primary) !important; stroke-width: 4px !important; stroke-linejoin: round !important; }
+
+/* Tree view: name and comment share a colour, like the SP file trees (tab-panels-vertical.css):
+   app.c :::new ## added    util.c :::edited ## …    port.c :::ported ## …    old.c :::removed ## … */
+.mermaid text.treeView-node-label.new,     .mermaid g:has(> text.new)     > text.treeView-node-description { fill: var(--diagram-c4) !important; }
+.mermaid text.treeView-node-label.edited,  .mermaid g:has(> text.edited)  > text.treeView-node-description { fill: var(--diagram-c6) !important; }
+.mermaid text.treeView-node-label.ported,  .mermaid g:has(> text.ported)  > text.treeView-node-description { fill: var(--diagram-c7) !important; }
+.mermaid text.treeView-node-label.removed, .mermaid g:has(> text.removed) > text.treeView-node-description { fill: var(--diagram-error) !important; text-decoration: line-through; }
+.mermaid text.treeView-node-description { font-style: normal !important; }
