@@ -53,6 +53,9 @@ def fetch(repo, files, dest, optional, dry):
     return ok
 
 
+LOCAL = {'hover-fit'}  # plugins whose code is kept in this repo
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
@@ -62,6 +65,9 @@ def main():
     repos = {p['id']: p['repo'] for p in json.loads(get(INDEX.format('community-plugins')))}
     ok = True
     for pid in ids:
+        if pid in LOCAL:
+            print(f'{pid}  (in this repo, nothing to download)')
+            continue
         repo = repos.get(pid)
         print(f'{pid}  ({repo or "not in the community index"})')
         if not repo:

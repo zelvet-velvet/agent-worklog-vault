@@ -144,6 +144,7 @@ Needs Python 3.9+ for `Tools/`. Filling the company `.doc` (`weekly_report.py --
 | Tab Panels | Tabbed notes (styled by `tab-panels-vertical.css`) |
 | Mermaid ELK Renderer | Obsidian before 1.15: `%% elk %%` as the first line of a diagram for ELK layout; with *Use bundled Mermaid* on, every diagram renders with Mermaid 11.17 (fishbone, tree view, venn, …). Obsidian 1.15 draws diagrams with Pele and does not use it. |
 | Hover Editor | Editing in hover popups |
+| Hover Fit | Own plugin, code in this repo. Sizes a Hover Editor popover to the heading section a link points to, for links inside `class="hover-fit"` (e.g. the tags of a `<pre class="file-tree hover-fit">` tree) |
 | make.md | Note icons (`sticker:`) and folder notes; it shows the file name as the title, so notes have no `# Title` line |
 
 Without Python: delete a plugin's folder, install it from Settings → Community plugins → Browse, then restore its `data.json` from git.
@@ -219,6 +220,7 @@ Every Mermaid type gets a dark, readable look: dark cards with coloured outlines
   | [Mermaid ELK Renderer](https://github.com/smolblackhole/mermaid-elk-renderer) | SmolBlackHole | MIT |
   | [Hover Editor](https://github.com/nothingislost/obsidian-hover-editor) | nothingislost | MIT |
   | [make.md](https://github.com/make-md/makemd) | make.md | MIT |
+  | Hover Fit (`.obsidian/plugins/hover-fit`, code kept in this repo) | this repo | MIT |
 
 ## Licence
 

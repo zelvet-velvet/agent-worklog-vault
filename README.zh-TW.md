@@ -147,6 +147,7 @@ flowchart LR
 | Tab Panels | 分頁式筆記（樣式由 `tab-panels-vertical.css` 設置） |
 | Mermaid ELK Renderer | 圖表第一行加上 `%% elk %%` 即以 ELK 排版；開啟 *Use bundled Mermaid* 後所有圖表改以 Mermaid 11.17 繪製（魚骨圖、樹狀圖、文氏圖…） |
 | Hover Editor | 於浮動視窗中編輯 |
+| Hover Fit | 本 repo 自製外掛，程式碼保存於 repo。依連結的標題段落調整 Hover Editor 浮動視窗大小，適用於 `class="hover-fit"` 內的連結（例如 `<pre class="file-tree hover-fit">` 檔案樹的標籤） |
 | make.md | 筆記圖示（`sticker:`）與資料夾筆記；以檔名作為標題，筆記不需 `# 標題` |
 
 無 Python 環境時：刪除外掛資料夾後，於 設定 → 社群外掛 → 瀏覽 重新安裝，再從 git 還原 `data.json`。
@@ -222,6 +223,7 @@ flowchart LR
   | [Mermaid ELK Renderer](https://github.com/smolblackhole/mermaid-elk-renderer) | SmolBlackHole | MIT |
   | [Hover Editor](https://github.com/nothingislost/obsidian-hover-editor) | nothingislost | MIT |
   | [make.md](https://github.com/make-md/makemd) | make.md | MIT |
+  | Hover Fit（`.obsidian/plugins/hover-fit`，程式碼保存於 repo） | 本 repo | MIT |
 
 ## 授權
 

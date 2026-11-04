@@ -141,7 +141,7 @@
         padding-inline-start: 1.3em;
     }
 
-    /* File tree (<pre class="file-tree">): folders, new, edited, ported from AS350X6 */
+    /* File tree (<pre class="file-tree">): folders, new, edited, ported */
     .file-tree {
         margin: 0.3em 0 0;
         padding: 0.5em 0.8em;
@@ -159,4 +159,16 @@
     .file-tree .tree-new    { color: var(--color-green); }
     .file-tree .tree-edited { color: var(--color-orange); }
     .file-tree .tree-ported { color: var(--color-purple); }
+
+    /* A tag can link to a heading: <span class="tree-edited">(<a class="internal-link tree-edited"
+       data-href="Note#Heading" href="Note#Heading">edited</a>)</span>. With <pre class="file-tree hover-fit">
+       the Hover Fit plugin sizes the popover to that heading section. Only the word is underlined. */
+    .file-tree a.internal-link {
+        text-decoration: underline dotted;
+        text-underline-offset: 3px;
+    }
+
+    .file-tree a.internal-link.tree-new    { color: var(--color-green); }
+    .file-tree a.internal-link.tree-edited { color: var(--color-orange); }
+    .file-tree a.internal-link.tree-ported { color: var(--color-purple); }
 }

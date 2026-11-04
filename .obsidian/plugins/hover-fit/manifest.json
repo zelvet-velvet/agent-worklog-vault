@@ -1,0 +1,9 @@
+{
+  "id": "hover-fit",
+  "name": "Hover Fit",
+  "version": "1.2.0",
+  "minAppVersion": "1.4.0",
+  "description": "Sizes a Hover Editor popover to the heading section it links to. Only for links inside an element with the class hover-fit.",
+  "author": "Zaviel Chang",
+  "isDesktopOnly": false
+}
