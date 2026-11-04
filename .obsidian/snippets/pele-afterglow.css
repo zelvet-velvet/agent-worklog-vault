@@ -1,187 +1,269 @@
 /* ==========================================================================
-   pele-afterglow.css (2026-11-04)
-   Obsidian 1.15 draws ```mermaid blocks with its own renderer, Pele (github.com/obsidianmd/pele),
-   not Mermaid.js, so mermaid-afterglow.css (written for Mermaid's SVG) no longer matches anything.
-   Pele is themed with CSS variables; Obsidian feeds them from its --mermaid-* variables
-   (body, .mermaid { --pele-bg: var(--mermaid-background); ... }). This snippet points those at the
-   --diagram-* palette in popping-and-locking.css, then keeps the vault's own node classes.
+   pele-afterglow.css — diagrams for Obsidian 1.15+ (Pele 1.8, github.com/obsidianmd/pele)
+   Name: the colours started as the Base16 "Afterglow" scheme; they now live in popping-and-locking.css.
+
+   HOW IT WORKS
+     popping-and-locking.css   --diagram-*          (Style Settings → Popping and Locking → Diagrams)
+       → §1 here                --mermaid-*  + --dia-* tokens
+       → Obsidian app.css       --pele-*     (body, .mermaid { --pele-bg: var(--mermaid-background) … })
+       → Pele SVG               var(--pele-*) only, so a colour change repaints every diagram, no re-render.
+     Change colours in popping-and-locking.css, never here. Below this block only var(--dia-*) / var(--pele-*).
 
    CONTENTS
-     1. Palette — every diagram type, light and dark
-     2. Base — no dark-mode filter, subgraph borders
-     3. Semantic node classes — :::pass / fail / warn / info / mod / muted / hdr / sec
-        (dark fill + coloured border + light text, as in mermaid-afterglow §39)
-     4. Tree view status — :::new / edited / ported / removed colour the ## comment
-     5. Legend row below a diagram (<div class="diagram-legend">)
-     6. Aligned to the old gallery (agent-worklog-vault/docs/mermaid-gallery.png): sequence, mindmap,
-        sankey, packet, tree view, venn, quadrant (placed before 5 in the file)
+     1. Tokens     palette → Pele, plus the --dia-* tokens the rules use
+     2. Canvas     size follows the note font size
+     3. Surfaces   nodes, edges, edge labels, subgraphs
+     4. Classes    :::pass fail warn info mod muted hdr sec · tree view :::new edited ported removed highlight
+     5. Types      sequence, mindmap, sankey, packet, tree view, venn, quadrant
+     6. Motion     hover glow, focus, flowing edge (off with reduced motion)
+     7. Legend     <div class="diagram-legend"><span class="pass">…</span></div>
 
-   Pele's class names: pele (root svg), pele-<type>, pele-node, pele-label, pele-edge,
-   pele-edge-label, pele-cluster, pele-cluster-label, pele-marker, pele-title (see pele.run/theming).
+   Pele classes: pele, pele-<type>, pele-node, pele-label, pele-edge, pele-edge-label, pele-cluster,
+   pele-cluster-label, pele-marker (pele.run/theming). Nodes are placed with the SVG transform
+   attribute: move them with `translate`, never `transform`.
    ========================================================================== */
 
 
-/* 1. PALETTE ----------------------------------------------------------------
-   body.theme-* wins over Obsidian's own body { --mermaid-*: ... } */
+/* 1. TOKENS ----------------------------------------------------------------- */
 body.theme-dark,
 body.theme-light {
-    --mermaid-background: var(--background-primary);
-    --mermaid-text-color: var(--diagram-text, var(--text-normal));
-    --mermaid-muted-color: var(--text-muted);
-    --mermaid-line-color: var(--diagram-edge-color, var(--text-muted));
-    --mermaid-surface: var(--background-primary-alt);
-    --mermaid-surface-alt: var(--background-secondary);
-    --mermaid-border-color: var(--diagram-node-border, var(--background-modifier-border));
-    --mermaid-accent: var(--diagram-info, var(--interactive-accent));
-    --mermaid-critical: var(--diagram-error, var(--text-error));
-    --mermaid-error: var(--diagram-error, var(--text-error));
-    --mermaid-color-1: var(--diagram-c1);
-    --mermaid-color-2: var(--diagram-c2);
-    --mermaid-color-3: var(--diagram-c3);
-    --mermaid-color-4: var(--diagram-c4);
-    --mermaid-color-5: var(--diagram-c5);
-    --mermaid-color-6: var(--diagram-c6);
-    --mermaid-color-7: var(--diagram-c7);
-    --mermaid-color-8: var(--diagram-c8);
+    /* Pele, through Obsidian's --mermaid-* */
+    --mermaid-background:   var(--background-primary);
+    --mermaid-text-color:   var(--dia-text);
+    --mermaid-muted-color:  var(--text-muted);
+    --mermaid-line-color:   var(--dia-edge);
+    --mermaid-surface:      var(--dia-surface);
+    --mermaid-surface-alt:  var(--background-secondary);
+    --mermaid-border-color: var(--dia-border);
+    --mermaid-accent:       var(--dia-info);
+    --mermaid-critical:     var(--dia-fail);
+    --mermaid-error:        var(--dia-fail);
+    --mermaid-radius:       6px;
+    --mermaid-title-weight: 700;
+    --mermaid-color-1: var(--diagram-c1, var(--color-blue));
+    --mermaid-color-2: var(--diagram-c2, var(--color-yellow));
+    --mermaid-color-3: var(--diagram-c3, var(--color-pink));
+    --mermaid-color-4: var(--diagram-c4, var(--color-green));
+    --mermaid-color-5: var(--diagram-c5, var(--color-cyan));
+    --mermaid-color-6: var(--diagram-c6, var(--color-orange));
+    --mermaid-color-7: var(--diagram-c7, var(--color-purple));
+    --mermaid-color-8: var(--diagram-c8, var(--color-red));
+
+    /* Tokens (fallbacks keep a light theme without --diagram-* readable) */
+    --dia-text:    var(--diagram-text, var(--text-normal));
+    --dia-edge:    var(--diagram-edge-color, var(--text-muted));
+    --dia-border:  var(--diagram-node-border, var(--background-modifier-border-hover));
+    --dia-group:   var(--diagram-subgraph-border, var(--color-purple));
+    --dia-surface: color-mix(in srgb, var(--dia-border) 9%, var(--background-primary-alt));
+    --dia-chip:    var(--diagram-note-bg, #fff);
+    --dia-chip-fg: var(--diagram-note-text, #1c1d26);
+    --dia-chip-bd: var(--diagram-note-border, var(--color-yellow));
+    --dia-pass:    var(--diagram-success, var(--color-green));
+    --dia-fail:    var(--diagram-error, var(--color-red));
+    --dia-warn:    var(--diagram-warn, var(--color-yellow));
+    --dia-info:    var(--diagram-info, var(--color-blue));
+    --dia-mod:     var(--h6-color, var(--diagram-c7, var(--color-purple)));
+    --dia-faint:   var(--text-faint);
+    --dia-on-color: color-mix(in srgb, var(--dia-text) 45%, white);           /* text on a solid colour block */
+    --dia-halo:     color-mix(in srgb, var(--background-primary) 75%, black);  /* its outline */
+}
+.mermaid > svg.pele {
+    --pele-fg-on-light: var(--dia-chip-fg);   /* text on a light classDef fill */
+    --pele-fg-on-dark:  var(--dia-text);      /* text on a dark classDef fill */
 }
 
 
-/* 2. BASE ------------------------------------------------------------------- */
+/* 2. CANVAS -------------------------------------------------------------------
+   Pele lays out at 16 px; scale by note font size ÷ 16, never wider than the note.
+   !important: another stylesheet pins `.mermaid svg { width: auto !important }`. */
 .theme-dark .mermaid > svg.pele { filter: none; }
-
-/* Size follows Settings → Appearance → Font size. Pele lays a diagram out at 16 px text (Obsidian passes no
-   fontSize), so the SVG is scaled by font size ÷ 16 from its natural width (the width attribute), never wider
-   than the note. A diagram that already fills the note stays note-wide (Pele's zoom shows the detail).
-   !important: another stylesheet pins every `.mermaid svg { width: auto !important }`. */
 .mermaid > svg.pele {
     width: calc(attr(width type(<number>), 0) * var(--font-text-size, 16px) / 16) !important;
     max-width: 100% !important;
     height: auto !important;
-}
-.pele-cluster > :is(rect, path, polygon) { stroke: var(--diagram-subgraph-border, var(--_b)); }
-
-
-/* 3. SEMANTIC NODE CLASSES ---------------------------------------------------
-   A[Build]:::pass  B[Flash]:::fail  C:::warn  D:::info  E:::muted  F:::mod (H6 colour)
-   No classDef needed. Colour lives in the outline, never behind the text. */
-.pele-node:is(.pass, .success, .fail, .error, .warn, .warning, .info, .mod) > :is(rect, path, polygon, circle, ellipse) {
-    fill: var(--background-primary-alt);
-    stroke-width: 3px;
-}
-.pele-node:is(.pass, .success) > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-success); }
-.pele-node:is(.fail, .error)    > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-error); }
-.pele-node:is(.warn, .warning)  > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-warn); }
-.pele-node.info                 > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-info); }
-.pele-node.mod                  > :is(rect, path, polygon, circle, ellipse) { stroke: var(--h6-color, var(--diagram-c7)); }
-.pele-node:is(.pass, .success, .fail, .error, .warn, .warning, .info, .mod) .pele-label {
-    fill: var(--diagram-text);
-    font-weight: 600;
+    overflow: visible;                         /* room for glows at the edge */
 }
 
-/* muted: dashed faint outline, no fill, faint text */
-.pele-node.muted > :is(rect, path, polygon, circle, ellipse) {
-    fill: transparent;
-    stroke: var(--text-faint);
-    stroke-dasharray: 4 3;
+/* One-line labels. Pele lays a diagram out again with wrapped labels (participants at ~160 px) when it is
+   wider than the .mermaid box's clientWidth. zoom .5 makes that box report twice the note width, so only a
+   diagram wider than 2 × the note wraps; the rest keeps Mermaid's one-line layout and is scaled to fit.
+   Everything inside is zoomed back (net 1). */
+.mermaid { zoom: .5; }
+.mermaid > * { zoom: 2; }
+
+
+/* 3. SURFACES ------------------------------------------------------------------- */
+.pele-node > :is(rect, path, polygon, circle, ellipse):first-child {
+    stroke-width: 1.5px;
+    filter: drop-shadow(0 2px 3px rgb(0 0 0 / .35));
 }
-.pele-node.muted .pele-label { fill: var(--text-faint); }
+.pele-edges { stroke-width: 1.5px; }
 
-/* hdr: header / row label of a block grid, no box, bold muted text */
-.pele-node.hdr > :is(rect, path, polygon) { fill: transparent; stroke: transparent; }
-.pele-node.hdr .pele-label { fill: var(--text-muted); font-weight: 700; }
+/* Edge labels: small tinted pill in the edge colour */
+.pele-edge-label > rect {
+    fill: color-mix(in srgb, var(--dia-edge) 12%, var(--pele-bg));
+    stroke: color-mix(in srgb, var(--dia-edge) 40%, transparent);
+    rx: 9px;
+}
+.pele-edge-label > text { fill: var(--dia-text); }
 
-/* sec: section title row of a block grid, bold muted text, box reduced to a faint outline */
-.pele-node.sec > :is(rect, path, polygon) { fill: transparent; stroke: var(--text-faint); stroke-width: 1px; }
-.pele-node.sec .pele-label { fill: var(--text-muted); font-weight: 700; }
+/* Subgraphs: faint wash of the group colour, dashed frame, bold title */
+.pele-cluster:not(.pele-section) > :is(rect, path, polygon) {   /* timeline sections keep their solid series fill */
+    fill: color-mix(in srgb, var(--dia-group) 7%, transparent);
+    fill-opacity: 1;
+    stroke: var(--dia-group);
+    stroke-width: 1.5px;
+    stroke-dasharray: 6 4;
+    rx: 10px;
+}
+.pele-cluster-label { fill: var(--dia-group); }   /* no bold: Pele places the title by its regular width */
 
-
-/* 4. TREE VIEW STATUS ------------------------------------------------------------
-   app.c :::new ## added    util.c :::edited ## ...    port.c :::ported ## ...    old.c :::removed ## ... */
-.pele-node.new     .pele-tree-description { fill: var(--diagram-c4); }
-.pele-node.edited  .pele-tree-description { fill: var(--diagram-c6); }
-.pele-node.ported  .pele-tree-description { fill: var(--diagram-c7); }
-.pele-node.removed .pele-tree-description { fill: var(--diagram-error); text-decoration: line-through; }
-.pele-tree-description { font-style: normal; }
-
-
-/* 6. ALIGNED TO agent-worklog-vault/docs/mermaid-gallery.png (2026-11-04) ----------
-   Only the types that differed: sequence, mindmap, sankey, packet, tree view, venn, quadrant. */
-
-/* Sequence: loop / alt / opt / par frames in the subgraph colour, notes as white chips, yellow step numbers */
-.pele-frame :is(rect, path):not(.pele-rect) { stroke: var(--diagram-subgraph-border); }
-.pele-frame-kind, .pele-frame-label { fill: var(--diagram-subgraph-border); }
-.pele-note > :is(rect, path) { fill: var(--diagram-note-bg); stroke: var(--diagram-note-border); }
-.pele-note .pele-label { fill: var(--diagram-note-text); }
-.pele-sequence-number > rect { fill: var(--diagram-c2); stroke: none; }
-.pele-sequence-number > text { fill: var(--diagram-note-text); }
-
-/* Mindmap: boxes on the dark fill, the branch colour on the border, root ringed in the text colour */
-.pele-branch .pele-node > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); }
-.pele-branch .pele-node .pele-label { fill: var(--diagram-text); }
-.pele-root > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); stroke: var(--diagram-text); stroke-width: 2px; }
-.pele-root .pele-label { fill: var(--diagram-text); font-weight: 600; }
-
-/* Sankey: flows nearly solid in their series colour, labels light and bold */
-.pele-sankey-links { fill-opacity: 0.85; }
+/* Text on a solid colour block (pie, treemap, timeline, gantt, git, packet, sankey, classDef / style fill):
+   light bold text with a dark halo. Pele marks dark-on-light text with fill="var(--_bg)" on the text
+   or a parent group; a classDef / style fill shows as style="…fill:…" on the node's shape. */
+.pele :is(text[fill="var(--_bg)"], [fill="var(--_bg)"] text, .pele-packet-fields text,
+          .pele-node:has(> [style*="fill:"]) > text):not(.pele-sequence-number > text),
 .pele-sankey-nodes ~ .pele-labels .pele-label,
-.pele-labels .pele-label:has(.pele-sankey-value) { fill: var(--diagram-text); font-weight: 600; }
+.pele-labels .pele-label:has(.pele-sankey-value) {
+    fill: var(--dia-on-color);
+    font-weight: 600;
+    paint-order: stroke;
+    stroke: var(--dia-halo);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+}
 
-/* Packet: solid series fields (blue, yellow, magenta, repeating) with dark text */
-.pele-packet-fields > .pele-node:nth-child(3n+1) > rect { fill: var(--diagram-c1); }
-.pele-packet-fields > .pele-node:nth-child(3n+2) > rect { fill: var(--diagram-c2); }
-.pele-packet-fields > .pele-node:nth-child(3n)   > rect { fill: var(--diagram-c3); }
-.pele-packet-fields > .pele-node > rect { stroke: var(--background-primary); }
-.pele-packet-fields > .pele-node text { fill: var(--diagram-note-text); }
 
-/* Tree view: folders in blue, the highlighted row as yellow bold text instead of a box */
-.pele-tree-dir > .pele-label { fill: var(--diagram-c1); }
-.pele-tree-guides { stroke: var(--text-faint); stroke-width: 1.5px; }   /* as before (Mermaid's treeView-node-line) */
+/* 4. CLASSES --------------------------------------------------------------------
+   A[Build]:::pass  B:::fail  C:::warn  D:::info  E:::mod  F:::muted — no classDef needed.
+   Colour sits on the outline only (glow on hover), never behind the text. */
+.pele-node:is(.pass, .success)  { --tone: var(--dia-pass); }
+.pele-node:is(.fail, .error)    { --tone: var(--dia-fail); }
+.pele-node:is(.warn, .warning)  { --tone: var(--dia-warn); }
+.pele-node.info                 { --tone: var(--dia-info); }
+.pele-node.mod                  { --tone: var(--dia-mod); }
+.pele-node:is(.pass, .success, .fail, .error, .warn, .warning, .info, .mod) {
+    & > :is(rect, path, polygon, circle, ellipse) {
+        fill: var(--dia-surface);              /* same dark card as every node; the glow comes on hover (§6) */
+        stroke: var(--tone);
+        stroke-width: 2.5px;
+    }
+    & .pele-label { fill: var(--dia-text); font-weight: 600; }
+}
+
+.pele-node.muted > :is(rect, path, polygon, circle, ellipse) {
+    fill: transparent; stroke: var(--dia-faint); stroke-dasharray: 4 3; filter: none;
+}
+.pele-node.muted .pele-label { fill: var(--dia-faint); }
+
+/* Block grids: hdr = row label without box, sec = section row with a faint outline */
+.pele-node:is(.hdr, .sec) > :is(rect, path, polygon) { fill: transparent; filter: none; }
+.pele-node.hdr > :is(rect, path, polygon) { stroke: transparent; }
+.pele-node.sec > :is(rect, path, polygon) { stroke: var(--dia-faint); stroke-width: 1px; }
+.pele-node:is(.hdr, .sec) .pele-label { fill: var(--text-muted); font-weight: 700; }
+
+/* Tree view: the ## comment takes the status colour, the file name stays plain */
+.pele-tree-description { font-style: normal; }
+.pele-node.new     .pele-tree-description { fill: var(--diagram-c4, var(--dia-pass)); }
+.pele-node.edited  .pele-tree-description { fill: var(--diagram-c6, var(--dia-warn)); }
+.pele-node.ported  .pele-tree-description { fill: var(--diagram-c7, var(--dia-mod)); }
+.pele-node.removed .pele-tree-description { fill: var(--dia-fail); text-decoration: line-through; }
+
+
+/* 5. TYPES ------------------------------------------------------------------------ */
+
+/* Sequence: frames in the group colour, notes as light chips, yellow step badges, faint lifelines */
+.pele-frame :is(rect, path):not(.pele-rect) { stroke: var(--dia-group); }
+.pele-frame-kind, .pele-frame-label { fill: var(--dia-group); }
+.pele-lifeline { stroke: var(--dia-faint); stroke-dasharray: 2 4; }
+.pele-note > :is(rect, path) { fill: var(--dia-chip); stroke: var(--dia-chip-bd); }
+.pele-note .pele-label { fill: var(--dia-chip-fg); }
+.pele-sequence-number > rect { fill: var(--pele-series-2); stroke: none; }
+.pele-sequence-number > text { fill: var(--dia-chip-fg); font-weight: 700; }
+
+/* Mindmap: dark boxes outlined in the branch colour, root ringed in the text colour */
+.pele-branch .pele-node > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); }
+.pele-branch .pele-node .pele-label { fill: var(--dia-text); }
+.pele-root > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); stroke: var(--dia-text); stroke-width: 2px; }
+.pele-root .pele-label { fill: var(--dia-text); font-weight: 700; }
+
+/* Sankey: nearly solid flows (labels: §3 text on colour) */
+.pele-sankey-links { fill-opacity: .85; }
+
+/* Packet: solid fields cycling blue / yellow / magenta (labels: §3 text on colour) */
+.pele-packet-fields > .pele-node:nth-child(3n+1) > rect { fill: var(--pele-series-1); }
+.pele-packet-fields > .pele-node:nth-child(3n+2) > rect { fill: var(--pele-series-2); }
+.pele-packet-fields > .pele-node:nth-child(3n)   > rect { fill: var(--pele-series-3); }
+.pele-packet-fields > .pele-node > rect { stroke: var(--pele-bg); filter: none; }
+
+/* Tree view: blue folders, faint guides, :::highlight as yellow bold text instead of a box */
+.pele-tree-dir > .pele-label { fill: var(--pele-series-1); }
+.pele-tree-guides { stroke: var(--dia-faint); stroke-width: 1.5px; }
 .pele-tree-highlight { fill: transparent; stroke: none; }
-.pele-node:has(> .pele-tree-highlight) > .pele-label { fill: var(--diagram-c2); font-weight: 700; }
+.pele-node:has(> .pele-tree-highlight) > .pele-label { fill: var(--pele-series-2); font-weight: 700; }
 
-/* Venn: stronger tint inside each set, light labels */
-.pele-venn-set { fill-opacity: 0.3; }
-.pele-venn-labels .pele-label { fill: var(--diagram-text); }
-
-/* Quadrant: points in yellow */
-.pele-points, .pele-point { fill: var(--diagram-c2); }
+/* Venn and quadrant */
+.pele-venn-set { fill-opacity: .3; }
+.pele-venn-labels .pele-label { fill: var(--dia-text); }
+.pele-points, .pele-point { fill: var(--pele-series-2); }
 
 
-/* 5. LEGEND ----------------------------------------------------------------------
+/* 6. MOTION -------------------------------------------------------------------------
+   Hover a node: it lifts and glows, the other nodes step back. Hover an edge: it flows. */
+.pele-node, .pele-node > *, .pele-edge > path { transition: opacity .2s, translate .2s, filter .2s, stroke .2s, stroke-width .2s; }
+
+.pele-node:hover { translate: 0 -2px; }
+.pele-node:hover > :is(rect, path, polygon, circle, ellipse):first-child {
+    filter: drop-shadow(0 0 7px color-mix(in srgb, var(--tone, var(--dia-border)) 70%, transparent));
+}
+.pele:has(.pele-nodes .pele-node:hover) .pele-node:not(:hover) { opacity: .5; }
+
+.pele-edge > path:not(.pele-marker) { pointer-events: stroke; }
+.pele-edge:hover > path:not(.pele-marker) {
+    stroke: var(--pele-series-2);
+    stroke-width: 2.5px;
+    stroke-dasharray: 7 5;
+    animation: dia-flow .5s linear infinite;
+}
+.pele-edge:hover > .pele-marker { fill: var(--pele-series-2); }
+@keyframes dia-flow { to { stroke-dashoffset: -12; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .pele-node, .pele-node > *, .pele-edge > path { transition: none; }
+    .pele-node:hover { translate: none; }
+    .pele-edge:hover > path { animation: none; }
+}
+
+
+/* 7. LEGEND ---------------------------------------------------------------------------
    <div class="diagram-legend"><span class="warn">To discuss</span><span class="info">To do</span></div>
-   Classes: pass, fail, warn, info, mod, muted (as the node classes); node = a plain node. */
+   Classes: pass fail warn info mod muted (as the nodes); node = plain node. */
 .diagram-legend {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: 0.3em 1.4em;
-    margin: 0.2em 0 0.8em;
-    padding: 0.15em 0;
-    font-size: 0.85em;
+    gap: .3em 1.4em;
+    margin: .2em 0 .8em;
+    font-size: .85em;
     line-height: 1.6;
-    overflow: visible;
     color: var(--text-muted);
 }
-.diagram-legend > span {
-    --legend-color: var(--text-faint);
-    display: inline-flex;
-    align-items: center;
-}
+.diagram-legend > span { --tone: var(--dia-faint); display: inline-flex; align-items: center; }
 .diagram-legend > span::before {
     content: "";
     width: 1.1em;
-    height: 0.8em;
-    margin-right: 0.45em;
-    border: 2px solid var(--legend-color);
-    border-radius: 2px;
-    background-color: color-mix(in srgb, var(--legend-color) 18%, transparent);
+    height: .8em;
+    margin-right: .45em;
+    border: 2px solid var(--tone);
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--tone) 18%, transparent);
+    box-shadow: 0 0 5px color-mix(in srgb, var(--tone) 40%, transparent);
 }
-.diagram-legend > .pass  { --legend-color: var(--diagram-success); }
-.diagram-legend > .fail  { --legend-color: var(--diagram-error); }
-.diagram-legend > .warn  { --legend-color: var(--diagram-warn); }
-.diagram-legend > .info  { --legend-color: var(--diagram-info); }
-.diagram-legend > .mod   { --legend-color: var(--h6-color, var(--diagram-c7)); }
-.diagram-legend > .node  { --legend-color: var(--diagram-node-border); }
-.diagram-legend > .node::before { background-color: var(--background-primary-alt); }
-.diagram-legend > .muted { --legend-color: var(--text-faint); }
-.diagram-legend > .muted::before { border-style: dashed; background-color: transparent; }
+.diagram-legend > .pass  { --tone: var(--dia-pass); }
+.diagram-legend > .fail  { --tone: var(--dia-fail); }
+.diagram-legend > .warn  { --tone: var(--dia-warn); }
+.diagram-legend > .info  { --tone: var(--dia-info); }
+.diagram-legend > .mod   { --tone: var(--dia-mod); }
+.diagram-legend > .node  { --tone: var(--dia-border); }
+.diagram-legend > .node::before  { background: var(--dia-surface); box-shadow: none; }
+.diagram-legend > .muted::before { border-style: dashed; background: transparent; box-shadow: none; }

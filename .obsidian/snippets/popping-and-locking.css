@@ -17,7 +17,7 @@
      4. Tabs     — tab bar + tab header colors (desktop only)
      5. Swatches — per-swatch colour in Style Settings (plugin bug workaround)
 
-   Used by: mermaid-afterglow.css reads the --diagram-* variables.
+   Used by: pele-afterglow.css reads the --diagram-* variables.
    Color swatches: Docs/Theme Color Preview.md
    ========================================================================== */
 
@@ -370,7 +370,7 @@ settings:
     collapsed: true
   - id: diagram-text
     title: Diagram Text Color
-    description: 'Text in mermaid nodes (mermaid-afterglow.css).'
+    description: 'Text in mermaid nodes (pele-afterglow.css).'
     type: variable-color
     format: hex
     default: '#D0D0D0'
@@ -558,7 +558,7 @@ settings:
     --code-tag: #fabd2f;                    /* VS Code: entity.name.tag */
     --code-value: #d3869b;                  /* VS Code: constant */
 
-    /* Diagrams (read by mermaid-afterglow.css) */
+    /* Diagrams (read by pele-afterglow.css) */
     --diagram-text: #D0D0D0;
     --diagram-node-border: #6C99BB;
     --diagram-edge-color: #7DD6CF;

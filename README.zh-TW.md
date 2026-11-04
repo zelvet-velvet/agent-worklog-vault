@@ -179,7 +179,7 @@ flowchart LR
 
 ## 圖表
 
-所有 Mermaid 圖表類型使用統一的深色外觀：深色區塊搭配彩色外框與淺色文字、白底標籤，並共用同一組配色。Obsidian 1.15 起以內建繪圖器 [Pele](https://github.com/obsidianmd/pele) 繪製 ```mermaid 區塊，由 `pele-afterglow.css` 設定外觀（以 Pele 的 CSS 變數套用配色、`:::pass` / `:::fail` 等類別，圖表大小隨外觀字型大小縮放）；較舊的 Obsidian 以 Mermaid.js 繪製，由 `mermaid-afterglow.css` 設定。兩個片段皆啟用，各自只作用於對應的繪圖器。`_Meta/Mermaid Preview.md` 於筆記庫中即時繪製全部 34 個範例。
+所有 Mermaid 圖表類型使用統一的深色外觀：深色卡片搭配彩色外框、實色色塊上的淺色描邊文字、連線標籤膠囊、白底註記，並共用同一組配色。以 Pele 繪製時，滑鼠移到節點上會浮起並發光，移到連線上會顯示流動效果（系統設定減少動態時關閉）。Obsidian 1.15 起以內建繪圖器 [Pele](https://github.com/obsidianmd/pele) 繪製 ```mermaid 區塊，由 `pele-afterglow.css` 設定外觀（以 Pele 的 CSS 變數套用配色、`:::pass` / `:::fail` 等類別，圖表大小隨外觀字型大小縮放）；較舊的 Obsidian 以 Mermaid.js 繪製，由 `mermaid-afterglow.css` 設定。兩個片段皆啟用，各自只作用於對應的繪圖器。`_Meta/Mermaid Preview.md` 於筆記庫中即時繪製全部 34 個範例。
 
 ![筆記庫主題下的 Mermaid 圖表](docs/mermaid-gallery.png)
 

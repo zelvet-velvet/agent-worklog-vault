@@ -176,7 +176,7 @@ Journal and report text is written in Traditional Chinese in a Taiwan work-log t
 
 ## Diagrams
 
-Every Mermaid type gets a dark, readable look: dark blocks with coloured borders and light text, white label chips, and one palette for all charts. Obsidian 1.15 and later draw ```mermaid blocks with their own renderer, [Pele](https://github.com/obsidianmd/pele), styled by `pele-afterglow.css` (the palette through Pele's CSS variables, the `:::pass` / `:::fail` … classes, and diagrams sized to the Appearance font size). Older Obsidian draws them with Mermaid.js, styled by `mermaid-afterglow.css`. Both snippets are on; each matches only its own renderer. `_Meta/Mermaid Preview.md` draws all 34 samples live in the vault.
+Every Mermaid type gets a dark, readable look: dark cards with coloured outlines, light text with a dark outline on solid colour blocks, edge-label pills, white note chips, and one palette for all charts. With Pele, nodes lift and glow on hover and an edge flows when you point at it (off with reduced motion). Obsidian 1.15 and later draw ```mermaid blocks with their own renderer, [Pele](https://github.com/obsidianmd/pele), styled by `pele-afterglow.css` (the palette through Pele's CSS variables, the `:::pass` / `:::fail` … classes, and diagrams sized to the Appearance font size). Older Obsidian draws them with Mermaid.js, styled by `mermaid-afterglow.css`. Both snippets are on; each matches only its own renderer. `_Meta/Mermaid Preview.md` draws all 34 samples live in the vault.
 
 ![Mermaid diagrams in the vault theme](docs/mermaid-gallery.png)
 
