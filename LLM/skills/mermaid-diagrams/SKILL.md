@@ -62,4 +62,4 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - Link a node to a vault note: name the node like the note and add `class A,B internal-link;` at the end.
 - `click` handlers do not work (strict security). Markdown labels need backticks: ``A["`**bold** _italic_`"]``.
 - Do not name a node `end` (lowercase); start an edge with a space if the target begins with `o` or `x`.
-- You cannot see the rendering: keep to known syntax, and ask the user to check a new or complex diagram in Obsidian.
+- Keep to known syntax. `python3 Tools/mermaid_preview/preview.py render N` shows sample N as Obsidian draws it (headless Edge, Obsidian's own renderer); ask the user to check a new or complex diagram in Obsidian.

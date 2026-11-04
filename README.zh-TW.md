@@ -185,7 +185,7 @@ flowchart LR
 
 - 以內建 class 標示意義，圖表中不寫顏色：`:::pass`、`:::fail`、`:::warn`、`:::info`、`:::muted`。
 - 樹狀圖註解可加上狀態 class：`:::new`、`:::edited`、`:::ported`、`:::removed`。
-- 修改顏色後執行 `python3 Tools/mermaid_preview/preview.py render`，透過 Obsidian 內建 Mermaid 於背景 Edge 繪製所有圖表類型，以便確認結果而不需逐一開啟筆記。
+- 修改顏色後執行 `python3 Tools/mermaid_preview/preview.py render`，透過 Obsidian 內建的繪圖器（Pele；1.15 之前為 Mermaid.js）於背景 Edge 繪製所有圖表類型，以便確認結果而不需逐一開啟筆記；`preview.py gallery` 則重新產生上方的圖。
 
 ---
 
@@ -197,7 +197,7 @@ flowchart LR
 | Agent 共用規則 | `AGENTS.md` 與 `LLM/LLM_GUIDE.md` |
 | 姓名、co-author、週報檔名 | `LLM/vault_config.json` |
 | 顏色 | Style Settings → Popping and Locking（色票位於 `_Meta/Theme Color Preview.md`） |
-| 圖表外觀 | `.obsidian/snippets/pele-afterglow.css`（Obsidian 1.15 起）、`mermaid-afterglow.css`（較舊版本，以 `preview.py render` 確認） |
+| 圖表外觀 | `.obsidian/snippets/pele-afterglow.css`（Obsidian 1.15 起）、`mermaid-afterglow.css`（較舊版本）；`preview.py render` 會檢查目前 Obsidian 使用的那一份 |
 | 日誌語氣 | `LLM/TONE.md`（並依據修改紀錄自動學習） |
 
 ---

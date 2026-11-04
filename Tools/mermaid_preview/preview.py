@@ -2,17 +2,19 @@
 
 Usage (from WSL, any folder):
     python3 preview.py note             # rewrite _Meta/Mermaid Preview.md from samples.py
-    python3 preview.py render [N,M]     # render samples in headless Edge with Obsidian's own Mermaid
-                                        # and the vault snippets; one PNG per sample in out_dir
+    python3 preview.py render [N,M]     # draw samples in headless Edge with Obsidian's own renderer and the
+                                        # vault snippets; one PNG per sample in out_dir
+    python3 preview.py gallery          # docs/mermaid-gallery.png: the GALLERY samples in a 4 x 3 grid
 
-render takes mermaid.min.js out of Obsidian's app archive (same version as the app), builds one
-page per sample with the palette of popping-and-locking.css + mermaid-afterglow.css, and renders
-it the way Obsidian does (inside a hidden div.mermaid, Obsidian's mermaid.initialize settings).
-When the Mermaid ELK Renderer plugin is installed it is loaded too, through a small stand-in for
-the Obsidian API: with "useBundledMermaid" its own newer Mermaid renders every diagram (as in the
-app), and `%% elk %%` markers switch the layout, exactly as in the notes.
-Paths: "mermaid_preview" in LLM/vault_config.json. Use it after changing a colour or a snippet,
-or after porting a theme, then look at the PNGs.
+render takes the renderer out of Obsidian's app archive (same version as the app): Pele (lib/pele.min.js,
+Obsidian 1.15+) or Mermaid.js (lib/mermaid.min.js, older). With Pele each page has the palette of
+popping-and-locking.css, Obsidian's --pele-* <- --mermaid-* mapping and pele-afterglow.css, the Appearance
+font size (.obsidian/appearance.json) and draws with pele.mount in a div.mermaid, as Obsidian does.
+With Mermaid.js it uses mermaid-afterglow.css and Obsidian's mermaid.initialize settings; the Mermaid ELK
+Renderer plugin, when installed, is loaded through a small stand-in for the Obsidian API (Obsidian 1.15
+bypasses that plugin).
+Paths: "mermaid_preview" in LLM/vault_config.json (<you> = the Windows user folder). Use it after changing
+a colour or a snippet, or after porting a theme, then look at the PNGs.
 """
 import glob, html, json, struct, subprocess, sys
 from pathlib import Path
@@ -78,17 +80,27 @@ def note():
     print(f'{NOTE.relative_to(VAULT)}: {len(SAMPLES)} diagrams')
 
 
-def mermaid_js(dst):
-    """Copy lib/mermaid.min.js out of the newest Obsidian app archive (asar: pickle header + JSON index)."""
-    asar = sorted(glob.glob(CFG['obsidian_asar_glob']))[-1]
+def you(path, asar=None):
+    """The shared config writes the Windows user folder as <you>: glob for it, or take it from the asar path."""
+    if '<you>' not in path:
+        return path
+    if asar is None:
+        return path.replace('<you>', '*')
+    return path.replace('<you>', Path(asar).parts[4])
+
+
+def obsidian_lib(asar, out):
+    """Copy Obsidian's diagram renderer out of the newest app archive (asar: pickle header + JSON index):
+    lib/pele.min.js (1.15+, Pele) or lib/mermaid.min.js (older). Returns (renderer, asar path)."""
     with open(asar, 'rb') as f:
         head = f.read(16)
-        index = json.loads(f.read(struct.unpack('<I', head[12:16])[0]))
+        lib = json.loads(f.read(struct.unpack('<I', head[12:16])[0]))['files']['lib']['files']
         base = 8 + struct.unpack('<I', head[4:8])[0]
-        entry = index['files']['lib']['files']['mermaid.min.js']
+        name = 'pele' if 'pele.min.js' in lib else 'mermaid'
+        entry = lib[f'{name}.min.js']
         f.seek(base + int(entry['offset']))
-        dst.write_bytes(f.read(entry['size']))
-    return Path(asar).name
+        (out / f'{name}.min.js').write_bytes(f.read(entry['size']))
+    return name, asar
 
 
 PLUGIN = VAULT / '.obsidian' / 'plugins' / 'mermaid-elk-renderer'
@@ -116,47 +128,112 @@ def plugin_html(out):
     return SHIM.replace('__DATA__', data)
 
 
-def render(only):
-    out = Path(CFG['out_dir'])
+# Obsidian's app.css feeds Pele from its --mermaid-* variables (set by pele-afterglow.css).
+PELE_VARS = ('body,.mermaid{--pele-bg:var(--mermaid-background);--pele-fg:var(--mermaid-text-color);'
+             '--pele-muted:var(--mermaid-muted-color);--pele-line:var(--mermaid-line-color);--pele-surface:var(--mermaid-surface);'
+             '--pele-surface-alt:var(--mermaid-surface-alt);--pele-border:var(--mermaid-border-color);'
+             '--pele-accent:var(--mermaid-accent);--pele-critical:var(--mermaid-critical);--pele-error:var(--mermaid-error);'
+             '--pele-font:var(--font-mermaid);' + ''.join(f'--pele-series-{i}:var(--mermaid-color-{i});' for i in range(1, 9)) + '}')
+# Gallery: docs/mermaid-gallery.png, 4 × 3 cells, samples by their Preview number in grid order.
+GALLERY = [2, 3, 8, 14, 15, 12, 9, 16, 19, 29, 30, 10]
+CELL = (480, 330)
+
+
+def setup():
+    """Out folder with the renderer, page CSS and script tags, as Obsidian would draw the diagrams."""
+    hits = sorted(glob.glob(you(CFG['obsidian_asar_glob'])))
+    if not hits:
+        sys.exit(f'no Obsidian app archive matches {CFG["obsidian_asar_glob"]} (obsidian_asar_glob in LLM/vault_config.json)')
+    out = Path(you(CFG['out_dir'], hits[-1]))
     out.mkdir(parents=True, exist_ok=True)
-    print('mermaid from', mermaid_js(out / 'mermaid.min.js'))
+    renderer, asar = obsidian_lib(hits[-1], out)
+    print(renderer, 'from', Path(asar).name)
     pal = (SNIP / 'popping-and-locking.css').read_text(encoding='utf-8')
     i = pal.index('1. PALETTE')
-    palette = pal[pal.rfind('/*', 0, i):pal.rfind('/*', 0, pal.index('   2.', i))]
-    css = palette + (SNIP / 'mermaid-afterglow.css').read_text(encoding='utf-8') + (
-        'body{margin:0;padding:16px;background:var(--background-primary);color:var(--text-normal);'
-        'font-family:"Segoe UI",sans-serif;--font-mermaid:"Segoe UI",sans-serif}'
-        'h3{margin:0 0 8px;font-size:15px;color:var(--text-muted)}.mermaid svg{max-width:100%;height:auto}')
-    elk = plugin_html(out)
-    print('ELK plugin', 'loaded' if elk else 'not installed')
-    winpath = lambda p: subprocess.run(['wslpath', '-w', str(p)], capture_output=True, text=True).stdout.strip()
+    css = pal[pal.rfind('/*', 0, i):pal.rfind('/*', 0, pal.index('   2.', i))]
+    size = json.loads((VAULT / '.obsidian' / 'appearance.json').read_text(encoding='utf-8')).get('baseFontSize', 16)
+    css += ('body{margin:0;padding:16px;background:var(--background-primary);color:var(--text-normal);'
+            f'font-family:"Segoe UI",sans-serif;--font-mermaid:"Segoe UI",sans-serif;--font-text-size:{size}px}}'
+            'h3{margin:0 0 8px;font-size:15px;color:var(--text-muted)}')
+    if renderer == 'pele':
+        css += PELE_VARS + (SNIP / 'pele-afterglow.css').read_text(encoding='utf-8')
+        head, draw = '<script src="pele.min.js"></script><script>window.__ready=Promise.resolve();</script>', 'pele.mount(el,src,opts)'
+    else:  # Obsidian < 1.15: Mermaid.js, and the ELK plugin when installed
+        css += (SNIP / 'mermaid-afterglow.css').read_text(encoding='utf-8') + '.mermaid svg{max-width:100%;height:auto}'
+        elk = plugin_html(out)
+        print('ELK plugin', 'loaded' if elk else 'not installed')
+        head = f'<script src="mermaid.min.js"></script><script>mermaid.initialize({INIT});window.__ready=Promise.resolve();</script>{elk}'
+        draw = ('(async()=>{const t=document.createElement("div");t.className="mermaid";t.style.cssText="width:1000px;'
+                'visibility:hidden;position:absolute";document.body.appendChild(t);try{el.innerHTML=(await mermaid.render('
+                '"m"+Math.random().toString(36).slice(2),src,t)).svg}finally{t.remove()}})()')
+    return out, css, head, draw
+
+
+def page(out, name, css, head, body, script):
+    """Write one page; the samples sit in <script type="text/plain" id="sN"> so no escaping is lost."""
+    f = out / f'{name}.html'
+    f.write_text(f'<!doctype html><html><head><meta charset="utf-8"><style>{css}</style>{head}</head>'
+                 f'<body class="theme-dark">{body}<script>(async()=>{{await window.__ready;'
+                 'const code=n=>new DOMParser().parseFromString(document.getElementById("s"+n).textContent,"text/html")'
+                 f'.documentElement.textContent;{script}}})();</script></body></html>', encoding='utf-8')
+    return f
+
+
+def shoot(f, png, w, h):
+    win = lambda p: subprocess.run(['wslpath', '-w', str(p)], capture_output=True, text=True).stdout.strip()
+    png.unlink(missing_ok=True)
+    subprocess.run([CFG['edge'], '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files',
+                    '--virtual-time-budget=15000', f'--screenshot={win(png)}', f'--window-size={w},{h}',
+                    'file:///' + win(f).replace('\\', '/')], capture_output=True, timeout=120)
+    return png.exists()
+
+
+def src_tag(n):
+    return f'<script id="s{n}" type="text/plain">{html.escape(SAMPLES[n - 1][2])}</script>'
+
+
+def render(only):
+    out, css, head, draw = setup()
     for n, (t, _, code) in enumerate(SAMPLES, 1):
         if only and n not in only:
             continue
-        page = out / f'p{n:02d}.html'
-        page.write_text(
-            f'<!doctype html><html><head><meta charset="utf-8"><style>{css}</style><script src="mermaid.min.js"></script>'
-            f'<script>mermaid.initialize({INIT});window.__ready=Promise.resolve();</script>'
-            f'{elk}</head><body class="theme-dark"><h3>{n}. {html.escape(t)}</h3><div id="slot"></div>'
-            f'<script id="src" type="text/plain">{html.escape(code)}</script><script>'
-            '(async()=>{await window.__ready;const tmp=document.createElement("div");tmp.className="mermaid";'
-            'tmp.style.cssText="width:1000px;visibility:hidden;position:absolute";document.body.appendChild(tmp);'
-            'const slot=document.getElementById("slot");try{const r=await mermaid.render("m",'
-            'new DOMParser().parseFromString(document.getElementById("src").textContent,"text/html").documentElement.textContent,tmp);'
-            'slot.className="mermaid";slot.innerHTML=r.svg;}catch(e){slot.textContent="ERROR "+e;}tmp.remove();})();'
-            '</script></body></html>', encoding='utf-8')
-        png = out / f'p{n:02d}.png'
-        subprocess.run([CFG['edge'], '--headless=new', '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files',
-                        '--virtual-time-budget=15000', f'--screenshot={winpath(png)}', '--window-size=1100,900',
-                        'file:///' + winpath(page).replace('\\', '/')], capture_output=True, timeout=120)
-        print(n, t, 'ok' if png.exists() else 'NO PNG')
+        f = page(out, f'p{n:02d}', css, head, f'<h3>{n}. {html.escape(t)}</h3><div class="mermaid" id="slot"></div>{src_tag(n)}',
+                 f'const el=document.getElementById("slot"),src=code({n}),opts={{}};try{{await {draw}}}catch(e){{el.textContent="ERROR "+e}}')
+        print(n, t, 'ok' if shoot(f, out / f'p{n:02d}.png', 1100, 900) else 'NO PNG')
     print('PNGs in', out)
+
+
+def gallery():
+    """docs/mermaid-gallery.png: the GALLERY samples, each scaled to fit its cell. maxWidth 0: Pele keeps the
+    layout it has in a wide note (by default it re-lays a diagram out for a narrow container, e.g. LR → TB);
+    zoom false: no zoom buttons on a diagram wider than its cell."""
+    out, css, head, draw = setup()
+    (w, h), cols = CELL, 4
+    rows = -(-len(GALLERY) // cols)
+    css += (f'body{{padding:0;width:{w * cols}px;display:grid;grid-template-columns:repeat({cols},{w}px);grid-auto-rows:{h}px}}'
+            '.cell{box-sizing:border-box;border:1px solid var(--background-modifier-border);padding:8px 10px;overflow:hidden;'
+            'display:flex;flex-direction:column}.cell h3{font-size:13px;margin:0 0 4px}'
+            '.cell .mermaid{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}')
+    body = ''.join(f'<div class="cell"><h3>{n}. {html.escape(SAMPLES[n - 1][0])}</h3><div class="mermaid" id="g{n}"></div>'
+                   f'{src_tag(n)}</div>' for n in GALLERY)
+    script = (f'for(const n of {GALLERY}){{const el=document.getElementById("g"+n),src=code(n),opts={{maxWidth:0,zoom:false}};'
+              f'try{{await {draw}}}catch(e){{el.textContent="ERROR "+e;continue}}'
+              'const svg=el.querySelector("svg");if(!svg)continue;const b=svg.viewBox.baseVal,'
+              'sw=+svg.getAttribute("width")||b.width,sh=+svg.getAttribute("height")||b.height,'
+              'r=el.getBoundingClientRect(),s=Math.min(r.width/sw,r.height/sh);'
+              'svg.style.setProperty("width",sw*s+"px","important");svg.style.setProperty("height",sh*s+"px","important");'
+              'svg.style.setProperty("max-width","none","important");}')
+    f = page(out, 'gallery', css, head, body, script)
+    png = VAULT / 'docs' / 'mermaid-gallery.png'
+    print(png.relative_to(VAULT), 'ok' if shoot(f, png, w * cols, h * rows) else 'NO PNG')
 
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     if cmd == 'note':
         note()
+    elif cmd == 'gallery':
+        gallery()
     elif cmd == 'render':
         render({int(x) for x in sys.argv[2].split(',')} if len(sys.argv) > 2 else None)
     else:

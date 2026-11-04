@@ -182,7 +182,7 @@ Every Mermaid type gets a dark, readable look: dark blocks with coloured borders
 
 - Mark meaning with built-in classes, no colours in the diagram: `:::pass`, `:::fail`, `:::warn`, `:::info`, `:::muted`.
 - Tree views take status classes on the comment: `:::new`, `:::edited`, `:::ported`, `:::removed`.
-- After changing a colour, `python3 Tools/mermaid_preview/preview.py render` draws every type with Obsidian's own Mermaid in headless Edge, so you can check it without opening each note.
+- After changing a colour, `python3 Tools/mermaid_preview/preview.py render` draws every type with Obsidian's own renderer (Pele, or Mermaid.js before 1.15) in headless Edge, so you can check it without opening each note; `preview.py gallery` redraws the picture above.
 
 ---
 
@@ -194,7 +194,7 @@ Every Mermaid type gets a dark, readable look: dark blocks with coloured borders
 | Shared rules for the agent | `AGENTS.md` and `LLM/LLM_GUIDE.md` |
 | Your name, co-author line, report file names | `LLM/vault_config.json` |
 | Colours | Style Settings → Popping and Locking (swatches in `_Meta/Theme Color Preview.md`) |
-| Diagram look | `.obsidian/snippets/pele-afterglow.css` (Obsidian 1.15+), `mermaid-afterglow.css` (older; `preview.py render` checks this one) |
+| Diagram look | `.obsidian/snippets/pele-afterglow.css` (Obsidian 1.15+), `mermaid-afterglow.css` (older); `preview.py render` checks the one your Obsidian uses |
 | Journal tone | `LLM/TONE.md` (it also learns from your edits) |
 
 ---
