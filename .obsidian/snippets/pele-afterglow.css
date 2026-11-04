@@ -1,0 +1,187 @@
+/* ==========================================================================
+   pele-afterglow.css (2026-11-04)
+   Obsidian 1.15 draws ```mermaid blocks with its own renderer, Pele (github.com/obsidianmd/pele),
+   not Mermaid.js, so mermaid-afterglow.css (written for Mermaid's SVG) no longer matches anything.
+   Pele is themed with CSS variables; Obsidian feeds them from its --mermaid-* variables
+   (body, .mermaid { --pele-bg: var(--mermaid-background); ... }). This snippet points those at the
+   --diagram-* palette in popping-and-locking.css, then keeps the vault's own node classes.
+
+   CONTENTS
+     1. Palette — every diagram type, light and dark
+     2. Base — no dark-mode filter, subgraph borders
+     3. Semantic node classes — :::pass / fail / warn / info / mod / muted / hdr / sec
+        (dark fill + coloured border + light text, as in mermaid-afterglow §39)
+     4. Tree view status — :::new / edited / ported / removed colour the ## comment
+     5. Legend row below a diagram (<div class="diagram-legend">)
+     6. Aligned to the old gallery (agent-worklog-vault/docs/mermaid-gallery.png): sequence, mindmap,
+        sankey, packet, tree view, venn, quadrant (placed before 5 in the file)
+
+   Pele's class names: pele (root svg), pele-<type>, pele-node, pele-label, pele-edge,
+   pele-edge-label, pele-cluster, pele-cluster-label, pele-marker, pele-title (see pele.run/theming).
+   ========================================================================== */
+
+
+/* 1. PALETTE ----------------------------------------------------------------
+   body.theme-* wins over Obsidian's own body { --mermaid-*: ... } */
+body.theme-dark,
+body.theme-light {
+    --mermaid-background: var(--background-primary);
+    --mermaid-text-color: var(--diagram-text, var(--text-normal));
+    --mermaid-muted-color: var(--text-muted);
+    --mermaid-line-color: var(--diagram-edge-color, var(--text-muted));
+    --mermaid-surface: var(--background-primary-alt);
+    --mermaid-surface-alt: var(--background-secondary);
+    --mermaid-border-color: var(--diagram-node-border, var(--background-modifier-border));
+    --mermaid-accent: var(--diagram-info, var(--interactive-accent));
+    --mermaid-critical: var(--diagram-error, var(--text-error));
+    --mermaid-error: var(--diagram-error, var(--text-error));
+    --mermaid-color-1: var(--diagram-c1);
+    --mermaid-color-2: var(--diagram-c2);
+    --mermaid-color-3: var(--diagram-c3);
+    --mermaid-color-4: var(--diagram-c4);
+    --mermaid-color-5: var(--diagram-c5);
+    --mermaid-color-6: var(--diagram-c6);
+    --mermaid-color-7: var(--diagram-c7);
+    --mermaid-color-8: var(--diagram-c8);
+}
+
+
+/* 2. BASE ------------------------------------------------------------------- */
+.theme-dark .mermaid > svg.pele { filter: none; }
+
+/* Size follows Settings → Appearance → Font size. Pele lays a diagram out at 16 px text (Obsidian passes no
+   fontSize), so the SVG is scaled by font size ÷ 16 from its natural width (the width attribute), never wider
+   than the note. A diagram that already fills the note stays note-wide (Pele's zoom shows the detail).
+   !important: another stylesheet pins every `.mermaid svg { width: auto !important }`. */
+.mermaid > svg.pele {
+    width: calc(attr(width type(<number>), 0) * var(--font-text-size, 16px) / 16) !important;
+    max-width: 100% !important;
+    height: auto !important;
+}
+.pele-cluster > :is(rect, path, polygon) { stroke: var(--diagram-subgraph-border, var(--_b)); }
+
+
+/* 3. SEMANTIC NODE CLASSES ---------------------------------------------------
+   A[Build]:::pass  B[Flash]:::fail  C:::warn  D:::info  E:::muted  F:::mod (H6 colour)
+   No classDef needed. Colour lives in the outline, never behind the text. */
+.pele-node:is(.pass, .success, .fail, .error, .warn, .warning, .info, .mod) > :is(rect, path, polygon, circle, ellipse) {
+    fill: var(--background-primary-alt);
+    stroke-width: 3px;
+}
+.pele-node:is(.pass, .success) > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-success); }
+.pele-node:is(.fail, .error)    > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-error); }
+.pele-node:is(.warn, .warning)  > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-warn); }
+.pele-node.info                 > :is(rect, path, polygon, circle, ellipse) { stroke: var(--diagram-info); }
+.pele-node.mod                  > :is(rect, path, polygon, circle, ellipse) { stroke: var(--h6-color, var(--diagram-c7)); }
+.pele-node:is(.pass, .success, .fail, .error, .warn, .warning, .info, .mod) .pele-label {
+    fill: var(--diagram-text);
+    font-weight: 600;
+}
+
+/* muted: dashed faint outline, no fill, faint text */
+.pele-node.muted > :is(rect, path, polygon, circle, ellipse) {
+    fill: transparent;
+    stroke: var(--text-faint);
+    stroke-dasharray: 4 3;
+}
+.pele-node.muted .pele-label { fill: var(--text-faint); }
+
+/* hdr: header / row label of a block grid, no box, bold muted text */
+.pele-node.hdr > :is(rect, path, polygon) { fill: transparent; stroke: transparent; }
+.pele-node.hdr .pele-label { fill: var(--text-muted); font-weight: 700; }
+
+/* sec: section title row of a block grid, bold muted text, box reduced to a faint outline */
+.pele-node.sec > :is(rect, path, polygon) { fill: transparent; stroke: var(--text-faint); stroke-width: 1px; }
+.pele-node.sec .pele-label { fill: var(--text-muted); font-weight: 700; }
+
+
+/* 4. TREE VIEW STATUS ------------------------------------------------------------
+   app.c :::new ## added    util.c :::edited ## ...    port.c :::ported ## ...    old.c :::removed ## ... */
+.pele-node.new     .pele-tree-description { fill: var(--diagram-c4); }
+.pele-node.edited  .pele-tree-description { fill: var(--diagram-c6); }
+.pele-node.ported  .pele-tree-description { fill: var(--diagram-c7); }
+.pele-node.removed .pele-tree-description { fill: var(--diagram-error); text-decoration: line-through; }
+.pele-tree-description { font-style: normal; }
+
+
+/* 6. ALIGNED TO agent-worklog-vault/docs/mermaid-gallery.png (2026-11-04) ----------
+   Only the types that differed: sequence, mindmap, sankey, packet, tree view, venn, quadrant. */
+
+/* Sequence: loop / alt / opt / par frames in the subgraph colour, notes as white chips, yellow step numbers */
+.pele-frame :is(rect, path):not(.pele-rect) { stroke: var(--diagram-subgraph-border); }
+.pele-frame-kind, .pele-frame-label { fill: var(--diagram-subgraph-border); }
+.pele-note > :is(rect, path) { fill: var(--diagram-note-bg); stroke: var(--diagram-note-border); }
+.pele-note .pele-label { fill: var(--diagram-note-text); }
+.pele-sequence-number > rect { fill: var(--diagram-c2); stroke: none; }
+.pele-sequence-number > text { fill: var(--diagram-note-text); }
+
+/* Mindmap: boxes on the dark fill, the branch colour on the border, root ringed in the text colour */
+.pele-branch .pele-node > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); }
+.pele-branch .pele-node .pele-label { fill: var(--diagram-text); }
+.pele-root > :is(rect, path, circle, ellipse, polygon) { fill: var(--background-primary-alt); stroke: var(--diagram-text); stroke-width: 2px; }
+.pele-root .pele-label { fill: var(--diagram-text); font-weight: 600; }
+
+/* Sankey: flows nearly solid in their series colour, labels light and bold */
+.pele-sankey-links { fill-opacity: 0.85; }
+.pele-sankey-nodes ~ .pele-labels .pele-label,
+.pele-labels .pele-label:has(.pele-sankey-value) { fill: var(--diagram-text); font-weight: 600; }
+
+/* Packet: solid series fields (blue, yellow, magenta, repeating) with dark text */
+.pele-packet-fields > .pele-node:nth-child(3n+1) > rect { fill: var(--diagram-c1); }
+.pele-packet-fields > .pele-node:nth-child(3n+2) > rect { fill: var(--diagram-c2); }
+.pele-packet-fields > .pele-node:nth-child(3n)   > rect { fill: var(--diagram-c3); }
+.pele-packet-fields > .pele-node > rect { stroke: var(--background-primary); }
+.pele-packet-fields > .pele-node text { fill: var(--diagram-note-text); }
+
+/* Tree view: folders in blue, the highlighted row as yellow bold text instead of a box */
+.pele-tree-dir > .pele-label { fill: var(--diagram-c1); }
+.pele-tree-guides { stroke: var(--text-faint); stroke-width: 1.5px; }   /* as before (Mermaid's treeView-node-line) */
+.pele-tree-highlight { fill: transparent; stroke: none; }
+.pele-node:has(> .pele-tree-highlight) > .pele-label { fill: var(--diagram-c2); font-weight: 700; }
+
+/* Venn: stronger tint inside each set, light labels */
+.pele-venn-set { fill-opacity: 0.3; }
+.pele-venn-labels .pele-label { fill: var(--diagram-text); }
+
+/* Quadrant: points in yellow */
+.pele-points, .pele-point { fill: var(--diagram-c2); }
+
+
+/* 5. LEGEND ----------------------------------------------------------------------
+   <div class="diagram-legend"><span class="warn">To discuss</span><span class="info">To do</span></div>
+   Classes: pass, fail, warn, info, mod, muted (as the node classes); node = a plain node. */
+.diagram-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.3em 1.4em;
+    margin: 0.2em 0 0.8em;
+    padding: 0.15em 0;
+    font-size: 0.85em;
+    line-height: 1.6;
+    overflow: visible;
+    color: var(--text-muted);
+}
+.diagram-legend > span {
+    --legend-color: var(--text-faint);
+    display: inline-flex;
+    align-items: center;
+}
+.diagram-legend > span::before {
+    content: "";
+    width: 1.1em;
+    height: 0.8em;
+    margin-right: 0.45em;
+    border: 2px solid var(--legend-color);
+    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--legend-color) 18%, transparent);
+}
+.diagram-legend > .pass  { --legend-color: var(--diagram-success); }
+.diagram-legend > .fail  { --legend-color: var(--diagram-error); }
+.diagram-legend > .warn  { --legend-color: var(--diagram-warn); }
+.diagram-legend > .info  { --legend-color: var(--diagram-info); }
+.diagram-legend > .mod   { --legend-color: var(--h6-color, var(--diagram-c7)); }
+.diagram-legend > .node  { --legend-color: var(--diagram-node-border); }
+.diagram-legend > .node::before { background-color: var(--background-primary-alt); }
+.diagram-legend > .muted { --legend-color: var(--text-faint); }
+.diagram-legend > .muted::before { border-style: dashed; background-color: transparent; }

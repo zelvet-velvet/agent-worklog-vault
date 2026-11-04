@@ -142,7 +142,7 @@ Needs Python 3.9+ for `Tools/`. Filling the company `.doc` (`weekly_report.py --
 | Breadcrumbs | `up:` links and the folder-note maps |
 | Dataview | Tables and lists from note properties |
 | Tab Panels | Tabbed notes (styled by `tab-panels-vertical.css`) |
-| Mermaid ELK Renderer | `%% elk %%` as the first line of a diagram for ELK layout; with *Use bundled Mermaid* on, every diagram renders with Mermaid 11.17 (fishbone, tree view, venn, …) |
+| Mermaid ELK Renderer | Obsidian before 1.15: `%% elk %%` as the first line of a diagram for ELK layout; with *Use bundled Mermaid* on, every diagram renders with Mermaid 11.17 (fishbone, tree view, venn, …). Obsidian 1.15 draws diagrams with Pele and does not use it. |
 | Hover Editor | Editing in hover popups |
 | make.md | Note icons (`sticker:`) and folder notes; it shows the file name as the title, so notes have no `# Title` line |
 
@@ -176,7 +176,7 @@ Journal and report text is written in Traditional Chinese in a Taiwan work-log t
 
 ## Diagrams
 
-`mermaid-afterglow.css` gives every Mermaid type a dark, readable look: dark blocks with coloured borders and light text, white label chips, and one palette for all charts. `_Meta/Mermaid Preview.md` draws all 34 samples live in the vault.
+Every Mermaid type gets a dark, readable look: dark blocks with coloured borders and light text, white label chips, and one palette for all charts. Obsidian 1.15 and later draw ```mermaid blocks with their own renderer, [Pele](https://github.com/obsidianmd/pele), styled by `pele-afterglow.css` (the palette through Pele's CSS variables, the `:::pass` / `:::fail` … classes, and diagrams sized to the Appearance font size). Older Obsidian draws them with Mermaid.js, styled by `mermaid-afterglow.css`. Both snippets are on; each matches only its own renderer. `_Meta/Mermaid Preview.md` draws all 34 samples live in the vault.
 
 ![Mermaid diagrams in the vault theme](docs/mermaid-gallery.png)
 
@@ -194,7 +194,7 @@ Journal and report text is written in Traditional Chinese in a Taiwan work-log t
 | Shared rules for the agent | `AGENTS.md` and `LLM/LLM_GUIDE.md` |
 | Your name, co-author line, report file names | `LLM/vault_config.json` |
 | Colours | Style Settings → Popping and Locking (swatches in `_Meta/Theme Color Preview.md`) |
-| Diagram look | `.obsidian/snippets/mermaid-afterglow.css`, then `preview.py render` to check |
+| Diagram look | `.obsidian/snippets/pele-afterglow.css` (Obsidian 1.15+), `mermaid-afterglow.css` (older; `preview.py render` checks this one) |
 | Journal tone | `LLM/TONE.md` (it also learns from your edits) |
 
 ---
@@ -203,7 +203,8 @@ Journal and report text is written in Traditional Chinese in a Taiwan work-log t
 
 - **[Popping and Locking](https://github.com/hedinne/popping-and-locking-vscode)** by hedinne (MIT): the palette and syntax colours of `popping-and-locking.css` come from this VS Code theme. Licence text: [`licenses/popping-and-locking-vscode.txt`](licenses/popping-and-locking-vscode.txt).
 - **[Minimal](https://github.com/kepano/obsidian-minimal)** by kepano (MIT): the theme the snippets are layered on; installed separately, not included.
-- **[Mermaid](https://mermaid.js.org)** (MIT): rendered by Obsidian and the Mermaid ELK Renderer plugin; `mermaid-afterglow.css` only restyles its output.
+- **[Pele](https://github.com/obsidianmd/pele)** (MIT): Obsidian's diagram renderer since 1.15; `pele-afterglow.css` only sets its CSS variables and classes.
+- **[Mermaid](https://mermaid.js.org)** (MIT): rendered by Obsidian before 1.15 and the Mermaid ELK Renderer plugin; `mermaid-afterglow.css` only restyles its output.
 - **Plugins**: this repo keeps only their settings (`data.json`, `manifest.json`); the code is downloaded from each author's release by `Tools/setup/install_plugins.py`.
 
   | Plugin | Author | Licence |

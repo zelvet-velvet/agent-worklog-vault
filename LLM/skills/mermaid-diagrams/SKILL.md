@@ -52,13 +52,13 @@ Every type, rendered with the vault theme: `_Meta/Mermaid Preview.md`. Copy synt
 - **Gantt**: start the block with `---` / `config:` / `  gantt:` / `    barHeight: 34` / `    barGap: 8` / `    fontSize: 16` / `    sectionFontSize: 16` / `---` (the default bars are too thin to read).
 
 ## Colours: never hard-code
-- The theme colours every diagram (`mermaid-afterglow.css`). Do not write `style X fill:#…`, `classDef … fill:#…` or `%%{init: {theme…}}%%`: they break the theme and dark mode.
+- The theme colours every diagram (`pele-afterglow.css` on Obsidian 1.15+, `mermaid-afterglow.css` before). Do not write `style X fill:#…`, `classDef … fill:#…` or `%%{init: {theme…}}%%`: they break the theme and dark mode.
 - Mark meaning with the built-in classes, no `classDef` needed: `:::pass` (green), `:::fail` (red), `:::warn` (yellow), `:::info` (blue), `:::muted` (faint, dashed). Example: `B[Verify KCV]:::pass`.
 - Series colours (pie slices, chart lines, sections) follow the order of the data; put the most important series first.
 - Tree view: mark changed files with `:::new` (green), `:::edited` (orange), `:::ported` (purple), `:::removed` (red, struck through), `:::highlight` (yellow bold name); the comment after `##` takes the colour, the file name stays plain. Example: `crypto.c :::new ## added for key storage`.
 
 ## Obsidian specifics
-- The vault renders with **Mermaid 11.17**, bundled by the Mermaid ELK Renderer plugin (*Use bundled Mermaid* on). Without that setting Obsidian's own 11.13 renders, which lacks the 11.12+ types and collapsible subgraphs (`G@{ view: collapsed }`). v12 features (`neo` look, ELK by default) are not available. When in doubt, use a form shown in `_Meta/Mermaid Preview.md`.
+- **Obsidian 1.15+** draws every ```mermaid block with its own renderer, **Pele** (Mermaid 12.1 syntax, its own layout); `%% elk %%` and the ELK plugin have no effect there. Before 1.15: the vault renders with **Mermaid 11.17**, bundled by the Mermaid ELK Renderer plugin (*Use bundled Mermaid* on). Without that setting Obsidian's own 11.13 renders, which lacks the 11.12+ types and collapsible subgraphs (`G@{ view: collapsed }`). v12 features (`neo` look, ELK by default) are not available. When in doubt, use a form shown in `_Meta/Mermaid Preview.md`.
 - Link a node to a vault note: name the node like the note and add `class A,B internal-link;` at the end.
 - `click` handlers do not work (strict security). Markdown labels need backticks: ``A["`**bold** _italic_`"]``.
 - Do not name a node `end` (lowercase); start an edge with a space if the target begins with `o` or `x`.

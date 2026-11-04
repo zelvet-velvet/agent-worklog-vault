@@ -179,7 +179,7 @@ flowchart LR
 
 ## 圖表
 
-`mermaid-afterglow.css` 統一所有 Mermaid 圖表類型的深色外觀：深色區塊搭配彩色外框與淺色文字、白底標籤，並共用同一組配色。`_Meta/Mermaid Preview.md` 於筆記庫中即時繪製全部 34 個範例。
+所有 Mermaid 圖表類型使用統一的深色外觀：深色區塊搭配彩色外框與淺色文字、白底標籤，並共用同一組配色。Obsidian 1.15 起以內建繪圖器 [Pele](https://github.com/obsidianmd/pele) 繪製 ```mermaid 區塊，由 `pele-afterglow.css` 設定外觀（以 Pele 的 CSS 變數套用配色、`:::pass` / `:::fail` 等類別，圖表大小隨外觀字型大小縮放）；較舊的 Obsidian 以 Mermaid.js 繪製，由 `mermaid-afterglow.css` 設定。兩個片段皆啟用，各自只作用於對應的繪圖器。`_Meta/Mermaid Preview.md` 於筆記庫中即時繪製全部 34 個範例。
 
 ![筆記庫主題下的 Mermaid 圖表](docs/mermaid-gallery.png)
 
@@ -197,7 +197,7 @@ flowchart LR
 | Agent 共用規則 | `AGENTS.md` 與 `LLM/LLM_GUIDE.md` |
 | 姓名、co-author、週報檔名 | `LLM/vault_config.json` |
 | 顏色 | Style Settings → Popping and Locking（色票位於 `_Meta/Theme Color Preview.md`） |
-| 圖表外觀 | `.obsidian/snippets/mermaid-afterglow.css`，修改後以 `preview.py render` 確認 |
+| 圖表外觀 | `.obsidian/snippets/pele-afterglow.css`（Obsidian 1.15 起）、`mermaid-afterglow.css`（較舊版本，以 `preview.py render` 確認） |
 | 日誌語氣 | `LLM/TONE.md`（並依據修改紀錄自動學習） |
 
 ---
@@ -206,7 +206,8 @@ flowchart LR
 
 - **[Popping and Locking](https://github.com/hedinne/popping-and-locking-vscode)**，作者 hedinne（MIT）：`popping-and-locking.css` 的配色與語法顏色取自此 VS Code 主題。授權全文：[`licenses/popping-and-locking-vscode.txt`](licenses/popping-and-locking-vscode.txt)。
 - **[Minimal](https://github.com/kepano/obsidian-minimal)**，作者 kepano（MIT）：CSS 片段所依附的主題，需另外安裝，不包含於 repo 內。
-- **[Mermaid](https://mermaid.js.org)**（MIT）：由 Obsidian 與 Mermaid ELK Renderer 外掛繪製，`mermaid-afterglow.css` 僅調整其外觀。
+- **[Pele](https://github.com/obsidianmd/pele)**（MIT）：Obsidian 1.15 起的圖表繪圖器，`pele-afterglow.css` 僅設定其 CSS 變數與類別。
+- **[Mermaid](https://mermaid.js.org)**（MIT）：由 1.15 之前的 Obsidian 與 Mermaid ELK Renderer 外掛繪製，`mermaid-afterglow.css` 僅調整其外觀。
 - **外掛**：repo 僅保存外掛設定（`data.json`、`manifest.json`），程式碼由 `Tools/setup/install_plugins.py` 從各作者的 release 下載。
 
   | 外掛 | 作者 | 授權 |
